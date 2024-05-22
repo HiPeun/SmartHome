@@ -109,27 +109,27 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               // 이미지 슬라이더
-              CarouselSlider.builder(
-                itemCount: imgList.length,
-                itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-                     Container(
-                    child: Image.network(imgList[itemIndex], fit: BoxFit.cover),
+              Stack(
+                children: [
+                  CarouselSlider.builder(
+                    itemCount: imgList.length,
+                    itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+                        Container(
+                          child: Image.network(imgList[itemIndex], fit: BoxFit.cover),
+                        ),
+                    options: CarouselOptions(
+                      height: 500, // 슬라이더의 높이를 지정
+                      viewportFraction: 1.0, // 사진을 하나하나 보여줌
+                      initialPage: 0, // 0번부터
+                      enableInfiniteScroll: true, // 스크롤
+                      autoPlay: true, // 자동 플레이
+                      autoPlayCurve: Curves.fastOutSlowIn, // 자동 재생 애니메이션 커브 설정
+                      scrollDirection: Axis.horizontal, // 스크롤 방향을 가로로 설정
+                    ),
                   ),
-                options: CarouselOptions(
-                  height: 400.0, // 슬라이더의 높이를 지정
-                  aspectRatio: 16 / 9, // 슬라이더의 종횡비를 지정
-                  initialPage: 0, // 처음에 표시될 슬라이드의 인덱스
-                  enableInfiniteScroll: true, // 무한 스크롤 활성화
-                  reverse: false, // 슬라이드 넘기는 방향 반전
-                  autoPlay: true, // 자동 재생 활성화
-                  autoPlayInterval: Duration(seconds: 5), // 자동 재생 간격
-                  autoPlayCurve: Curves.fastOutSlowIn, // 자동 재생 애니메이션 커브
-                  pauseAutoPlayOnTouch: true, // 사용자가 터치하면 자동 재생 일시 중지
-                  onPageChanged: (index, reason) { // 페이지가 변경될 때 실행할 함수
-                  print('Page changed: $index, Reason: $reason');
-            },
-            scrollDirection: Axis.horizontal, // 스크롤 방향을 가로로 설정
-          ),)
+                ],
+
+              ),
             ],
           ),
         ),
