@@ -30,34 +30,49 @@ class _AppMainState extends State<AppMain> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+
                 Padding(
                   padding: const EdgeInsets.fromLTRB(150, 0, 0, 10),
-                  child: InkWell(
-                    onTap: () {
-                      print('이미지 백 버튼 클릭 ');
-                    },
-                    child: Image.asset(
-                      'assets/images/backbutton.png',
-                      width: 26,
-                      height: 26,
-                      fit: BoxFit.cover,
-                    ),
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () {},
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              'assets/images/backbutton.png',
+                              width: 26,
+                              height: 26,
+                              fit: BoxFit.cover,
+                            ),
+                            Text("로그인",)
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 0, 10),
-                  child: InkWell(
-                    onTap: () {
-                      print('회원가입 이미지 클릭 ');
-                    },
-                    child: Image.asset(
-                      'assets/images/personbutton.png',
-                      height: 26,
-                      width: 26,
-                      fit: BoxFit.cover,
-                    ),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () {},
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              'assets/images/personbutton.png',
+                              width: 26,
+                              height: 26,
+                              fit: BoxFit.cover,
+                            ),
+                            Text("회원가입"),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                )
+                ),
               ],
             ),
           ),
