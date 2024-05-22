@@ -41,7 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
     'assets/webmain/webmain4.png',
   ];
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,19 +115,26 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: const EdgeInsets.only(top: 30),
                     child: CarouselSlider.builder(
                       itemCount: imgList.length,
-                      itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+                      itemBuilder: (BuildContext context, int itemIndex,
+                              int pageViewIndex) =>
                           Container(
-                            child: Image.network(imgList[itemIndex], fit: BoxFit.cover),
-                          ),
+                        child: Image.network(imgList[itemIndex],
+                            fit: BoxFit.cover),
+                      ),
                       options: CarouselOptions(
-                        height: 500, // 슬라이더의 높이를 지정
-                        viewportFraction: 1.0, // 사진을 하나하나 보여줌
-                        initialPage: 0, // 0번부터
-                        enableInfiniteScroll: true, // 스크롤
-                        autoPlay: true, // 자동 플레이
-                        autoPlayCurve: Curves.fastOutSlowIn, // 자동 재생 애니메이션 커브 설정
+                        height: 500,
+                        // 슬라이더의 높이를 지정
+                        viewportFraction: 1.0,
+                        // 사진을 하나하나 보여줌
+                        initialPage: 0,
+                        // 0번부터
+                        enableInfiniteScroll: true,
+                        // 스크롤
+                        autoPlay: true,
+                        // 자동 플레이
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        // 자동 재생 애니메이션 커브 설정
                         scrollDirection: Axis.horizontal, // 스크롤 방향을 가로로 설정
-
                       ),
                     ),
                   ),
@@ -139,20 +145,19 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           Container(
                             margin: EdgeInsets.only(top: 180),
-                            child: Text("Smart Home",
+                            child: Text(
+                              "Smart Home",
                               style: TextStyle(
-                                fontSize: 80,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white
-                              ),
+                                  fontSize: 80,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                           ),
                           Container(
-                            child: Text("일상의 행복한 변화",
-                              style: TextStyle(
-                                fontSize: 40,
-                                color: Colors.white
-                              ),
+                            child: Text(
+                              "일상의 행복한 변화",
+                              style:
+                                  TextStyle(fontSize: 40, color: Colors.white),
                             ),
                           ),
                         ],
@@ -170,7 +175,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 100),
                         child: Container(
-                          child: Text("당신의 일상을 더 똑똑하고 편리하게 바꿔보세요",
+                          child: Text(
+                            "당신의 일상을 더 똑똑하고 편리하게 바꿔보세요",
                             style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
@@ -179,11 +185,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Container(
-                        child: Text("누구 스마트홈 앱 하나로 언제 어디서나 가전제품은 물론, 우리집 안팎 곳곳을 컨트롤할 수 있습니다.",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey
-                          ),
+                        child: Text(
+                          "누구 스마트홈 앱 하나로 언제 어디서나 가전제품은 물론, 우리집 안팎 곳곳을 컨트롤할 수 있습니다.",
+                          style: TextStyle(fontSize: 15, color: Colors.grey),
                         ),
                       )
                     ],
@@ -194,7 +198,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   Center(
                     child: Container(
-                      child: Image.asset("assets/webmain/light.png",
+                      child: Image.asset(
+                        "assets/webmain/light.png",
                         width: 1200,
                         height: 800,
                       ),
@@ -207,52 +212,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           Container(
                             margin: EdgeInsets.only(top: 300),
-                            child: Text("조명 제어",
-                              style: TextStyle(
-                                  fontSize: 50,
-                                  fontWeight: FontWeight.bold,
-                                color: Color(0xFF2C2B28),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: Text("우리집 조명 어디서든 제어 할 수 있어요",
-                              style: TextStyle(
-                                  fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF2C2B28),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-
-
-
-
-              Stack(
-                children: [
-                  Center(
-                    child: Container(
-                      margin: EdgeInsets.only(top: 50),
-                      child: Image.asset("assets/webmain/CCTV.png",
-                        width: 1200,
-                        height: 800,
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(top: 350),
-                            child: Text("CCTV 확인",
+                            child: Text(
+                              "조명 제어",
                               style: TextStyle(
                                 fontSize: 50,
                                 fontWeight: FontWeight.bold,
@@ -261,7 +222,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                           Container(
-                            child: Text("언제 어디서든 집 확인 서비스",
+                            child: Text(
+                              "우리집 조명 어디서든 제어 할 수 있어요",
                               style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
@@ -281,7 +243,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   Center(
                     child: Container(
                       margin: EdgeInsets.only(top: 50),
-                      child: Image.asset("assets/webmain/temperature.png",
+                      child: Image.asset(
+                        "assets/webmain/CCTV.png",
                         width: 1200,
                         height: 800,
                       ),
@@ -294,7 +257,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           Container(
                             margin: EdgeInsets.only(top: 350),
-                            child: Text("온 습도 확인",
+                            child: Text(
+                              "CCTV 확인",
                               style: TextStyle(
                                 fontSize: 50,
                                 fontWeight: FontWeight.bold,
@@ -303,7 +267,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                           Container(
-                            child: Text("따뜻한 환경 유지 서비스",
+                            child: Text(
+                              "언제 어디서든 집 확인 서비스",
                               style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
@@ -323,7 +288,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   Center(
                     child: Container(
                       margin: EdgeInsets.only(top: 50),
-                      child: Image.asset("assets/webmain/window.png",
+                      child: Image.asset(
+                        "assets/webmain/temperature.png",
                         width: 1200,
                         height: 800,
                       ),
@@ -336,7 +302,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           Container(
                             margin: EdgeInsets.only(top: 350),
-                            child: Text("창문 개폐 서비스",
+                            child: Text(
+                              "온 습도 확인",
                               style: TextStyle(
                                 fontSize: 50,
                                 fontWeight: FontWeight.bold,
@@ -345,7 +312,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                           Container(
-                            child: Text("쾌적한 우리집을 만들어 봐요",
+                            child: Text(
+                              "따뜻한 환경 유지 서비스",
                               style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
@@ -360,6 +328,50 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
 
+              Stack(
+                children: [
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 50),
+                      child: Image.asset(
+                        "assets/webmain/window.png",
+                        width: 1200,
+                        height: 800,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 350),
+                            child: Text(
+                              "창문 개폐 서비스",
+                              style: TextStyle(
+                                fontSize: 50,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF2C2B28),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: Text(
+                              "쾌적한 우리집을 만들어 봐요",
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF2C2B28),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
 
               Row(
                 children: [
@@ -367,13 +379,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: const EdgeInsets.only(left: 50),
                     child: Container(
                       child: InkWell(
-                        onTap: () {},
-                          child: Text("이용약관",
-                            style: TextStyle(
-                                color: Colors.grey
-                            ),
-                          )
-                      ),
+                          onTap: () {},
+                          child: Text(
+                            "이용약관",
+                            style: TextStyle(color: Colors.grey),
+                          )),
                     ),
                   ),
                   Padding(
@@ -381,11 +391,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Container(
                       child: InkWell(
                         onTap: () {},
-                          child: Text("개인정보 처리방침",
-                            style: TextStyle(
-                                color: Colors.grey
-                            ),
-                          ),
+                        child: Text(
+                          "개인정보 처리방침",
+                          style: TextStyle(color: Colors.grey),
+                        ),
                       ),
                     ),
                   )
@@ -395,10 +404,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: const EdgeInsets.only(left: 50),
                 child: Row(
                   children: [
-                    Text("• 대표이사/사장 김근재",
-                      style: TextStyle(
-                          color: Colors.grey
-                      ),
+                    Text(
+                      "• 대표이사/사장 김근재",
+                      style: TextStyle(color: Colors.grey),
                     ),
                   ],
                 ),
@@ -407,10 +415,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: const EdgeInsets.only(left: 50),
                 child: Row(
                   children: [
-                    Text("• 광주 북구 북문대로242번길 11",
-                      style: TextStyle(
-                          color: Colors.grey
-                      ),
+                    Text(
+                      "• 광주 북구 북문대로242번길 11",
+                      style: TextStyle(color: Colors.grey),
                     ),
                   ],
                 ),
@@ -419,10 +426,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: const EdgeInsets.only(left: 50),
                 child: Row(
                   children: [
-                    Text("• 고객센터 010-8805-4754",
-                      style: TextStyle(
-                          color: Colors.grey
-                      ),
+                    Text(
+                      "• 고객센터 010-8805-4754",
+                      style: TextStyle(color: Colors.grey),
                     ),
                   ],
                 ),
@@ -431,17 +437,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: const EdgeInsets.only(left: 50, bottom: 30),
                 child: Row(
                   children: [
-                    Text("• COPYRIGHT ⓒ 럽팅",
-                    style: TextStyle(
-                      color: Colors.grey
-                    ),
+                    Text(
+                      "• COPYRIGHT ⓒ 럽팅",
+                      style: TextStyle(color: Colors.grey),
                     ),
                   ],
                 ),
               ),
-
-              
-              
             ],
           ),
         ),
