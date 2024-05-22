@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:loginproject/Web/Web_Member/web_login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -68,7 +69,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       padding: const EdgeInsets.only(right: 40),
                       child: Container(
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => WebLogin(),
+                            ));
+                          },
                           child: Text(
                             "로그인",
                             style: TextStyle(
