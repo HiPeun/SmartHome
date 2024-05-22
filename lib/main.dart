@@ -1,12 +1,9 @@
+
 import 'package:flutter/material.dart';
-
-import 'home_screen/home_screen.dart';
-
-
-
+import 'package:loginproject/app_screen/app_main.dart';
 
 void main(){
   runApp(MaterialApp(
-    home: HomeScreen(),
-  ),);
+    home: AppMain(),
+  ));
 }

@@ -1,14 +1,18 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
+void main(){
+  runApp(const AppMain());
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class AppMain extends StatefulWidget {
+  const AppMain({super.key});
+
+  @override
+  State<AppMain> createState() => _AppMainState();
+}
+
+class _AppMainState extends State<AppMain> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -51,7 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 26,
                       width: 26,
                       fit: BoxFit.cover,
-
                     ),
                   ),
                 )
@@ -63,3 +66,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
