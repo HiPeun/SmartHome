@@ -105,23 +105,28 @@ class _WebFidState extends State<WebFid> {
                 ),
               ),
             ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 400, right: 400, top: 100),
+                SizedBox(
+                  height: 100,
+                ),
+                Center(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      TextField(
-                        controller: name,
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.person),
-                          labelText: "이름",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                      SizedBox(
+                        width:400,
+                        child: TextField(
+                          controller: name,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.person),
+                            labelText: "이름",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        width: 400,
                         child: TextField(
                           controller: email,
                           decoration: InputDecoration(
@@ -138,7 +143,7 @@ class _WebFidState extends State<WebFid> {
                           borderRadius: BorderRadius.circular(10),
                           color: Color(0xFFD3CDC8),
                         ),
-                        margin: EdgeInsets.only(top: 20),
+                        margin: EdgeInsets.only(top: 45),
                         width: 400,
                         height: 50,
                         child: InkWell(
