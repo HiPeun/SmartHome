@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loginproject/Web/Web_Member/web_join.dart';
+import 'package:loginproject/Web/webmain.dart';
 
 class WebLogin extends StatefulWidget {
   WebLogin({super.key});
@@ -29,7 +31,7 @@ class _WebLoginState extends State<WebLogin> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(top: 30, left: 30, bottom: 20),
+                padding: const EdgeInsets.only(top: 30, left: 50, bottom: 20),
                 child: Row(
                   children: [
                     Expanded(
@@ -43,6 +45,7 @@ class _WebLoginState extends State<WebLogin> {
                               fontSize: 50,
                             ),
                           ),
+
                           Text(
                             "계정을 로그인 합니다",
                             style: TextStyle(
@@ -72,7 +75,11 @@ class _WebLoginState extends State<WebLogin> {
                     Padding(
                       padding: const EdgeInsets.only(right: 40),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => WebJoin(),
+                          ));
+                        },
                         child: Text(
                           "회원가입",
                           style: TextStyle(
@@ -178,13 +185,17 @@ class _WebLoginState extends State<WebLogin> {
                 Container(
                   margin: EdgeInsets.only(right:120, top: 10),
                   child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => WebJoin(),
+                      ));
+                    },
                     child: Text(
                       "회원가입",
                       style: TextStyle(
                         fontSize: 18,
                       ),
                     ),
-                    onTap: () {},
                   ),
                 ),
                 Container(
