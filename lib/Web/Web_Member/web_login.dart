@@ -9,8 +9,8 @@ class WebLogin extends StatefulWidget {
 }
 
 class _WebLoginState extends State<WebLogin> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _id = TextEditingController();
+  final TextEditingController _pw = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -97,8 +97,125 @@ class _WebLoginState extends State<WebLogin> {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(top: 90),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color(0xffF9E000),
+                ),
+                width: 400,
+                height: 55,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      child: Image.asset(
+                        "assets/images/kakao.png",
+                        width: 30,
+                        height: 30,
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "카카오톡으로 시작하기",
+                        style: TextStyle(
+                          fontSize: 19,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                      height: 10,
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Container(
+              margin: EdgeInsets.only(top: 15),
+              width: 400,
+              child: TextField(
+                decoration: InputDecoration(labelText: 'ID'),
+                keyboardType: TextInputType.emailAddress,
+                controller: _id,
+                obscureText: false,
+              ),
+            ),
+            Container(
+              width: 400,
+              child: TextField(
+                maxLength: 10,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                ),
+                keyboardType: TextInputType.emailAddress,
+                controller: _pw,
+                obscureText: true,
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xFFD3CDC8),
+              ),
+              margin: EdgeInsets.only(top: 20),
+              width: 400,
+              height: 55,
+              child: InkWell(
+                child: Center(
+                  child: Text(
+                    "로 그 인",
+                    style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold,color: Colors.black),
+                  ),
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right:120, top: 10),
+                  child: InkWell(
+                    child: Text(
+                      "회원가입",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    onTap: () {},
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: InkWell(
+                    child: Text(
+                      "아이디 찾기",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    onTap: () {},
+                  ),
+                  ),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: InkWell(
+                    child: Text(
+                      " 비밀번호 찾기",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    onTap: () {},
+                ),
+                ),
+              ],
+            )
           ],
         ),
+
       ),
     );
   }
