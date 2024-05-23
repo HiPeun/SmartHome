@@ -1,143 +1,13 @@
-import "dart:ffi";
-
 import "package:carousel_slider/carousel_slider.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter/widgets.dart";
 
-void main() {
-  runApp(const AppMain());
-}
+import "package:loginproject/app_screen/app_page2.dart";
 
-class AppMain extends StatefulWidget {
-  const AppMain({super.key});
-
-  @override
-  State<AppMain> createState() => _AppMainState();
-}
-
-class _AppMainState extends State<AppMain> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        top: true,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 10, right: 20, left: 20),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        "Conven",
-                        style: TextStyle(
-                          fontSize: 32.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            "assets/images/backbutton.png",
-                            width: 26,
-                            height: 26,
-                            fit: BoxFit.cover,
-                          ),
-                          Text("로그인"),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      child: InkWell(
-                        onTap: () {},
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              "assets/images/personbutton.png",
-                              width: 26,
-                              height: 26,
-                              fit: BoxFit.cover,
-                            ),
-                            Text("회원가입"),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                AppMainView(),
-                SmartText(),
-                Row(
-                  children: [
-                    SmartControl(
-                      text: "조명제어",
-                      image: "assets/images/lightimage.png",
-                        iconButton: IconButton(onPressed: (){},icon: Icon(Icons.power_settings_new_outlined),)
-                    ),
-                    SmartControl(
-                      text: "CCTV",
-                      image: "assets/images/cctvimage.png",
-                        iconButton: IconButton(onPressed: (){},icon: Icon(Icons.power_settings_new_outlined),)
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SmartControl(
-                      text: "현관문개폐",
-                      image: "assets/images/doorimage.png",
-                        iconButton: IconButton(onPressed: (){},icon: Icon(Icons.power_settings_new_outlined),)
-                    ),
-                    SmartControl(
-                      text: "창문개폐",
-                      image: "assets/images/windowimage.png",
-                        iconButton: IconButton(onPressed: (){},icon: Icon(Icons.power_settings_new_outlined),)
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SmartControl(
-                      text: "온습도측정",
-                      image: "assets/images/homeimage.png",
-                      iconButton: IconButton(onPressed: (){},icon: Icon(Icons.power_settings_new_outlined),)
-                    ),
-                    SmartControl(
-                      text: "화재감지",
-                      image: "assets/images/fireimage.png",
-                      iconButton: IconButton(onPressed: (){
-
-                      },icon: Icon(Icons.power_settings_new_outlined),)
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: "리스트"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "홈"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "내 정보"),
-        ],
-      ),
-
-
-    );
-
-  }
-}
+import "app_page1.dart";
+import "app_page3.dart";
 
 class AppMainView extends StatefulWidget {
   const AppMainView({super.key});
@@ -215,9 +85,7 @@ class _AppMainViewState extends State<AppMainView> {
             ],
           ),
         ],
-
       ),
-
     );
   }
 }
@@ -240,9 +108,7 @@ class _SmartTextState extends State<SmartText> {
           child: const Text(
             "스마트 제어 ",
             style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: Colors.black),
+                fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black),
           ),
         ),
       ],
@@ -255,7 +121,11 @@ class SmartControl extends StatefulWidget {
   final String image;
   final IconButton iconButton;
 
-  const SmartControl({required this.iconButton, required this.image, required this.text, super.key});
+  const SmartControl(
+      {required this.iconButton,
+      required this.image,
+      required this.text,
+      super.key});
 
   @override
   State<SmartControl> createState() => _SmartControlState();
@@ -265,39 +135,106 @@ class _SmartControlState extends State<SmartControl> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Container(
-        margin: const EdgeInsets.all(8),
-        padding: const EdgeInsets.all(15),
-        height: 90,
-        width: 160,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Color(
-            0xFFE5E5E1,
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          Container(
+            margin: const EdgeInsets.all(15),
+            padding: const EdgeInsets.all(15),
+            width: MediaQuery.of(context).size.width * 0.42,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Color(
+                0xFFE5E5E1,
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(
-                  widget.image,
-                  fit: BoxFit.fill,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      widget.image,
+                      fit: BoxFit.fill,
+                    ),
+                    Text(
+                      widget.text,
+                    ),
+                  ],
                 ),
-                Text(
-                  widget.text,
-                ),
+                widget.iconButton,
               ],
             ),
-        widget.iconButton,
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
 
+class BottomBar extends StatefulWidget {
+  const BottomBar({super.key});
 
+  @override
+  State<BottomBar> createState() => _BottomBarState();
+}
+
+class _BottomBarState extends State<BottomBar> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _widgetOptions = <Widget>[
+    Page1(),
+    Page2(),
+    Page3(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        toolbarHeight: 0,
+      ),
+      body: SafeArea(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.black,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list_alt),
+            label: "공지사항",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "홈",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "내 정보",
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+}
