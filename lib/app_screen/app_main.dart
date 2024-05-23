@@ -1,3 +1,5 @@
+import "dart:ffi";
+
 import "package:carousel_slider/carousel_slider.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
@@ -23,7 +25,7 @@ class _AppMainState extends State<AppMain> {
         top: true,
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
+            padding: const EdgeInsets.only(top: 10, right: 20, left: 20),
             child: Column(
               children: [
                 Row(
@@ -71,13 +73,69 @@ class _AppMainState extends State<AppMain> {
                   ],
                 ),
                 AppMainView(),
-                SmartControl(),
+                SmartText(),
+                Row(
+                  children: [
+                    SmartControl(
+                      text: "조명제어",
+                      image: "assets/images/lightimage.png",
+                        iconButton: IconButton(onPressed: (){},icon: Icon(Icons.power_settings_new_outlined),)
+                    ),
+                    SmartControl(
+                      text: "CCTV",
+                      image: "assets/images/cctvimage.png",
+                        iconButton: IconButton(onPressed: (){},icon: Icon(Icons.power_settings_new_outlined),)
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SmartControl(
+                      text: "현관문개폐",
+                      image: "assets/images/doorimage.png",
+                        iconButton: IconButton(onPressed: (){},icon: Icon(Icons.power_settings_new_outlined),)
+                    ),
+                    SmartControl(
+                      text: "창문개폐",
+                      image: "assets/images/windowimage.png",
+                        iconButton: IconButton(onPressed: (){},icon: Icon(Icons.power_settings_new_outlined),)
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SmartControl(
+                      text: "온습도측정",
+                      image: "assets/images/homeimage.png",
+                      iconButton: IconButton(onPressed: (){},icon: Icon(Icons.power_settings_new_outlined),)
+                    ),
+                    SmartControl(
+                      text: "화재감지",
+                      image: "assets/images/fireimage.png",
+                      iconButton: IconButton(onPressed: (){
+
+                      },icon: Icon(Icons.power_settings_new_outlined),)
+                    ),
+                  ],
+                )
               ],
             ),
           ),
+
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: "리스트"),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "홈"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "내 정보"),
+        ],
+      ),
+
+
     );
+
   }
 }
 
@@ -102,7 +160,7 @@ class _AppMainViewState extends State<AppMainView> {
     return Container(
       child: Stack(
         children: [
-          Padding(padding: EdgeInsets.fromLTRB(0, 50, 0, 0)),
+          Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
           CarouselSlider(
             items: imgList
                 .map(
@@ -116,14 +174,14 @@ class _AppMainViewState extends State<AppMainView> {
                 )
                 .toList(),
             options: CarouselOptions(
-                autoPlay: true,
                 // 화면 전환을 자동으로 할건지 설정
-                aspectRatio: 1.6,
+                autoPlay: true,
                 //슬라이더가 화면의 비율에 맞춰지도록 합니다.
+                aspectRatio: 1.6,
                 enlargeCenterPage: true,
                 viewportFraction: 1,
-                autoPlayInterval: Duration(seconds: 3) //화면 전환을 몇초마다 할건지 설정함
-                ),
+                //화면 전환을 몇초마다 할건지 설정함
+                autoPlayInterval: Duration(seconds: 5)),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -157,13 +215,47 @@ class _AppMainViewState extends State<AppMainView> {
             ],
           ),
         ],
+
       ),
+
+    );
+  }
+}
+
+class SmartText extends StatefulWidget {
+  const SmartText({super.key});
+
+  @override
+  State<SmartText> createState() => _SmartTextState();
+}
+
+class _SmartTextState extends State<SmartText> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: const Text(
+            "스마트 제어 ",
+            style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Colors.black),
+          ),
+        ),
+      ],
     );
   }
 }
 
 class SmartControl extends StatefulWidget {
-  const SmartControl({super.key});
+  final String text;
+  final String image;
+  final IconButton iconButton;
+
+  const SmartControl({required this.iconButton, required this.image, required this.text, super.key});
 
   @override
   State<SmartControl> createState() => _SmartControlState();
@@ -172,31 +264,38 @@ class SmartControl extends StatefulWidget {
 class _SmartControlState extends State<SmartControl> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(110, 50, 0, 0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: const TextStyle(fontSize: 20),
-                ),
-                onPressed: () {},
-                child: const Text(
-                  "스마트 제어 ",
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                ),
-              ),
-            ],
+    return SingleChildScrollView(
+      child: Container(
+        margin: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(15),
+        height: 90,
+        width: 160,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Color(
+            0xFFE5E5E1,
           ),
         ),
-      ],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  widget.image,
+                  fit: BoxFit.fill,
+                ),
+                Text(
+                  widget.text,
+                ),
+              ],
+            ),
+        widget.iconButton,
+          ],
+        ),
+      ),
     );
   }
 }
