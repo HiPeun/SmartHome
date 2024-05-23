@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loginproject/Web/Web_Cus/web_notice.dart';
 import 'package:loginproject/Web/Web_Member/web_fid.dart';
 import 'package:loginproject/Web/Web_Member/web_fpw.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
@@ -93,7 +94,10 @@ class _WebLoginState extends State<WebLogin> {
                     Padding(
                       padding: const EdgeInsets.only(right: 40),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebNotice(),
+                          ));
+                        },
                         child: Text(
                           "고객센터",
                           style: TextStyle(

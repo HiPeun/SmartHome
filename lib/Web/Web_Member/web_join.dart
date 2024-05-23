@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loginproject/Web/Web_Cus/web_notice.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
 
 class WebJoin extends StatefulWidget {
@@ -100,7 +101,10 @@ class _WebJoinState extends State<WebJoin> {
                     Padding(
                       padding: const EdgeInsets.only(right: 40),
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebNotice(),
+                          ));
+                        },
                         child: Text(
                           "고객센터",
                           style: TextStyle(
