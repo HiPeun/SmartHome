@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loginproject/Web/Web_Member/web_fid.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/webmain.dart';
 
@@ -207,7 +208,11 @@ class _WebLoginState extends State<WebLogin> {
                         fontSize: 18,
                       ),
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => WebFid(),
+                      ));
+                    },
                   ),
                   ),
                 Container(
