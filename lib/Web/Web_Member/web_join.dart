@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loginproject/Web/Web_Cus/web_notice.dart';
@@ -51,7 +52,57 @@ class _WebJoinState extends State<WebJoin> {
     //super.dispose를 호출하여 부모 클래스의 dispose 메소드를 실행하여 추가적인 정리 작업을 수행
     super.dispose();
   }
+  void joins(String id, String pw, String name, String email) async {
+    final dio = Dio(); //HTTP 클라이언트 라이브러리 Dio의 인스턴스 생성
 
+    try {
+      final response = await dio.post(
+        "http://192.168.0.177:9090/user/join", // 서버에 POST 요청 보냄
+        data: {
+          'id': id,
+          'pw': pw,
+          'name': name,
+          'email': email,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json', // 요청 헤더 설정
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text("회원가입이 완료되었습니다. \n로그인페이지로 이동합니다."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // 알림 닫기
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => WebLogin(), // 로그인 페이지로 이동
+                    ));
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        print("회원가입 실패: ${response.data}");
+      }
+    } catch (e) {
+      print("회원가입 실패: $e");
+    }
+  }
+
+  // 이메일 유효성 검사 함수
+  bool isValidEmail(String email) {
+    final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -219,6 +270,7 @@ class _WebJoinState extends State<WebJoin> {
                       ),
                     ),
                   ),
+
                   SizedBox(height: 16),
                   Container(
                     child: Row(
@@ -309,23 +361,160 @@ class _WebJoinState extends State<WebJoin> {
                     ],
                   ),
                   SizedBox(height: 40),
-                  SizedBox(
-                    width: 500,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFFD3CDC8),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: Text(
-                        "회원가입",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Material(
+                      elevation: 5.0,
+                      borderRadius: BorderRadius.circular(30.0),
+                      color: const Color(0xFFD3CDC8),
+                      child: MaterialButton(
+                        onPressed: () {
+                          String joinName = name.text;
+                          String joinId = id.text;
+                          String joinPw = pw.text;
+                          String joinPw2 = pw2.text;
+                          String joinEmail = email.text;
+
+
+                          if (joinName.length > 6) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text("이름은 6자리 이하로 입력하세요."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('확인'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            return;
+                          }
+
+                          if (joinId.length > 12 || !joinId.contains(RegExp(r'\d'))) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('확인'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            return;
+                          }
+
+
+                          RegExp passwordRegex = RegExp(r'^(?=.*\d)(?=.*[a-zA-Z]).{5,12}$');
+                          if (joinPw.length > 12 || !passwordRegex.hasMatch(joinPw)) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text("비밀번호는 5자에서 12자 사이이며, 문자와 숫자를 모두 포함해야 합니다."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('확인'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            return;
+                          }
+
+                          if (joinPw != joinPw2) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text("비밀번호가 일치하지 않습니다."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('확인'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            return;
+                          }
+
+                          if (joinEmail.isEmpty || !isValidEmail(joinEmail)) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text("유효한 이메일 주소를 입력하세요."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('확인'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            return;
+                          }
+
+                          if (!isAgreed) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text("약관에 동의해야 합니다."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('확인'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            return;
+                          }
+
+                          joins(joinId, joinPw, joinName, joinEmail);
+                        },
+
+                        child: SizedBox(
+                          width: 500,
+                          height: 45,
+                          child: Center(
+                            child: Text(
+                              "회원가입",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
