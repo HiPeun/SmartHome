@@ -183,6 +183,7 @@ class _WebLoginState extends State<WebLogin> {
                     style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold,color: Colors.black),
                   ),
                 ),
+                onTap: () {},
               ),
             ),
             Row(

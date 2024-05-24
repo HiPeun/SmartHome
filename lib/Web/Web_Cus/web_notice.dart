@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 
 import '../Web_Member/web_login.dart';
@@ -122,7 +123,8 @@ class _WebNoticeState extends State<WebNotice> {
               padding: const EdgeInsets.fromLTRB(50, 0, 0, 0),
               child: Container(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     ElevatedButton(
                       onPressed: () {
@@ -165,28 +167,21 @@ class _WebNoticeState extends State<WebNotice> {
                             borderRadius: BorderRadius.zero),
                       ),
                     ),
-                    Container(
-                      width: 300,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
+                    Expanded(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintText: "  검색어를 입력하세요",
-                                border: InputBorder.none,
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 40, 10),
+                            child: Container(
+                              child: SearchBar(
+                                trailing: [Icon(Icons.search)],
+                                hintText: "검색어를 입력하세요",
+                                //padding: MaterialStateProperty.all(EdgeInsets.all(10)),
+                                constraints: BoxConstraints(maxWidth: 250, minHeight: 50),
+
                               ),
                             ),
-                          ),
-                          SizedBox(width: 10),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                            child: Icon(Icons.search, size: 40),
                           ),
                         ],
                       ),
@@ -196,7 +191,7 @@ class _WebNoticeState extends State<WebNotice> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
               child: Container(
                 width: double.infinity,
                 height: 1.5,
@@ -211,20 +206,25 @@ class _WebNoticeState extends State<WebNotice> {
     );
   }
 }
+
 class NoticeList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // 공지사항 목록을 반환하는 위젯
     return Container(
-      child: Text("공지사항 목록"),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("공지사항 목록")
+        ],
+      ),
     );
+
   }
 }
 
 class QnaList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Q&A 목록을 반환하는 위젯
     return Container(
       child: Text("Q&A 목록"),
     );

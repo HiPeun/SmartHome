@@ -29,6 +29,30 @@ class _WebJoinState extends State<WebJoin> {
     });
   }
 
+  void initState(){
+    //super.initState 코드는 현재 클래스에서 오버라이드 된
+    // initState() 메서드 내에서 상위 클래스의 initState() 메서드를 호출
+    super.initState();
+    id = TextEditingController(text: "");
+    pw = TextEditingController(text: "");
+    pw2 = TextEditingController(text: "");
+    email = TextEditingController(text: "");
+    name = TextEditingController(text: "");
+  }
+//각 텍스트 필드의 입력값을 Controller를 사용하여 가져오고
+// dispose을 사용해서 메모리 누수를 방지
+  @override
+  void dispose(){
+    id.dispose();
+    pw.dispose();
+    pw2.dispose();
+    email.dispose();
+    name.dispose();
+    //super.dispose를 호출하여 부모 클래스의 dispose 메소드를 실행하여 추가적인 정리 작업을 수행
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
