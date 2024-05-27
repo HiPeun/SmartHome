@@ -45,7 +45,7 @@ class _WebNpwState extends State<WebNpw> {
         },
         options: Options(
           headers: {
-            'Content-Type': 'application/json', // 요청 헤더 설정
+            'Content-Type': 'application/json',
           },
         ),
       );
@@ -58,9 +58,9 @@ class _WebNpwState extends State<WebNpw> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop(); // 알림 닫기
+                    Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => WebLogin(), // 로그인 페이지로 이동
+                      builder: (context) => WebLogin(),
                     ));
                   },
                   child: Text('확인'),
