@@ -6,9 +6,14 @@ import 'package:loginproject/Web/Web_Cus/web_notice.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
+
+
+
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
