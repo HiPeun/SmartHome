@@ -10,6 +10,7 @@ class Page2 extends StatefulWidget {
 }
 
 class _Page2State extends State<Page2> {
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

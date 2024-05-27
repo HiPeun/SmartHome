@@ -3,11 +3,13 @@ import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter/widgets.dart";
+import "package:loginproject/app_screen/app_login.dart";
+
 
 import "package:loginproject/app_screen/app_page2.dart";
 
 import "app_page1.dart";
-import "app_page3.dart";
+
 
 class AppMainView extends StatefulWidget {
   const AppMainView({super.key});
@@ -187,7 +189,7 @@ class _BottomBarState extends State<BottomBar> {
   final List<Widget> _widgetOptions = <Widget>[
     Page1(),
     Page2(),
-    Page3(),
+    AppLogin()
   ];
 
   void _onItemTapped(int index) {
