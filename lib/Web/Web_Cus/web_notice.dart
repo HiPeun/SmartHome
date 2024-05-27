@@ -200,11 +200,8 @@ class _WebNoticeState extends State<WebNotice> {
               ),
             ),
             SizedBox(height: 30),
-            showNotices ? NoticeTile(
-                    text: "첫번째 박스",
-                    text1: "두번째 박스",
-                    text2: "세번째 박스",
-                  )
+            showNotices ? NoticeList()
+
                 : QnaList(),
           ],
         ),

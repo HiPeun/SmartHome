@@ -1,11 +1,62 @@
-
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:dio/dio.dart';
 
+class Page1 extends StatefulWidget {
+  @override
+  _Page1State createState() => _Page1State();
+}
 
-class Page1 extends StatelessWidget {
+class _Page1State extends State<Page1> {
+  bool showNotices = true;
+  List<Map<String, String>> qnaList = [];
+  bool isNoticeSelected = true;
+  final Dio dio = Dio();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchQnAList();
+  }
+
+  void fetchQnAList() async {
+    try {
+      final response = await dio.get('http://your_flask_server_ip:5000/qna');
+      setState(() {
+        qnaList = List<Map<String, String>>.from(response.data);
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void addQnA(Map<String, String> qna) async {
+    try {
+      await dio.post('http://your_flask_server_ip:5000/qna/add', data: qna);
+      fetchQnAList(); // Add QnA 후 리스트를 다시 불러옵니다
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void updateQnA(int index, Map<String, String> qna) {
+    setState(() {
+      qnaList[index] = qna;
+    });
+  }
+
+  void deleteQnA(int index) {
+    setState(() {
+      qnaList.removeAt(index);
+    });
+  }
+
+  void toggleView(bool showNotices) {
+    setState(() {
+      this.showNotices = showNotices;
+      isNoticeSelected = showNotices;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +78,10 @@ class Page1 extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            CustomService(),
+            CustomService(
+              toggleView: toggleView,
+              isNoticeSelected: isNoticeSelected,
+            ),
             Container(
               width: 400,
               height: 100,
@@ -58,27 +112,17 @@ class Page1 extends StatelessWidget {
               height: 10,
               color: Color(0xFFE5E5E1),
             ),
-            ServiceTile(
-              text: "스마트홈 서비스 이용약관 변경 공지  ",
-              text1: "2024-05-25",
-              text2:
-                  "안녕하세요. 저는 대표님입니다 대표로서 한마디 하자면 이 어플 너무 잘만든거 같아서 칭찬좀 할려고 합니다. 알겠죠 그러니깐 알아서들하세요 ㅎㅎ ",
-            ),
-            ServiceTile(
-              text: "스마트홈 이용안내",
-              text1: "2024-05-22",
-              text2: " 알아서들 잘 사용해 보세요 ",
-            ),
-            ServiceTile(
-              text: "스마트홈 신제품 안내",
-              text1: "2024-05-09",
-              text2: " 사실 신제품 안나옴 ㅋㅋ ",
-            ),
-            ServiceTile(
-              text: "행복한 집 생활 스마트홈!",
-              text1: "2024-04-02",
-              text2:
-                  "행복한 하루 되세요 그리고 행복하세요 행복하고 행복하면 행복이라는 단어가 내 귀에 들어올겁니다 그러니깐 행복하세요 ㅎㅎ ",
+            showNotices
+                ? Column(
+              children: [
+//원래 ServiceTile이 있던 자리 이제는 DB에 내용을 저장해서 꺼내는 식으로 함
+              ],
+            )
+                : QnASection(
+              qnaList: qnaList,
+              addQnA: addQnA,
+              updateQnA: updateQnA,
+              deleteQnA: deleteQnA,
             ),
           ],
         ),
@@ -87,52 +131,11 @@ class Page1 extends StatelessWidget {
   }
 }
 
-class ServiceTile extends StatefulWidget {
-  final String text;
-  final String text1;
-  final String text2;
+class CustomService extends StatelessWidget {
+  final Function(bool) toggleView;
+  final bool isNoticeSelected;
 
-  const ServiceTile(
-      {required this.text,
-      required this.text1,
-      required this.text2,
-      super.key});
-
-  @override
-  State<ServiceTile> createState() => _ServiceTileState();
-}
-
-class _ServiceTileState extends State<ServiceTile> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        ExpansionTile(
-          title: Text(widget.text),
-          subtitle: Text(
-            widget.text1,
-            style: TextStyle(fontSize: 10),
-          ),
-          children: <Widget>[
-            ListTile(
-              title: Text(widget.text2),
-            )
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class CustomService extends StatefulWidget {
-  const CustomService({super.key});
-
-  @override
-  State<CustomService> createState() => _CustomServiceState();
-}
-
-class _CustomServiceState extends State<CustomService> {
-  bool showNotices = true;
+  CustomService({required this.toggleView, required this.isNoticeSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -141,41 +144,44 @@ class _CustomServiceState extends State<CustomService> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ElevatedButton(
-            onPressed: () {
-              setState(() {
-                showNotices = true;
-              });
-            },
-            child: Text(
-              "공지사항",
-              style: TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            style: ElevatedButton.styleFrom(
-                minimumSize: Size(150, 150),
-                backgroundColor: showNotices ? Color(0xFFE5E5E1) : null,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                showNotices = false;
-              });
-            },
-            child: Text(
-              "고객센터",
-              style: TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
+            onPressed: () => toggleView(true),
+            child: Column(
+              children: [
+                Image.asset("assets/images/noteimage.png"),
+                Text(
+                  "공지사항",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
             ),
             style: ElevatedButton.styleFrom(
               minimumSize: Size(150, 150),
-              backgroundColor: !showNotices ? Color(0xFFE5E5E1) : null,
+              backgroundColor: isNoticeSelected ? Colors.grey : Color(0xFFE5E5E1),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () => toggleView(false),
+            child: Column(
+              children: [
+                Image.asset("assets/images/speakerimage.png"),
+                Text(
+                  "고객센터",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(150, 150),
+              backgroundColor: isNoticeSelected ? Color(0xFFE5E5E1) : Colors.grey,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.zero,
               ),
@@ -187,43 +193,267 @@ class _CustomServiceState extends State<CustomService> {
   }
 }
 
-class NoticeTile extends StatefulWidget {
-  final String text;
-  final String text1;
-  final String text2;
+class QnASection extends StatelessWidget {
+  final List<Map<String, String>> qnaList;
+  final Function(Map<String, String>) addQnA;
+  final Function(int, Map<String, String>) updateQnA;
+  final Function(int) deleteQnA;
 
-  const NoticeTile(
-      {required this.text,
-      required this.text1,
-      required this.text2,
-      super.key});
+  QnASection({required this.qnaList, required this.addQnA, required this.updateQnA, required this.deleteQnA});
 
-  @override
-  State<NoticeTile> createState() => _NoticeTileState();
-}
-
-class _NoticeTileState extends State<NoticeTile> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <Widget>[
-        ExpansionTile(
-          title: Text(widget.text),
-          subtitle: Text(
-            widget.text1,
-            style: TextStyle(fontSize: 10),
+      children: [
+        for (int i = 0; i < qnaList.length; i++)
+          ListTile(
+            title: Text(qnaList[i]['title'] ?? ""),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => QnADetailPage(
+                    qna: qnaList[i],
+                    updateQnA: updateQnA,
+                    deleteQnA: deleteQnA,
+                    index: i,
+                  ),
+                ),
+              );
+            },
           ),
-          children: <Widget>[
-            ListTile(
-              title: Text(widget.text2),
-            )
-          ],
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddQnAPage(addQnA: addQnA),
+              ),
+            );
+          },
+          child: Text("글쓰기"),
         ),
       ],
     );
   }
 }
 
+class AddQnAPage extends StatefulWidget {
+  final Function(Map<String, String>) addQnA;
 
+  AddQnAPage({required this.addQnA});
 
+  @override
+  _AddQnAPageState createState() => _AddQnAPageState();
+}
 
+class _AddQnAPageState extends State<AddQnAPage> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _authorController = TextEditingController();
+  final TextEditingController _contentController = TextEditingController();
+
+  void _submit() {
+    if (_titleController.text.isEmpty || _authorController.text.isEmpty || _contentController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("오류"),
+          content: Text("작성자, 제목, 내용을 모두 입력하세요."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("확인"),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    final qna = {
+      'title': _titleController.text,
+      'author': _authorController.text,
+      'content': _contentController.text,
+    };
+    widget.addQnA(qna);
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("글 등록"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _titleController,
+              decoration: InputDecoration(labelText: "제목"),
+            ),
+            TextField(
+              controller: _authorController,
+              decoration: InputDecoration(labelText: "작성자"),
+            ),
+            TextField(
+              controller: _contentController,
+              decoration: InputDecoration(labelText: "내용"),
+              maxLines: 10,
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _submit,
+              child: Text("글 등록"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class QnADetailPage extends StatelessWidget {
+  final Map<String, String> qna;
+  final Function(int, Map<String, String>) updateQnA;
+  final Function(int) deleteQnA;
+  final int index;
+
+  QnADetailPage({required this.qna, required this.updateQnA, required this.deleteQnA, required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(qna['title'] ?? "상세보기"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("작성자: ${qna['author'] ?? ""}", style: TextStyle(fontSize: 18)),
+            SizedBox(height: 10),
+            Text(qna['content'] ?? "", style: TextStyle(fontSize: 16)),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditQnAPage(
+                          qna: qna,
+                          updateQnA: updateQnA,
+                          index: index,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text("수정"),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    deleteQnA(index);
+                    Navigator.pop(context);
+                  },
+                  child: Text("삭제"),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class EditQnAPage extends StatefulWidget {
+  final Map<String, String> qna;
+  final Function(int, Map<String, String>) updateQnA;
+  final int index;
+
+  EditQnAPage({required this.qna, required this.updateQnA, required this.index});
+
+  @override
+  _EditQnAPageState createState() => _EditQnAPageState();
+}
+
+class _EditQnAPageState extends State<EditQnAPage> {
+  late TextEditingController _titleController;
+  late TextEditingController _authorController;
+  late TextEditingController _contentController;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.qna['title']);
+    _authorController = TextEditingController(text: widget.qna['author']);
+    _contentController = TextEditingController(text: widget.qna['content']);
+  }
+
+  void _submit() {
+    if (_titleController.text.isEmpty || _authorController.text.isEmpty || _contentController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("오류"),
+          content: Text("작성자, 제목, 내용을 모두 입력하세요."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("확인"),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    final qna = {
+      'title': _titleController.text,
+      'author': _authorController.text,
+      'content': _contentController.text,
+    };
+    widget.updateQnA(widget.index, qna);
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("글 수정"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _titleController,
+              decoration: InputDecoration(labelText: "제목"),
+            ),
+            TextField(
+              controller: _authorController,
+              decoration: InputDecoration(labelText: "작성자"),
+            ),
+            TextField(
+              controller: _contentController,
+              decoration: InputDecoration(labelText: "내용"),
+              maxLines: 10,
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _submit,
+              child: Text("수정"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
