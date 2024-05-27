@@ -4,7 +4,7 @@ import 'package:loginproject/Web/Web_Cus/web_notice.dart';
 import 'package:loginproject/Web/Web_Member/web_fid.dart';
 import 'package:loginproject/Web/Web_Member/web_fpw.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
-import 'package:loginproject/Web/webmain.dart';
+
 
 class WebLogin extends StatefulWidget {
   WebLogin({super.key});
@@ -48,7 +48,6 @@ class _WebLoginState extends State<WebLogin> {
                               fontSize: 50,
                             ),
                           ),
-
                           Text(
                             "계정을 로그인 합니다",
                             style: TextStyle(
@@ -95,7 +94,8 @@ class _WebLoginState extends State<WebLogin> {
                       padding: const EdgeInsets.only(right: 40),
                       child: InkWell(
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebNotice(),
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => WebNotice(),
                           ));
                         },
                         child: Text(
@@ -180,7 +180,10 @@ class _WebLoginState extends State<WebLogin> {
                 child: Center(
                   child: Text(
                     "로 그 인",
-                    style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold,color: Colors.black),
+                    style: TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
                   ),
                 ),
                 onTap: () {},
@@ -190,7 +193,7 @@ class _WebLoginState extends State<WebLogin> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  margin: EdgeInsets.only(right:120, top: 10),
+                  margin: EdgeInsets.only(right: 120, top: 10),
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
@@ -215,12 +218,12 @@ class _WebLoginState extends State<WebLogin> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => WebFid(),
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => WebFid(),
                       ));
                     },
                   ),
-                  ),
+                ),
                 Container(
                   margin: EdgeInsets.only(top: 10),
                   child: InkWell(
@@ -235,13 +238,12 @@ class _WebLoginState extends State<WebLogin> {
                         builder: (context) => WebFpw(),
                       ));
                     },
-                ),
+                  ),
                 ),
               ],
             )
           ],
         ),
-
       ),
     );
   }

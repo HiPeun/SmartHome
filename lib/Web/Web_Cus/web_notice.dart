@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
+import 'package:loginproject/app_screen/app_page1.dart';
 
 import '../Web_Member/web_login.dart';
 
@@ -199,7 +200,9 @@ class _WebNoticeState extends State<WebNotice> {
               ),
             ),
             SizedBox(height: 30),
-            showNotices ? NoticeList() : QnaList(),
+            showNotices ? NoticeList()
+
+                : QnaList(),
           ],
         ),
       ),
