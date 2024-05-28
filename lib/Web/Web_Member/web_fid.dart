@@ -45,8 +45,9 @@ class _WebFidState extends State<WebFid> {
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebLogin(),
-                      ));
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => WebLogin(),
+                          ));
                     },
                     child: Text('확인'),
                   ),
@@ -266,5 +267,3 @@ class _WebFidState extends State<WebFid> {
     );
   }
 }
-
-

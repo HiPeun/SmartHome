@@ -57,7 +57,7 @@ class _WebJoinState extends State<WebJoin> {
 
     try {
       final response = await dio.post(
-        "http://192.168.0.177:9090/user/join", // 서버에 POST 요청 보냄
+        "http://192.168.0.177:9090/user/join",
         data: {
           'id': id,
           'pw': pw,
@@ -90,6 +90,8 @@ class _WebJoinState extends State<WebJoin> {
             );
           },
         );
+
+
       } else {
         print("회원가입 실패: ${response.data}");
       }

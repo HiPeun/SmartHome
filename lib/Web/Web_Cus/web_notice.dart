@@ -253,5 +253,5 @@ class QnaList extends StatelessWidget {
       child: Text("Q&A 목록"),
     );
   }
-}
 
+}
