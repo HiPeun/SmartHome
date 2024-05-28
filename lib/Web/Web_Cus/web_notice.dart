@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:loginproject/Web/Web_Cus/web_writing.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
-import 'package:loginproject/app_screen/app_page1.dart';
 
 import '../Web_Member/web_login.dart';
 
@@ -125,7 +124,6 @@ class _WebNoticeState extends State<WebNotice> {
               child: Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     ElevatedButton(
                       onPressed: () {
@@ -136,15 +134,17 @@ class _WebNoticeState extends State<WebNotice> {
                       child: Text(
                         "공지사항",
                         style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(70, 50),
                         backgroundColor: showNotices ? Colors.grey : null,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero),
+                          borderRadius: BorderRadius.zero,
+                        ),
                       ),
                     ),
                     SizedBox(width: 20),
@@ -157,15 +157,17 @@ class _WebNoticeState extends State<WebNotice> {
                       child: Text(
                         "Q&A",
                         style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(70, 50),
                         backgroundColor: !showNotices ? Colors.grey : null,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero),
+                          borderRadius: BorderRadius.zero,
+                        ),
                       ),
                     ),
                     Expanded(
@@ -178,9 +180,10 @@ class _WebNoticeState extends State<WebNotice> {
                               child: SearchBar(
                                 trailing: [Icon(Icons.search)],
                                 hintText: "검색어를 입력하세요",
-                                //padding: MaterialStateProperty.all(EdgeInsets.all(10)),
-                                constraints: BoxConstraints(maxWidth: 250, minHeight: 50),
-
+                                constraints: BoxConstraints(
+                                  maxWidth: 250,
+                                  minHeight: 50,
+                                ),
                               ),
                             ),
                           ),
@@ -200,9 +203,28 @@ class _WebNoticeState extends State<WebNotice> {
               ),
             ),
             SizedBox(height: 30),
-            showNotices ? NoticeList()
-
-                : QnaList(),
+            showNotices ? NoticeList() : QnaList(),
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => WebWriting(),
+                  ));
+                },
+                child: Text("글쓰기"),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(160, 45),
+                  backgroundColor: Color(0xFFD3CDC8),
+                  textStyle: TextStyle(fontSize: 20),
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero
+                  )
+              ),
+              ),
+            ),
           ],
         ),
       ),
@@ -217,19 +239,25 @@ class NoticeList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("공지사항 목록")
+          Text("공지사항 목록"),
         ],
       ),
     );
-
   }
 }
 
-class QnaList extends StatelessWidget {
+class QnaList extends StatefulWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Text("Q&A 목록"),
     );
   }
+
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    throw UnimplementedError();
+  }
 }
+

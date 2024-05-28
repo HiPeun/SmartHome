@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
-
+import 'package:loginproject/Web/webmain.dart';
 
 class WebFpw extends StatefulWidget {
   WebFpw({super.key});
@@ -10,7 +10,6 @@ class WebFpw extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _WebFpwState();
 }
-
 class _WebFpwState extends State<WebFpw> {
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();

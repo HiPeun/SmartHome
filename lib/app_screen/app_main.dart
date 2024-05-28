@@ -10,7 +10,6 @@ import "package:loginproject/app_screen/app_page2.dart";
 
 import "app_page1.dart";
 
-
 class AppMainView extends StatefulWidget {
   const AppMainView({super.key});
 
