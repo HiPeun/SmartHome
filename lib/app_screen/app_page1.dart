@@ -231,7 +231,8 @@ class QnASection extends StatelessWidget {
               ),
             );
           },
-          child: Text("글쓰기"),
+          child: Text("글쓰기",
+          style: TextStyle(fontWeight:FontWeight.bold),),
         ),
       ],
     );

@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:loginproject/app_screen/app_fpw.dart';
+import 'package:loginproject/app_screen/app_join.dart';
 
 import '../Web/webmain.dart';
 
@@ -103,7 +104,6 @@ class _AppLoginState extends State<AppLogin> {
     return Scaffold(
       body: SafeArea(
         child: Column(
-
           children: [
             Stack(
               children: [
@@ -117,7 +117,6 @@ class _AppLoginState extends State<AppLogin> {
                     ),
                   ),
                 ),
-
                 Container(
                   child: TextButton(
                     onPressed: () {},
@@ -264,7 +263,11 @@ class _AppLoginState extends State<AppLogin> {
                 ),
                 Container(
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AppJoin(),
+                      ));
+                    },
                     child: Text(
                       "회원가입",
                       style: TextStyle(
