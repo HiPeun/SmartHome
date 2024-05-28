@@ -33,6 +33,7 @@ dependencies:
   http: ^0.13.3
   firebase_core: ^2.28.0
   cloud_firestore: ^4.16.0
+  file_picker: ^4.0.0
 
 
 
