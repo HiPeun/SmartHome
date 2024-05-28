@@ -246,18 +246,12 @@ class NoticeList extends StatelessWidget {
   }
 }
 
-class QnaList extends StatefulWidget {
+class QnaList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Text("Q&A 목록"),
     );
-  }
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
   }
 }
 

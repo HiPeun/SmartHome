@@ -240,6 +240,7 @@ class _WebLoginState extends State<WebLogin> {
               margin: EdgeInsets.only(top: 15),
               width: 400,
               child: TextField(
+                maxLength: 12,
                 decoration: InputDecoration(labelText: 'ID'),
                 keyboardType: TextInputType.emailAddress,
                 controller: _id,
@@ -249,7 +250,7 @@ class _WebLoginState extends State<WebLogin> {
             Container(
               width: 400,
               child: TextField(
-                maxLength: 10,
+                maxLength: 12,
                 decoration: InputDecoration(
                   labelText: 'Password',
                 ),
