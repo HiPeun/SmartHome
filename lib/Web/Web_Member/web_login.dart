@@ -1,4 +1,4 @@
-import 'dart:js';
+
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,21 +26,21 @@ void main() async {
 
 
 // 로그인 완료시 main페이지로 이동
-void navigateToMainPage() {
+void navigateToMainPage(BuildContext context) {
   Navigator.of(context as BuildContext).pushReplacement(MaterialPageRoute(
       builder: (context) => MyApp()
   ));
 }
 
 // 카카오 로그인 구현 예제
-Future<void> KakaoLogin() async {
+Future<void> KakaoLogin(BuildContext context) async {
 // 카카오톡 실행 가능 여부 확인
 // 카카오톡 실행이 가능하면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
   if (await isKakaoTalkInstalled()) {
     try {
       await UserApi.instance.loginWithKakaoTalk().then((value) {
         print('value from kakao $value');
-        navigateToMainPage();
+        navigateToMainPage(context);
       });
       print('카카오톡으로 로그인 성공');
       Navigator.pushReplacementNamed(context as BuildContext, '/webmain'); // 로그인 성공 시 메인 페이지로 이동
@@ -56,7 +56,7 @@ Future<void> KakaoLogin() async {
       // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
       try {
         await UserApi.instance.loginWithKakaoAccount().then((value) {
-          navigateToMainPage();
+          navigateToMainPage(context);
         });
         print('카카오계정으로 로그인 성공');
         Navigator.pushReplacementNamed(context as BuildContext, '/webmain'); // 로그인 성공 시 메인 페이지로 이동
@@ -68,7 +68,7 @@ Future<void> KakaoLogin() async {
     try {
       await UserApi.instance.loginWithKakaoAccount().then((value) {
         print('value from kakao $value');
-        navigateToMainPage();
+        navigateToMainPage(context);
       });
       print('카카오계정으로 로그인 성공');
       Navigator.pushReplacementNamed(context as BuildContext, '/webmain'); // 로그인 성공 시 메인 페이지로 이동
@@ -199,7 +199,7 @@ class _WebLoginState extends State<WebLogin> {
               child: InkWell(
                 onTap: () async {
                   print(await KakaoSdk.origin);
-                  KakaoLogin();
+                  KakaoLogin(context);
                 },
                 child: Container(
                   decoration: BoxDecoration(
