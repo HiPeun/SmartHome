@@ -1,7 +1,91 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:loginproject/app_screen/app_fpw.dart';
+
+import '../Web/webmain.dart';
+
+void main() async {
+// 웹 환경에서 카카오 로그인을 정상적으로 완료하려면 runApp() 호출 전 아래 메서드 호출 필요
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // runApp() 호출 전 Flutter SDK 초기화
+  KakaoSdk.init(
+    nativeAppKey: 'd664273b8aeac06793c0c6f6f1ed0348',
+    javaScriptAppKey: '38e21ce41bf7993c5366257c746421e3',
+  );
+  runApp(const MyApp());
+}
+
+
+// 로그인 완료시 main페이지로 이동
+void navigateToMainPage() {
+  Navigator.of(context as BuildContext).pushReplacement(MaterialPageRoute(
+      builder: (context) => MyApp()
+  ));
+}
+
+// 카카오 로그인 구현 예제
+Future<void> KakaoLogin() async {
+// 카카오톡 실행 가능 여부 확인
+// 카카오톡 실행이 가능하면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+  if (await isKakaoTalkInstalled()) {
+    try {
+      await UserApi.instance.loginWithKakaoTalk().then((value) {
+        print('value from kakao $value');
+        navigateToMainPage();
+      });
+      print('카카오톡으로 로그인 성공');
+      Navigator.pushReplacementNamed(context as BuildContext, '/webmain'); // 로그인 성공 시 메인 페이지로 이동
+    } catch (error) {
+      print(await KakaoSdk.origin);
+      print('카카오톡으로 로그인 실패 $error');
+
+      // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+      // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
+      if (error is PlatformException && error.code == 'CANCELED') {
+        return;
+      }
+      // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
+      try {
+        await UserApi.instance.loginWithKakaoAccount().then((value) {
+          navigateToMainPage();
+        });
+        print('카카오계정으로 로그인 성공');
+        Navigator.pushReplacementNamed(context as BuildContext, '/webmain'); // 로그인 성공 시 메인 페이지로 이동
+      } catch (error) {
+        print('카카오계정으로 로그인 실패 $error');
+      }
+    }
+  } else {
+    try {
+      await UserApi.instance.loginWithKakaoAccount().then((value) {
+        print('value from kakao $value');
+        navigateToMainPage();
+      });
+      print('카카오계정으로 로그인 성공');
+      Navigator.pushReplacementNamed(context as BuildContext, '/webmain'); // 로그인 성공 시 메인 페이지로 이동
+    } catch (error) {
+      print('카카오계정으로 로그인 실패 $error');
+    }
+  }
+}
+
+// 카카오 로그 아웃
+Future<void> KakaoLogout() async {
+  try {
+    await UserApi.instance.logout();
+    print('로그아웃 성공, SDK에서 토큰 삭제');
+  } catch (error) {
+    print('로그아웃 실패, SDK에서 토큰 삭제 $error');
+  }
+}
+
+
 
 class AppLogin extends StatefulWidget {
   AppLogin({super.key});
@@ -55,36 +139,41 @@ class _AppLoginState extends State<AppLogin> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 90),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color(0xffF9E000),
-                ),
-                width: 300,
-                height: 55,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      child: Image.asset(
-                        "assets/images/kakao.png",
-                        width: 30,
-                        height: 30,
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        "카카오톡으로 시작하기",
-                        style: TextStyle(
-                          fontSize: 19,
+              child: InkWell(
+                onTap: () {
+                 KakaoLogin();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xffF9E000),
+                  ),
+                  width: 300,
+                  height: 55,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        child: Image.asset(
+                          "assets/images/kakao.png",
+                          width: 30,
+                          height: 30,
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                      height: 10,
-                    )
-                  ],
+                      Container(
+                        child: Text(
+                          "카카오톡으로 시작하기",
+                          style: TextStyle(
+                            fontSize: 19,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                        height: 10,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
