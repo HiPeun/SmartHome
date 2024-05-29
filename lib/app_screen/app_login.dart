@@ -1,46 +1,34 @@
-import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+
 import 'package:loginproject/app_screen/app_fpw.dart';
-
-import '../Web/webmain.dart';
-
-void main() async {
-// 웹 환경에서 카카오 로그인을 정상적으로 완료하려면 runApp() 호출 전 아래 메서드 호출 필요
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // runApp() 호출 전 Flutter SDK 초기화
-  KakaoSdk.init(
-    nativeAppKey: 'd664273b8aeac06793c0c6f6f1ed0348',
-    javaScriptAppKey: '38e21ce41bf7993c5366257c746421e3',
-  );
-  runApp(const MyApp());
-}
+import 'package:loginproject/app_screen/app_join.dart';
+import 'package:loginproject/app_screen/app_page2.dart';
 
 
 // 로그인 완료시 main페이지로 이동
-void navigateToMainPage() {
+void navigateToMainPage(BuildContext context) {
   Navigator.of(context as BuildContext).pushReplacement(MaterialPageRoute(
-      builder: (context) => MyApp()
+      builder: (context) => Page2()
   ));
 }
 
 // 카카오 로그인 구현 예제
-Future<void> KakaoLogin() async {
+Future<void> KakaoLogin(BuildContext context) async {
 // 카카오톡 실행 가능 여부 확인
 // 카카오톡 실행이 가능하면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
   if (await isKakaoTalkInstalled()) {
     try {
       await UserApi.instance.loginWithKakaoTalk().then((value) {
         print('value from kakao $value');
-        navigateToMainPage();
+        navigateToMainPage(context);
       });
       print('카카오톡으로 로그인 성공');
-      Navigator.pushReplacementNamed(context as BuildContext, '/webmain'); // 로그인 성공 시 메인 페이지로 이동
+      Navigator.pushReplacementNamed(context as BuildContext, '/Page2'); // 로그인 성공 시 메인 페이지로 이동
     } catch (error) {
       print(await KakaoSdk.origin);
       print('카카오톡으로 로그인 실패 $error');
@@ -53,10 +41,10 @@ Future<void> KakaoLogin() async {
       // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
       try {
         await UserApi.instance.loginWithKakaoAccount().then((value) {
-          navigateToMainPage();
+          navigateToMainPage(context);
         });
         print('카카오계정으로 로그인 성공');
-        Navigator.pushReplacementNamed(context as BuildContext, '/webmain'); // 로그인 성공 시 메인 페이지로 이동
+        Navigator.pushReplacementNamed(context as BuildContext, '/Page2'); // 로그인 성공 시 메인 페이지로 이동
       } catch (error) {
         print('카카오계정으로 로그인 실패 $error');
       }
@@ -65,10 +53,10 @@ Future<void> KakaoLogin() async {
     try {
       await UserApi.instance.loginWithKakaoAccount().then((value) {
         print('value from kakao $value');
-        navigateToMainPage();
+        navigateToMainPage(context);
       });
       print('카카오계정으로 로그인 성공');
-      Navigator.pushReplacementNamed(context as BuildContext, '/webmain'); // 로그인 성공 시 메인 페이지로 이동
+      Navigator.pushReplacementNamed(context as BuildContext, '/Page2'); // 로그인 성공 시 메인 페이지로 이동
     } catch (error) {
       print('카카오계정으로 로그인 실패 $error');
     }
@@ -103,7 +91,6 @@ class _AppLoginState extends State<AppLogin> {
     return Scaffold(
       body: SafeArea(
         child: Column(
-
           children: [
             Stack(
               children: [
@@ -117,7 +104,6 @@ class _AppLoginState extends State<AppLogin> {
                     ),
                   ),
                 ),
-
                 Container(
                   child: TextButton(
                     onPressed: () {},
@@ -141,7 +127,7 @@ class _AppLoginState extends State<AppLogin> {
               padding: const EdgeInsets.only(top: 90),
               child: InkWell(
                 onTap: () {
-                 KakaoLogin();
+                 KakaoLogin(context);
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -264,7 +250,11 @@ class _AppLoginState extends State<AppLogin> {
                 ),
                 Container(
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AppJoin(),
+                      ));
+                    },
                     child: Text(
                       "회원가입",
                       style: TextStyle(
