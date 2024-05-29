@@ -40,7 +40,7 @@ class _Page2State extends State<Page2> {
                     isLogin = await Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => AppLogin()));
                     setState(() {
-
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Page2()));
                     });
                   },
 

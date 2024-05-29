@@ -93,11 +93,10 @@ class _AppLoginState extends State<AppLogin> {
         "pw": _pw.text,
       };
       final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.177:9090"));
-       Response res = await dio.post("/user/login",data: data);
-       if( res.statusCode == 200){
-         Navigator.pop(context, true);
-       }
-
+      Response res = await dio.post("/user/login", data: data);
+      if (res.statusCode == 200) {
+        Navigator.pop(context, true);
+      }
     } catch (e) {
       print(e);
     }
@@ -122,20 +121,17 @@ class _AppLoginState extends State<AppLogin> {
                   ),
                 ),
                 Container(
-                  child: TextButton(
-                    onPressed: () {},
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "로그인",
-                          style: TextStyle(
-                            fontSize: 40,
-                            color: Colors.black,
-                          ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "로그인",
+                        style: TextStyle(
+                          fontSize: 40,
+                          color: Colors.black,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -223,7 +219,9 @@ class _AppLoginState extends State<AppLogin> {
                         color: Colors.black),
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  login();
+                },
               ),
             ),
             Row(
