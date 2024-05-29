@@ -12,7 +12,7 @@ class Page2 extends StatefulWidget {
 }
 
 class _Page2State extends State<Page2> {
-
+  bool isLogin = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +36,14 @@ class _Page2State extends State<Page2> {
               Padding(
                 padding: const EdgeInsets.only(right: 3),
                 child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
+                  onTap: () async {
+                    isLogin = await Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => AppLogin()));
+                    setState(() {
+
+                    });
                   },
+
                   child: Column(
                     children: [
                       Image.asset(

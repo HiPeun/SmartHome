@@ -85,7 +85,6 @@ class AppLogin extends StatefulWidget {
 class _AppLoginState extends State<AppLogin> {
   final TextEditingController _id = TextEditingController();
   final TextEditingController _pw = TextEditingController();
-  bool isLogin = false;
 
   void login() async {
     try {
@@ -93,7 +92,7 @@ class _AppLoginState extends State<AppLogin> {
         "id": _id.text,
         "pw": _pw.text,
       };
-      final Dio dio = Dio(BaseOptions(baseUrl: "http://172.30.1.82:9090:9090"));
+      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.177:9090"));
        Response res = await dio.post("/user/login",data: data);
        if( res.statusCode == 200){
          Navigator.pop(context, true);
@@ -124,13 +123,7 @@ class _AppLoginState extends State<AppLogin> {
                 ),
                 Container(
                   child: TextButton(
-                    onPressed: () async {
-                      isLogin = await Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => AppLogin()));
-                      setState(() {
-
-                      });
-                    },
+                    onPressed: () {},
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
