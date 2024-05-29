@@ -103,6 +103,22 @@ class _WebLoginState extends State<WebLogin> {
   final TextEditingController _id = TextEditingController();
   final TextEditingController _pw = TextEditingController();
 
+  void login() async {
+    try {
+      final Map<String, dynamic> data = {
+        "id" : _id.text,
+        "pw" : _pw.text,
+      };
+      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.177:9090"));
+        Response res = await dio.post("/user/login", data: data);
+          if (res.statusCode == 200) {
+            Navigator.pop(context, true);
+          }
+    } catch (e) {
+      print(e);
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -280,7 +296,9 @@ class _WebLoginState extends State<WebLogin> {
                         color: Colors.black),
                   ),
                 ),
-                onTap: () async {},
+                onTap: () {
+                  login();
+                },
               ),
             ),
             Row(
@@ -334,22 +352,7 @@ class _WebLoginState extends State<WebLogin> {
                     },
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  child: InkWell(
-                    child: Text(
-                      " WebModifyProfile",
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => WebModifyProfile(),
-                      ));
-                    },
-                  ),
-                ),
+
               ],
             )
           ],

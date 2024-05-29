@@ -2,48 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loginproject/Web/Web_Cus/web_writing.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
+import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
+import 'package:loginproject/Web/webmain.dart';
 
 import '../Web_Member/web_login.dart';
 
-class WebNotice extends StatefulWidget {
-  WebNotice({super.key});
+class WebNoticeScreen extends StatefulWidget {
+  WebNoticeScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _WebNoticeState();
+  State<StatefulWidget> createState() => _WebNoticeScreenState();
 }
 
-class _WebNoticeState extends State<WebNotice> {
+class _WebNoticeScreenState extends State<WebNoticeScreen> {
   bool showNotices = true;
-  bool isLogin = false;
-
-  void _showLoginAlert(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('로그인 필요'),
-          content: Text('글쓰기를 하시려면 로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?'),
-          actions: [
-            TextButton(
-              child: Text('취소'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('확인'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => WebLogin(),
-                ));
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,11 +63,11 @@ class _WebNoticeState extends State<WebNotice> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebLogin(),
+                            builder: (context) => MyApp(),
                           ));
                         },
                         child: Text(
-                          "로그인",
+                          "로그아웃",
                           style: TextStyle(
                             fontSize: 22,
                           ),
@@ -107,11 +79,11 @@ class _WebNoticeState extends State<WebNotice> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebJoin(),
+                            builder: (context) => WebModifyProfile(),
                           ));
                         },
                         child: Text(
-                          "회원가입",
+                          "내 정보",
                           style: TextStyle(
                             fontSize: 22,
                           ),
@@ -123,7 +95,7 @@ class _WebNoticeState extends State<WebNotice> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebNotice(),
+                            builder: (context) => WebNoticeScreen(),
                           ));
                         },
                         child: Text(
@@ -239,7 +211,9 @@ class _WebNoticeState extends State<WebNotice> {
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: () {
-                  _showLoginAlert(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => WebWriting(),
+                  ));
                 },
                 child: Text("글쓰기"),
                 style: ElevatedButton.styleFrom(
@@ -283,4 +257,3 @@ class QnaList extends StatelessWidget {
   }
 
 }
-
