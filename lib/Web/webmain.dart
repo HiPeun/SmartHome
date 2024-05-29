@@ -35,9 +35,10 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-
+//받아라지윤
 class _MyHomePageState extends State<MyHomePage> {
   bool isLogin = false;
+
   // 이미지 슬라이더 list로 묶음
   final List<String> imgList = [
     'assets/webmain/webmain1.png',
