@@ -35,7 +35,9 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+
 class _MyHomePageState extends State<MyHomePage> {
+  bool isLogin = false;
   // 이미지 슬라이더 list로 묶음
   final List<String> imgList = [
     'assets/webmain/webmain1.png',
@@ -71,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Container(
                         child: InkWell(
                           onTap: () async {
-                           bool res = await Navigator.of(context).push(MaterialPageRoute(
+                           isLogin = await Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => WebLogin(),
                             ));
                           },
