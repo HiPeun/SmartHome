@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loginproject/app_screen/app_join.dart';
+import 'package:loginproject/app_screen/app_login.dart';
 
 import 'app_main.dart';
 
@@ -11,6 +12,8 @@ class Page2 extends StatefulWidget {
 }
 
 class _Page2State extends State<Page2> {
+
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -33,7 +36,10 @@ class _Page2State extends State<Page2> {
               Padding(
                 padding: const EdgeInsets.only(right: 3),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => AppLogin()));
+                  },
                   child: Column(
                     children: [
                       Image.asset(

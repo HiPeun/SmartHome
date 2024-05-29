@@ -216,92 +216,79 @@ class _AppJoinState extends State<AppJoin> {
                   ),
                   SizedBox(height: 16),
                   Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          child: TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              "약관 동의",
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.blue,
-                              ),
-                            ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 40),
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            value: isAgreed,
+                            onChanged: (value) {
+                              toggleAgreement(value!);
+                            },
                           ),
-                        ),
-                        Checkbox(
-                          value: isAgreed,
-                          onChanged: (value) {
-                            toggleAgreement(value!);
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 320),
-                          child: Text(
+                          Text(
                             "전체 동의",
                             style: TextStyle(
                               fontSize: 16,
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Checkbox(
-                        value: isPersonAgreed,
-                        onChanged: (value) {
-                          setState(() {
-                            isPersonAgreed = value!;
-                            if (!value) {
-                              isAgreed = false;
-                            } else if (isTermsAgreed) {
-                              isAgreed = true;
-                            }
-                          });
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 310),
-                        child: Text(
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40),
+                    child: Row(
+
+                      children: [
+                        Checkbox(
+                          value: isPersonAgreed,
+                          onChanged: (value) {
+                            setState(() {
+                              isPersonAgreed = value!;
+                              if (!value) {
+                                isAgreed = false;
+                              } else if (isTermsAgreed) {
+                                isAgreed = true;
+                              }
+                            });
+                          },
+                        ),
+                        Text(
                           "[필수] 개인 정보 수집",
                           style: TextStyle(
                             fontSize: 16,
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Checkbox(
-                        value: isTermsAgreed,
-                        onChanged: (value) {
-                          setState(() {
-                            isTermsAgreed = value!;
-                            if (!value) {
-                              isAgreed = false;
-                            } else if (isPersonAgreed) {
-                              isAgreed = true;
-                            }
-                          });
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 350),
-                        child: Text(
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40),
+                    child: Row(
+
+                      children: [
+                        Checkbox(
+                          value: isTermsAgreed,
+                          onChanged: (value) {
+                            setState(() {
+                              isTermsAgreed = value!;
+                              if (!value) {
+                                isAgreed = false;
+                              } else if (isPersonAgreed) {
+                                isAgreed = true;
+                              }
+                            });
+                          },
+                        ),
+                        Text(
                           "[필수] 이용약관",
                           style: TextStyle(
                             fontSize: 16,
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   SizedBox(height: 40),
                   Padding(

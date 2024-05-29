@@ -1,20 +1,19 @@
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 import 'package:loginproject/app_screen/app_fpw.dart';
 import 'package:loginproject/app_screen/app_join.dart';
 import 'package:loginproject/app_screen/app_page2.dart';
 
-
 // 로그인 완료시 main페이지로 이동
 void navigateToMainPage(BuildContext context) {
-  Navigator.of(context as BuildContext).pushReplacement(MaterialPageRoute(
-      builder: (context) => Page2()
-  ));
+  Navigator.of(context as BuildContext)
+      .pushReplacement(MaterialPageRoute(builder: (context) => Page2()));
 }
 
 // 카카오 로그인 구현 예제
@@ -28,7 +27,8 @@ Future<void> KakaoLogin(BuildContext context) async {
         navigateToMainPage(context);
       });
       print('카카오톡으로 로그인 성공');
-      Navigator.pushReplacementNamed(context as BuildContext, '/Page2'); // 로그인 성공 시 메인 페이지로 이동
+      Navigator.pushReplacementNamed(
+          context as BuildContext, '/Page2'); // 로그인 성공 시 메인 페이지로 이동
     } catch (error) {
       print(await KakaoSdk.origin);
       print('카카오톡으로 로그인 실패 $error');
@@ -44,7 +44,8 @@ Future<void> KakaoLogin(BuildContext context) async {
           navigateToMainPage(context);
         });
         print('카카오계정으로 로그인 성공');
-        Navigator.pushReplacementNamed(context as BuildContext, '/Page2'); // 로그인 성공 시 메인 페이지로 이동
+        Navigator.pushReplacementNamed(
+            context as BuildContext, '/Page2'); // 로그인 성공 시 메인 페이지로 이동
       } catch (error) {
         print('카카오계정으로 로그인 실패 $error');
       }
@@ -56,7 +57,8 @@ Future<void> KakaoLogin(BuildContext context) async {
         navigateToMainPage(context);
       });
       print('카카오계정으로 로그인 성공');
-      Navigator.pushReplacementNamed(context as BuildContext, '/Page2'); // 로그인 성공 시 메인 페이지로 이동
+      Navigator.pushReplacementNamed(
+          context as BuildContext, '/Page2'); // 로그인 성공 시 메인 페이지로 이동
     } catch (error) {
       print('카카오계정으로 로그인 실패 $error');
     }
@@ -73,8 +75,6 @@ Future<void> KakaoLogout() async {
   }
 }
 
-
-
 class AppLogin extends StatefulWidget {
   AppLogin({super.key});
 
@@ -85,6 +85,24 @@ class AppLogin extends StatefulWidget {
 class _AppLoginState extends State<AppLogin> {
   final TextEditingController _id = TextEditingController();
   final TextEditingController _pw = TextEditingController();
+  bool isLogin = false;
+
+  void login() async {
+    try {
+      final Map<String, dynamic> data = {
+        "id": _id.text,
+        "pw": _pw.text,
+      };
+      final Dio dio = Dio(BaseOptions(baseUrl: "http://172.30.1.82:9090:9090"));
+       Response res = await dio.post("/user/login",data: data);
+       if( res.statusCode == 200){
+         Navigator.pop(context, true);
+       }
+
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +124,13 @@ class _AppLoginState extends State<AppLogin> {
                 ),
                 Container(
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      isLogin = await Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => AppLogin()));
+                      setState(() {
+
+                      });
+                    },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -127,7 +151,7 @@ class _AppLoginState extends State<AppLogin> {
               padding: const EdgeInsets.only(top: 90),
               child: InkWell(
                 onTap: () {
-                 KakaoLogin(context);
+                  KakaoLogin(context);
                 },
                 child: Container(
                   decoration: BoxDecoration(
