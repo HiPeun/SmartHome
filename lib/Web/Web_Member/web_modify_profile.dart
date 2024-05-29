@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
+import 'package:loginproject/Web/webmain.dart';
 
 import '../Web_Cus/web_notice.dart';
 
@@ -74,11 +75,11 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebLogin(),
+                            builder: (context) => MyApp(),
                           ));
                         },
                         child: Text(
-                          "로그인",
+                          "로그아웃",
                           style: TextStyle(
                             fontSize: 22,
                           ),
@@ -90,11 +91,11 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebJoin(),
+                            builder: (context) => WebModifyProfile(),
                           ));
                         },
                         child: Text(
-                            "회원가입",
+                            "내 정보",
                             style: TextStyle(
                               fontSize: 22,
                             )),
