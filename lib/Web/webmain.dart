@@ -10,11 +10,6 @@ void main() async {
   runApp(const MyApp());
 }
 
-
-
-
-
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -75,8 +70,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       padding: const EdgeInsets.only(right: 40),
                       child: Container(
                         child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
+                          onTap: () async {
+                           bool res = await Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => WebLogin(),
                             ));
                           },

@@ -13,7 +13,9 @@ class WebJoinModel with _$WebJoinModel {
     String? pw,
     String? pw2,
     String? email,
-    String? name
+    String? name,
+    String? title,
+    String? content,
 
   }) = _WebJoinModel;
 

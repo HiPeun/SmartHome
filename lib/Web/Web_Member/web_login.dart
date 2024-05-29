@@ -1,5 +1,6 @@
 
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +9,7 @@ import 'package:loginproject/Web/Web_Cus/web_notice.dart';
 import 'package:loginproject/Web/Web_Member/web_fid.dart';
 import 'package:loginproject/Web/Web_Member/web_fpw.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
+import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 
 import '../webmain.dart';
 
@@ -100,6 +102,7 @@ class WebLogin extends StatefulWidget {
 class _WebLoginState extends State<WebLogin> {
   final TextEditingController _id = TextEditingController();
   final TextEditingController _pw = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -327,6 +330,22 @@ class _WebLoginState extends State<WebLogin> {
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => WebFpw(),
+                      ));
+                    },
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: InkWell(
+                    child: Text(
+                      " WebModifyProfile",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => WebModifyProfile(),
                       ));
                     },
                   ),

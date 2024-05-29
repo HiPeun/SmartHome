@@ -23,6 +23,7 @@ class _WebJoinState extends State<WebJoin> {
   bool isTermsAgreed = false;
 
   void toggleAgreement(bool value) {
+    //이 값들이 변경되고 위젯이 빈화면이 되었다가 다시 그려짐 (체크가됨),이변수값을 주었으니 다시 그려줌
     setState(() {
       isAgreed = value;
       isPersonAgreed = value;
@@ -57,7 +58,7 @@ class _WebJoinState extends State<WebJoin> {
 
     try {
       final response = await dio.post(
-        "http://192.168.0.177:9090/user/join", // 서버에 POST 요청 보냄
+        "http://192.168.0.177:9090/user/join",
         data: {
           'id': id,
           'pw': pw,
@@ -90,6 +91,8 @@ class _WebJoinState extends State<WebJoin> {
             );
           },
         );
+
+
       } else {
         print("회원가입 실패: ${response.data}");
       }
@@ -273,92 +276,82 @@ class _WebJoinState extends State<WebJoin> {
 
                   SizedBox(height: 16),
                   Container(
+                    width: 500,
+                    alignment: Alignment.centerLeft,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(
-                          child: TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              "약관 동의",
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ),
-                        ),
                         Checkbox(
                           value: isAgreed,
                           onChanged: (value) {
                             toggleAgreement(value!);
                           },
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 320),
-                          child: Text(
-                            "전체 동의",
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
+                        Text(
+                          "전체 동의",
+                          style: TextStyle(
+                            fontSize: 16,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Checkbox(
-                        value: isPersonAgreed,
-                        onChanged: (value) {
-                          setState(() {
-                            isPersonAgreed = value!;
-                            if (!value) {
-                              isAgreed = false;
-                            } else if (isTermsAgreed) {
-                              isAgreed = true;
-                            }
-                          });
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 310),
-                        child: Text(
+                  Container(
+                    width: 500,
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Checkbox(
+                          value: isPersonAgreed,
+                          onChanged: (value) {
+                            setState(() {
+                              isPersonAgreed = value!;
+                              if (!value) {
+                                isAgreed = false;
+                              } else if (isTermsAgreed) {
+                                isAgreed = true;
+                              }
+                            });
+                          },
+                        ),
+
+                        Text(
                           "[필수] 개인 정보 수집",
                           style: TextStyle(
                             fontSize: 16,
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Checkbox(
-                        value: isTermsAgreed,
-                        onChanged: (value) {
-                          setState(() {
-                            isTermsAgreed = value!;
-                            if (!value) {
-                              isAgreed = false;
-                            } else if (isPersonAgreed) {
-                              isAgreed = true;
-                            }
-                          });
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 350),
-                        child: Text(
+                  Container(
+                    width: 500,
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Checkbox(
+                          value: isTermsAgreed,
+                          onChanged: (value) {
+                            setState(() {
+                              isTermsAgreed = value!;
+                              if (!value) {
+                                isAgreed = false;
+                              } else if (isPersonAgreed) {
+                                isAgreed = true;
+                              }
+                            });
+                          },
+                        ),
+                        Text(
                           "[필수] 이용약관",
                           style: TextStyle(
                             fontSize: 16,
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   SizedBox(height: 40),
                   Padding(
