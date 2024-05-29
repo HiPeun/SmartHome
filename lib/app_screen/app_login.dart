@@ -4,6 +4,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
+
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 import 'package:loginproject/app_screen/app_fpw.dart';
@@ -98,7 +99,7 @@ class _AppLoginState extends State<AppLogin> {
         Navigator.pop(context, true);
       }
     } catch (e) {
-      print(e);
+      print("로그인 오류:$e");
     }
   }
 
@@ -210,6 +211,9 @@ class _AppLoginState extends State<AppLogin> {
               width: 300,
               height: 55,
               child: InkWell(
+                onTap: () {
+                  login();
+                },
                 child: Center(
                   child: Text(
                     "로 그 인",
@@ -219,9 +223,7 @@ class _AppLoginState extends State<AppLogin> {
                         color: Colors.black),
                   ),
                 ),
-                onTap: () {
-                  login();
-                },
+
               ),
             ),
             Row(
@@ -287,3 +289,4 @@ class _AppLoginState extends State<AppLogin> {
     );
   }
 }
+

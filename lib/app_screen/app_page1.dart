@@ -89,21 +89,6 @@ class _Page1State extends State<Page1> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  SearchBar(
-                    trailing: [
-                      IconButton(
-                        icon: const Icon(Icons.search),
-                        onPressed: () {},
-                      ),
-                    ],
-                    constraints: BoxConstraints(maxHeight: 100, maxWidth: 250),
-                    shape: MaterialStateProperty.all(
-                      ContinuousRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    hintText: "검색어를 입력하세요",
-                  )
                 ],
               ),
             ),
@@ -170,7 +155,7 @@ class CustomService extends StatelessWidget {
               children: [
                 Image.asset("assets/images/speakerimage.png"),
                 Text(
-                  "고객센터",
+                  "Q&A",
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -192,6 +177,7 @@ class CustomService extends StatelessWidget {
     );
   }
 }
+
 
 class QnASection extends StatelessWidget {
   final List<Map<String, String>> qnaList;
@@ -232,12 +218,13 @@ class QnASection extends StatelessWidget {
             );
           },
           child: Text("글쓰기",
-          style: TextStyle(fontWeight:FontWeight.bold),),
+            style: TextStyle(fontWeight:FontWeight.bold),),
         ),
       ],
     );
   }
 }
+
 
 class AddQnAPage extends StatefulWidget {
   final Function(Map<String, String>) addQnA;
