@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loginproject/Web/Web_Cus/web_notice_screen.dart';
 import 'package:loginproject/Web/Web_Cus/web_writing.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 
@@ -30,14 +31,20 @@ class _WebNoticeState extends State<WebNotice> {
                 Navigator.of(context).pop();
               },
             ),
-            TextButton(
-              child: Text('확인'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => WebLogin(),
-                ));
-              },
+            Container(
+              child: InkWell(
+                onTap: () async {
+                  isLogin = await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => WebLogin(),
+                  ));
+                  setState(() {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => WebNoticeScreen(),
+                    ));
+                  });
+                },
+                child: Text('확인'),
+              ),
             ),
           ],
         );
@@ -150,7 +157,7 @@ class _WebNoticeState extends State<WebNotice> {
             ),
             SizedBox(height: 70),
             Padding(
-              padding: const EdgeInsets.fromLTRB(50, 0, 0, 0),
+              padding: const EdgeInsets.fromLTRB(50, 0, 50, 0), // 양쪽에 여백 추가
               child: Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -233,8 +240,12 @@ class _WebNoticeState extends State<WebNotice> {
               ),
             ),
             SizedBox(height: 30),
-            showNotices ? NoticeList() : QnaList(),
-            Spacer(),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0), // 공지사항과 Q&A 리스트에 좌우 여백 추가
+                child: showNotices ? NoticeList() : QnaList(),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
@@ -243,13 +254,13 @@ class _WebNoticeState extends State<WebNotice> {
                 },
                 child: Text("글쓰기"),
                 style: ElevatedButton.styleFrom(
-                    minimumSize: Size(160, 45),
-                    backgroundColor: Color(0xFFD3CDC8),
-                    textStyle: TextStyle(fontSize: 20),
-                    foregroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero
-                    )
+                  minimumSize: Size(160, 45),
+                  backgroundColor: Color(0xFFD3CDC8),
+                  textStyle: TextStyle(fontSize: 20),
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),
                 ),
               ),
             ),
@@ -263,13 +274,33 @@ class _WebNoticeState extends State<WebNotice> {
 class NoticeList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("공지사항 목록"),
-        ],
-      ),
+    return ListView(
+      children: [
+        ExpansionTile(
+          title: Text('공지사항 1'),
+          children: <Widget>[
+            ListTile(
+              title: Text('공지사항 1의 상세 내용입니다.'),
+            ),
+          ],
+        ),
+        ExpansionTile(
+          title: Text('공지사항 2'),
+          children: <Widget>[
+            ListTile(
+              title: Text('공지사항 2의 상세 내용입니다.'),
+            ),
+          ],
+        ),
+        ExpansionTile(
+          title: Text('공지사항 3'),
+          children: <Widget>[
+            ListTile(
+              title: Text('공지사항 3의 상세 내용입니다.'),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -277,10 +308,34 @@ class NoticeList extends StatelessWidget {
 class QnaList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text("Q&A 목록"),
+    return ListView(
+      children: [
+        ExpansionTile(
+          title: Text('Q&A 1'),
+          children: <Widget>[
+            ListTile(
+              title: Text('Q&A 1의 상세 내용입니다.'),
+            ),
+          ],
+        ),
+        ExpansionTile(
+          title: Text('Q&A 2'),
+          children: <Widget>[
+            ListTile(
+              title: Text('Q&A 2의 상세 내용입니다.'),
+            ),
+          ],
+        ),
+        ExpansionTile(
+          title: Text('Q&A 3'),
+          children: <Widget>[
+            ListTile(
+              title: Text('Q&A 3의 상세 내용입니다.'),
+            ),
+          ],
+        ),
+      ],
     );
   }
-
 }
 
