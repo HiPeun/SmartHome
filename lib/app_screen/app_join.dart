@@ -60,7 +60,7 @@ class _AppJoinState extends State<AppJoin> {
 
     try {
       final response = await dio.post(
-        "http://192.168.0.177:9090/user/join", // 서버에 POST 요청 보냄
+        "http://192.168.0.182:9090/user/join", // 서버에 POST 요청 보냄
         data: {
           'id': id,
           'pw': pw,
@@ -100,6 +100,63 @@ class _AppJoinState extends State<AppJoin> {
       print("회원가입 실패: $e");
     }
   }
+
+  void checkDuplicate(String id) async {
+    final dio = Dio(); //HTTP 클라이언트 라이브러리 Dio의 인스턴스 생성
+
+    try {
+      final response = await dio.post(
+        "http://192.168.0.182:9090/user/login/duplication", // 서버에 POST 요청 보냄
+        data: {
+          'id': id,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json', // 요청 헤더 설정
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text("사용 가능한 아이디 입니다. "),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("확인 "),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        print("이미 존재하는 아이디 입니다. : ${response.data}");
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text("이미 존재하는 아이디 입니다. "),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("확인 "),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (e) {
+      print("중복 확인 실패 : $e");
+    }
+  }
+
 
   // 이메일 유효성 검사 함수
   bool isValidEmail(String email) {
@@ -177,10 +234,40 @@ class _AppJoinState extends State<AppJoin> {
                         width: 5,
                       ),
                       ElevatedButton(
-                        onPressed: () {},
-                        child: Text('중복확인'),
-                        style: ElevatedButton.styleFrom(),
-                      ),
+                          onPressed: () {
+                            String joinId = id.text;
+                            if (joinId.isNotEmpty) {
+                              checkDuplicate(joinId);
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      content: Text("아이디를 입력해주세요"),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text("확인"))
+                                      ],
+                                    );
+                                  });
+                            }
+                          },
+                          child: Text(
+                            '중복확인',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(10, 55),
+                            backgroundColor: Color(0xFFD3CDC8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ))
                     ],
                   ),
                   SizedBox(

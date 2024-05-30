@@ -29,6 +29,7 @@ class _Page1State extends State<Page1> {
     }
   }
 
+
   void addQnA(Map<String, String> qna) async {
     try {
       await dio.post('http://your_flask_server_ip:5000/qna/add', data: qna);
