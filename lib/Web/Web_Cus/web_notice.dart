@@ -12,7 +12,6 @@ class WebNotice extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _WebNoticeState();
 }
-
 class _WebNoticeState extends State<WebNotice> {
   bool showNotices = true;
   bool isLogin = false;
