@@ -157,20 +157,35 @@ class _AppJoinState extends State<AppJoin> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  SizedBox(
-                    width: 300,
-                    child: TextField(
-                      controller: id,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.key),
-                        labelText: '아이디',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 200,
+                        child: TextField(
+                          controller: id,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.key),
+                            labelText: '아이디',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text('중복확인'),
+                        style: ElevatedButton.styleFrom(),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(
+                    height: 20,
+                  ),
                   SizedBox(
                     width: 300,
                     child: TextField(
@@ -239,7 +254,6 @@ class _AppJoinState extends State<AppJoin> {
                   Padding(
                     padding: const EdgeInsets.only(left: 40),
                     child: Row(
-
                       children: [
                         Checkbox(
                           value: isPersonAgreed,
@@ -266,7 +280,6 @@ class _AppJoinState extends State<AppJoin> {
                   Padding(
                     padding: const EdgeInsets.only(left: 40),
                     child: Row(
-
                       children: [
                         Checkbox(
                           value: isTermsAgreed,

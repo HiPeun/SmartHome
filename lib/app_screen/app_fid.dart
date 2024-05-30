@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
-class AppFpw extends StatefulWidget {
-  AppFpw({super.key});
+class AppFid extends StatefulWidget {
+  AppFid({super.key});
 
   @override
-  State<StatefulWidget> createState() => _AppFpwState();
+  State<StatefulWidget> createState() => _AppFidState();
 }
 
-class _AppFpwState extends State<AppFpw> {
+class _AppFidState extends State<AppFid> {
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
 

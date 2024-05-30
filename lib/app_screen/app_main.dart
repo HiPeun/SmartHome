@@ -215,7 +215,7 @@ class _BottomBarState extends State<BottomBar> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.list_alt),
-            label: "공지사항",
+            label: "Q&A",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -223,7 +223,7 @@ class _BottomBarState extends State<BottomBar> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: "내 정보",
+            label: "로그인",
           ),
         ],
       ),
