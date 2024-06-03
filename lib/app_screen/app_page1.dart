@@ -20,7 +20,8 @@ class _Page1State extends State<Page1> {
 
   void fetchQnAList() async {
     try {
-      final response = await dio.get("http://192.168.0.177:9090/board/read?pno=2");
+      final response =
+          await dio.get("http://192.168.0.177:9090/board/read?pno=2");
       setState(() {
         qnaList = List<Map<String, String>>.from(response.data);
       });
@@ -28,7 +29,6 @@ class _Page1State extends State<Page1> {
       print(e);
     }
   }
-
 
   void addQnA(Map<String, String> qna) async {
     try {
@@ -89,8 +89,7 @@ class _Page1State extends State<Page1> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                ],
+                children: [],
               ),
             ),
             Container(
@@ -100,16 +99,16 @@ class _Page1State extends State<Page1> {
             ),
             showNotices
                 ? Column(
-              children: [
+                    children: [
 //원래 ServiceTile이 있던 자리 이제는 DB에 내용을 저장해서 꺼내는 식으로 함
-              ],
-            )
+                    ],
+                  )
                 : QnASection(
-              qnaList: qnaList,
-              addQnA: addQnA,
-              updateQnA: updateQnA,
-              deleteQnA: deleteQnA,
-            ),
+                    qnaList: qnaList,
+                    addQnA: addQnA,
+                    updateQnA: updateQnA,
+                    deleteQnA: deleteQnA,
+                  ),
           ],
         ),
       ),
@@ -146,7 +145,8 @@ class CustomService extends StatelessWidget {
             ),
             style: ElevatedButton.styleFrom(
               minimumSize: Size(150, 150),
-              backgroundColor: isNoticeSelected ? Colors.grey : Color(0xFFE5E5E1),
+              backgroundColor:
+                  isNoticeSelected ? Colors.grey : Color(0xFFE5E5E1),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
             ),
           ),
@@ -167,7 +167,8 @@ class CustomService extends StatelessWidget {
             ),
             style: ElevatedButton.styleFrom(
               minimumSize: Size(150, 150),
-              backgroundColor: isNoticeSelected ? Color(0xFFE5E5E1) : Colors.grey,
+              backgroundColor:
+                  isNoticeSelected ? Color(0xFFE5E5E1) : Colors.grey,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.zero,
               ),
@@ -179,14 +180,17 @@ class CustomService extends StatelessWidget {
   }
 }
 
-
 class QnASection extends StatelessWidget {
   final List<Map<String, String>> qnaList;
   final Function(Map<String, String>) addQnA;
   final Function(int, Map<String, String>) updateQnA;
   final Function(int) deleteQnA;
 
-  QnASection({required this.qnaList, required this.addQnA, required this.updateQnA, required this.deleteQnA});
+  QnASection(
+      {required this.qnaList,
+      required this.addQnA,
+      required this.updateQnA,
+      required this.deleteQnA});
 
   @override
   Widget build(BuildContext context) {
@@ -218,14 +222,16 @@ class QnASection extends StatelessWidget {
               ),
             );
           },
-          child: Text("글쓰기",
-            style: TextStyle(fontWeight:FontWeight.bold),),
+          child: Text(
+            "글쓰기",
+            style: TextStyle(fontWeight: FontWeight.bold),
+
+          ),
         ),
       ],
     );
   }
 }
-
 
 class AddQnAPage extends StatefulWidget {
   final Function(Map<String, String>) addQnA;
@@ -242,7 +248,9 @@ class _AddQnAPageState extends State<AddQnAPage> {
   final TextEditingController _contentController = TextEditingController();
 
   void _submit() {
-    if (_titleController.text.isEmpty || _authorController.text.isEmpty || _contentController.text.isEmpty) {
+    if (_titleController.text.isEmpty ||
+        _authorController.text.isEmpty ||
+        _contentController.text.isEmpty) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -309,7 +317,11 @@ class QnADetailPage extends StatelessWidget {
   final Function(int) deleteQnA;
   final int index;
 
-  QnADetailPage({required this.qna, required this.updateQnA, required this.deleteQnA, required this.index});
+  QnADetailPage(
+      {required this.qna,
+      required this.updateQnA,
+      required this.deleteQnA,
+      required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -366,7 +378,8 @@ class EditQnAPage extends StatefulWidget {
   final Function(int, Map<String, String>) updateQnA;
   final int index;
 
-  EditQnAPage({required this.qna, required this.updateQnA, required this.index});
+  EditQnAPage(
+      {required this.qna, required this.updateQnA, required this.index});
 
   @override
   _EditQnAPageState createState() => _EditQnAPageState();
@@ -386,7 +399,9 @@ class _EditQnAPageState extends State<EditQnAPage> {
   }
 
   void _submit() {
-    if (_titleController.text.isEmpty || _authorController.text.isEmpty || _contentController.text.isEmpty) {
+    if (_titleController.text.isEmpty ||
+        _authorController.text.isEmpty ||
+        _contentController.text.isEmpty) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
