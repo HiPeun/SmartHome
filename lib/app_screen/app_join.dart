@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loginproject/Web/Web_Cus/web_notice.dart';
-import 'package:loginproject/Web/Web_Member/web_login.dart';
+
 import 'package:loginproject/app_screen/app_login.dart';
 
 class AppJoin extends StatefulWidget {
@@ -60,7 +59,8 @@ class _AppJoinState extends State<AppJoin> {
 
     try {
       final response = await dio.post(
-        "http://192.168.0.182:9090/user/join", // 서버에 POST 요청 보냄
+        // 텍스트 필드로 입력한 아이디,패스워드,이름,이메일을 서버에 post 요청 보내서 DB에 저장시킴
+        "http://192.168.0.177:9090/user/join", // 서버에 POST 요청 보냄
         data: {
           'id': id,
           'pw': pw,
@@ -106,7 +106,7 @@ class _AppJoinState extends State<AppJoin> {
 
     try {
       final response = await dio.post(
-        "http://192.168.0.182:9090/user/login/duplication", // 서버에 POST 요청 보냄
+        "http://192.168.0.177:9090/user/login/duplication", // 서버에 POST 요청 보냄
         data: {
           'id': id,
         },
@@ -127,7 +127,7 @@ class _AppJoinState extends State<AppJoin> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text("확인 "),
+                  child: Text("닫기"),
                 ),
               ],
             );
@@ -145,7 +145,7 @@ class _AppJoinState extends State<AppJoin> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text("확인 "),
+                  child: Text("닫기"),
                 ),
               ],
             );
@@ -283,8 +283,11 @@ class _AppJoinState extends State<AppJoin> {
                         labelText: "비밀번호",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
+
                         ),
+
                       ),
+
                     ),
                   ),
                   SizedBox(height: 20),

@@ -20,7 +20,7 @@ class _Page1State extends State<Page1> {
 
   void fetchQnAList() async {
     try {
-      final response = await dio.get("http://192.168.0.182:9090/board/read?pno=2");
+      final response = await dio.get("http://192.168.0.177:9090/board/read?pno=2");
       setState(() {
         qnaList = List<Map<String, String>>.from(response.data);
       });
@@ -32,7 +32,7 @@ class _Page1State extends State<Page1> {
 
   void addQnA(Map<String, String> qna) async {
     try {
-      await dio.post("http://192.168.0.182:9090/board/insert", data: qna);
+      await dio.post("http://192.168.0.177:9090/board/insert", data: qna);
       fetchQnAList(); // Add QnA 후 리스트를 다시 불러옵니다
     } catch (e) {
       print(e);
