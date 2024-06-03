@@ -107,7 +107,7 @@ class _WebJoinState extends State<WebJoin> {
     return emailRegex.hasMatch(email);
   }
 
-  void checkDuplication(String id) async {
+  void check(String id) async {
     final dio = Dio();
 
     try {
@@ -141,29 +141,25 @@ class _WebJoinState extends State<WebJoin> {
               );
             },
           );
-        } else {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                content: Text("사용 가능한 아이디입니다."),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('확인'),
-                  ),
-                ],
-              );
-            },
-          );
         }
       } else {
         print("아이디 중복 확인 실패: ${response.data}");
       }
     } catch (e) {
-      print("아이디 중복 확인 실패: $e");
+      showDialog(context: context,
+          builder: (BuildContext context) {
+         return AlertDialog(
+           content: Text("사용 가능한 아이디입니다."),
+           actions: [
+             TextButton(onPressed: () {
+               Navigator.of(context).pop();
+             },
+            child: Text("확인"),
+             ),
+           ],
+         );
+         },
+      );
     }
   }
 
@@ -296,17 +292,34 @@ class _WebJoinState extends State<WebJoin> {
                       TextButton(
                         onPressed: () {
                           String joinId = id.text;
-                          if (joinId.isNotEmpty) {
-                            checkDuplication(joinId);
+                          if (joinId.isEmpty) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text("아이디를 입력하세요."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('확인'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            return;
                           }
-
+                          check(joinId);
                         },
-                        child: Text('중복확인',style: TextStyle(color: Colors.black),),
+                        child: Text('중복확인', style: TextStyle(color: Colors.black)),
                         style: TextButton.styleFrom(
                           backgroundColor: Color(0xFFD3CDC8),
-                          minimumSize: Size(60,50),
+                          minimumSize: Size(60, 50),
                         ),
                       ),
+
                     ],
                   ),
                   SizedBox(height: 20),
