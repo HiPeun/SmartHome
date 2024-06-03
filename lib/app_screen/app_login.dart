@@ -78,7 +78,7 @@ class _AppLoginState extends State<AppLogin> {
         "id": _id.text,
         "pw": _pw.text,
       };
-      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.182:9090"));
+      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.177:9090"));
       Response res = await dio.post("/user/login", data: data);
       if (res.statusCode == 200) {
         Navigator.pop(context, true);
