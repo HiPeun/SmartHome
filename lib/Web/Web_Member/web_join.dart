@@ -311,6 +311,27 @@ class _WebJoinState extends State<WebJoin> {
                             );
                             return;
                           }
+
+                          if (joinId.length > 12 || !joinId.contains(RegExp(r'\d'))) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('확인'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            return;
+                          }
+
                           check(joinId);
                         },
                         child: Text('중복확인', style: TextStyle(color: Colors.black)),
@@ -319,6 +340,7 @@ class _WebJoinState extends State<WebJoin> {
                           minimumSize: Size(60, 50),
                         ),
                       ),
+
 
                     ],
                   ),
