@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loginproject/Web/Web_Cus/web_notice.dart';
-import 'package:loginproject/Web/Web_Member/web_login.dart';
+
 import 'package:loginproject/app_screen/app_login.dart';
 
 class AppJoin extends StatefulWidget {
@@ -60,6 +59,7 @@ class _AppJoinState extends State<AppJoin> {
 
     try {
       final response = await dio.post(
+        // 텍스트 필드로 입력한 아이디,패스워드,이름,이메일을 서버에 post 요청 보내서 DB에 저장시킴
         "http://192.168.0.177:9090/user/join", // 서버에 POST 요청 보냄
         data: {
           'id': id,
@@ -100,6 +100,63 @@ class _AppJoinState extends State<AppJoin> {
       print("회원가입 실패: $e");
     }
   }
+
+  void checkDuplicate(String id) async {
+    final dio = Dio(); //HTTP 클라이언트 라이브러리 Dio의 인스턴스 생성
+
+    try {
+      final response = await dio.post(
+        "http://192.168.0.177:9090/user/login/duplication", // 서버에 POST 요청 보냄
+        data: {
+          'id': id,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json', // 요청 헤더 설정
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text("사용 가능한 아이디 입니다. "),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("닫기"),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        print("이미 존재하는 아이디 입니다. : ${response.data}");
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text("이미 존재하는 아이디 입니다. "),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("닫기"),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (e) {
+      print("중복 확인 실패 : $e");
+    }
+  }
+
 
   // 이메일 유효성 검사 함수
   bool isValidEmail(String email) {
@@ -157,20 +214,65 @@ class _AppJoinState extends State<AppJoin> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  SizedBox(
-                    width: 300,
-                    child: TextField(
-                      controller: id,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.key),
-                        labelText: '아이디',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 200,
+                        child: TextField(
+                          controller: id,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.key),
+                            labelText: '아이디',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      ElevatedButton(
+                          onPressed: () {
+                            String joinId = id.text;
+                            if (joinId.isNotEmpty) {
+                              checkDuplicate(joinId);
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      content: Text("아이디를 입력해주세요"),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text("확인"))
+                                      ],
+                                    );
+                                  });
+                            }
+                          },
+                          child: Text(
+                            '중복확인',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(10, 55),
+                            backgroundColor: Color(0xFFD3CDC8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ))
+                    ],
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(
+                    height: 20,
+                  ),
                   SizedBox(
                     width: 300,
                     child: TextField(
@@ -181,8 +283,11 @@ class _AppJoinState extends State<AppJoin> {
                         labelText: "비밀번호",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
+
                         ),
+
                       ),
+
                     ),
                   ),
                   SizedBox(height: 20),
@@ -239,7 +344,6 @@ class _AppJoinState extends State<AppJoin> {
                   Padding(
                     padding: const EdgeInsets.only(left: 40),
                     child: Row(
-
                       children: [
                         Checkbox(
                           value: isPersonAgreed,
@@ -266,7 +370,6 @@ class _AppJoinState extends State<AppJoin> {
                   Padding(
                     padding: const EdgeInsets.only(left: 40),
                     child: Row(
-
                       children: [
                         Checkbox(
                           value: isTermsAgreed,

@@ -20,7 +20,7 @@ class _Page1State extends State<Page1> {
 
   void fetchQnAList() async {
     try {
-      final response = await dio.get('http://your_flask_server_ip:5000/qna');
+      final response = await dio.get("http://192.168.0.177:9090/board/read?pno=2");
       setState(() {
         qnaList = List<Map<String, String>>.from(response.data);
       });
@@ -29,9 +29,10 @@ class _Page1State extends State<Page1> {
     }
   }
 
+
   void addQnA(Map<String, String> qna) async {
     try {
-      await dio.post('http://your_flask_server_ip:5000/qna/add', data: qna);
+      await dio.post("http://192.168.0.177:9090/board/insert", data: qna);
       fetchQnAList(); // Add QnA 후 리스트를 다시 불러옵니다
     } catch (e) {
       print(e);
@@ -89,21 +90,6 @@ class _Page1State extends State<Page1> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  SearchBar(
-                    trailing: [
-                      IconButton(
-                        icon: const Icon(Icons.search),
-                        onPressed: () {},
-                      ),
-                    ],
-                    constraints: BoxConstraints(maxHeight: 100, maxWidth: 250),
-                    shape: MaterialStateProperty.all(
-                      ContinuousRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    hintText: "검색어를 입력하세요",
-                  )
                 ],
               ),
             ),
@@ -170,7 +156,7 @@ class CustomService extends StatelessWidget {
               children: [
                 Image.asset("assets/images/speakerimage.png"),
                 Text(
-                  "고객센터",
+                  "Q&A",
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -192,6 +178,7 @@ class CustomService extends StatelessWidget {
     );
   }
 }
+
 
 class QnASection extends StatelessWidget {
   final List<Map<String, String>> qnaList;
@@ -232,12 +219,13 @@ class QnASection extends StatelessWidget {
             );
           },
           child: Text("글쓰기",
-          style: TextStyle(fontWeight:FontWeight.bold),),
+            style: TextStyle(fontWeight:FontWeight.bold),),
         ),
       ],
     );
   }
 }
+
 
 class AddQnAPage extends StatefulWidget {
   final Function(Map<String, String>) addQnA;

@@ -1,25 +1,21 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
-
 import 'package:loginproject/app_screen/app_fpw.dart';
 import 'package:loginproject/app_screen/app_join.dart';
-import 'package:loginproject/app_screen/app_page2.dart';
+import 'package:loginproject/app_screen/app_myinfo.dart';
 
 // 로그인 완료시 main페이지로 이동
 void navigateToMainPage(BuildContext context) {
-  Navigator.of(context as BuildContext)
-      .pushReplacement(MaterialPageRoute(builder: (context) => Page2()));
+  Navigator.of(context).pushReplacement(
+    MaterialPageRoute(builder: (context) => InfoPage()),
+  );
 }
 
 // 카카오 로그인 구현 예제
 Future<void> KakaoLogin(BuildContext context) async {
-// 카카오톡 실행 가능 여부 확인
-// 카카오톡 실행이 가능하면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+  // 카카오톡 실행 가능 여부 확인
   if (await isKakaoTalkInstalled()) {
     try {
       await UserApi.instance.loginWithKakaoTalk().then((value) {
@@ -27,25 +23,17 @@ Future<void> KakaoLogin(BuildContext context) async {
         navigateToMainPage(context);
       });
       print('카카오톡으로 로그인 성공');
-      Navigator.pushReplacementNamed(
-          context as BuildContext, '/Page2'); // 로그인 성공 시 메인 페이지로 이동
     } catch (error) {
       print(await KakaoSdk.origin);
       print('카카오톡으로 로그인 실패 $error');
-
-      // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
-      // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
       if (error is PlatformException && error.code == 'CANCELED') {
         return;
       }
-      // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
       try {
         await UserApi.instance.loginWithKakaoAccount().then((value) {
           navigateToMainPage(context);
         });
         print('카카오계정으로 로그인 성공');
-        Navigator.pushReplacementNamed(
-            context as BuildContext, '/Page2'); // 로그인 성공 시 메인 페이지로 이동
       } catch (error) {
         print('카카오계정으로 로그인 실패 $error');
       }
@@ -57,8 +45,6 @@ Future<void> KakaoLogin(BuildContext context) async {
         navigateToMainPage(context);
       });
       print('카카오계정으로 로그인 성공');
-      Navigator.pushReplacementNamed(
-          context as BuildContext, '/Page2'); // 로그인 성공 시 메인 페이지로 이동
     } catch (error) {
       print('카카오계정으로 로그인 실패 $error');
     }
@@ -120,58 +106,53 @@ class _AppLoginState extends State<AppLogin> {
                     ),
                   ),
                 ),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "로그인",
-                        style: TextStyle(
-                          fontSize: 40,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, top: 20),
+                  child: Text(
+                    "로그인",
+                    style: TextStyle(
+                      fontSize: 40,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ],
             ),
             Padding(
               padding: const EdgeInsets.only(top: 90),
-              child: InkWell(
-                onTap: () {
-                  KakaoLogin(context);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(0xffF9E000),
-                  ),
-                  width: 300,
-                  height: 55,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        child: Image.asset(
+              child: Material(
+                color: Colors.transparent, // 필요한 경우 배경 색상 지정
+                child: InkWell(
+                  onTap: () {
+                    KakaoLogin(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xffF9E000),
+                    ),
+                    width: 300,
+                    height: 55,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Image.asset(
                           "assets/images/kakao.png",
                           width: 30,
                           height: 30,
                         ),
-                      ),
-                      Container(
-                        child: Text(
+                        Text(
                           "카카오톡으로 시작하기",
                           style: TextStyle(
                             fontSize: 19,
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                        height: 10,
-                      )
-                    ],
+                        SizedBox(
+                          width: 10,
+                          height: 10,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -209,21 +190,24 @@ class _AppLoginState extends State<AppLogin> {
               margin: EdgeInsets.only(top: 20),
               width: 300,
               height: 55,
-              child: InkWell(
-                child: Center(
-                  child: Text(
-                    "로 그 인",
-                    style: TextStyle(
+
+                child: InkWell(
+                    onTap: () {
+                      login();
+                    },
+                  child: Center(
+                    child: Text(
+                      "로 그 인",
+                      style: TextStyle(
                         fontSize: 19,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                 ),
-                onTap: () {
-                  login();
-                },
               ),
-            ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -231,31 +215,27 @@ class _AppLoginState extends State<AppLogin> {
                   width: 35,
                   height: 50,
                 ),
-                Container(
-                  child: TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "아이디 찾기",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+                TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    "아이디 찾기",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
                   ),
                 ),
-                Container(
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => AppFpw(),
-                      ));
-                    },
-                    child: Text(
-                      "비밀번호 찾기",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AppFpw(),
+                    ));
+                  },
+                  child: Text(
+                    "비밀번호 찾기",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
                   ),
                 ),
@@ -263,19 +243,17 @@ class _AppLoginState extends State<AppLogin> {
                   width: 60,
                   height: 10,
                 ),
-                Container(
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => AppJoin(),
-                      ));
-                    },
-                    child: Text(
-                      "회원가입",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AppJoin(),
+                    ));
+                  },
+                  child: Text(
+                    "회원가입",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
                   ),
                 ),
@@ -287,3 +265,6 @@ class _AppLoginState extends State<AppLogin> {
     );
   }
 }
+
+
+
