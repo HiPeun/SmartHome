@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loginproject/Web/Web_Cus/web_writing.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
-import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 import 'package:loginproject/Web/webmain.dart';
 
 import '../Web_Member/web_login.dart';
@@ -79,7 +78,7 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebModifyProfile(),
+                            builder: (context) => WebJoin(),
                           ));
                         },
                         child: Text(

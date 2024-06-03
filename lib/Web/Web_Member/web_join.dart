@@ -107,6 +107,62 @@ class _WebJoinState extends State<WebJoin> {
     return emailRegex.hasMatch(email);
   }
 
+  void check(String id) async {
+    final dio = Dio();
+
+    try {
+      final response = await dio.post(
+        "http://192.168.0.177:9090/user/login/duplication",
+        data: {
+          'id': id,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        bool isDuplicate = response.data as bool;
+        if (isDuplicate) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: Text("이미 사용 중인 아이디입니다."),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('확인'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      } else {
+        print("아이디 중복 확인 실패: ${response.data}");
+      }
+    } catch (e) {
+      showDialog(context: context,
+          builder: (BuildContext context) {
+         return AlertDialog(
+           content: Text("사용 가능한 아이디입니다."),
+           actions: [
+             TextButton(onPressed: () {
+               Navigator.of(context).pop();
+             },
+            child: Text("확인"),
+             ),
+           ],
+         );
+         },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -216,18 +272,55 @@ class _WebJoinState extends State<WebJoin> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  SizedBox(
-                    width: 500,
-                    child: TextField(
-                      controller: id,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.key),
-                        labelText: '아이디',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 410,
+                        child: TextField(
+                          controller: id,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.key),
+                            labelText: '아이디',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      SizedBox(width: 10),
+                      TextButton(
+                        onPressed: () {
+                          String joinId = id.text;
+                          if (joinId.isEmpty) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text("아이디를 입력하세요."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('확인'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            return;
+                          }
+                          check(joinId);
+                        },
+                        child: Text('중복확인', style: TextStyle(color: Colors.black)),
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color(0xFFD3CDC8),
+                          minimumSize: Size(60, 50),
+                        ),
+                      ),
+
+                    ],
                   ),
                   SizedBox(height: 20),
                   SizedBox(
