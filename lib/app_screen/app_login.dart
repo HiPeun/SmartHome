@@ -60,7 +60,6 @@ Future<void> KakaoLogout() async {
     print('로그아웃 실패, SDK에서 토큰 삭제 $error');
   }
 }
-
 class AppLogin extends StatefulWidget {
   AppLogin({super.key});
 
