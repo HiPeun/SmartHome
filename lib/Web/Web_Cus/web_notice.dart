@@ -1,9 +1,14 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loginproject/Web/Web_Cus/web_notice_screen.dart';
-import 'package:loginproject/Web/Web_Cus/web_writing.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
+import 'package:intl/intl.dart';
 
+import '../../model/notice_model.dart';
+import '../../model/qna_model.dart';
 import '../Web_Member/web_login.dart';
 
 class WebNotice extends StatefulWidget {
@@ -15,6 +20,8 @@ class WebNotice extends StatefulWidget {
 class _WebNoticeState extends State<WebNotice> {
   bool showNotices = true;
   bool isLogin = false;
+
+
 
   void _showLoginAlert(BuildContext context) {
     showDialog(
@@ -206,26 +213,7 @@ class _WebNoticeState extends State<WebNotice> {
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 40, 10),
-                            child: Container(
-                              child: SearchBar(
-                                trailing: [Icon(Icons.search)],
-                                hintText: "검색어를 입력하세요",
-                                constraints: BoxConstraints(
-                                  maxWidth: 250,
-                                  minHeight: 50,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
+
                   ],
                 ),
               ),
@@ -270,71 +258,150 @@ class _WebNoticeState extends State<WebNotice> {
   }
 }
 
-class NoticeList extends StatelessWidget {
+class NoticeList extends StatefulWidget {
+  @override
+  _NoticeListState createState() => _NoticeListState();
+}
+
+class _NoticeListState extends State<NoticeList> {
+  List<NoticeModel> list = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getNoticeList();
+  }
+
+  void getNoticeList() async {
+    Dio dio = Dio(
+      BaseOptions(
+        baseUrl: "http://192.168.0.177:9090",
+        contentType: "application/json",
+      ),
+    );
+
+    try {
+      Response res = await dio.get("/board1/list");
+      if (res.statusCode == 200) {
+        print(res.data);
+
+        setState(() {
+          list = (res.data as List).map((e) => NoticeModel.fromJson(e as Map<String, dynamic>)).toList();
+        });
+        print(list);
+      }
+    } catch (e) {
+      print("Failed to load data: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        ExpansionTile(
-          title: Text('공지사항 1'),
+    return ListView.builder(
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        return ExpansionTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                list[index].title ?? "",
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
+                ),
+              ),
+              Container(
+                height: 10,
+              ),
+              Text(list[index].regdate != null
+                  ? DateFormat('yyyy-MM-dd HH:mm').format(list[index].regdate!)
+                  : 'No date available',)
+            ],
+          ),
           children: <Widget>[
             ListTile(
-              title: Text('공지사항 1의 상세 내용입니다.'),
+              title: Text(list[index].content ?? ""),
             ),
           ],
-        ),
-        ExpansionTile(
-          title: Text('공지사항 2'),
-          children: <Widget>[
-            ListTile(
-              title: Text('공지사항 2의 상세 내용입니다.'),
-            ),
-          ],
-        ),
-        ExpansionTile(
-          title: Text('공지사항 3'),
-          children: <Widget>[
-            ListTile(
-              title: Text('공지사항 3의 상세 내용입니다.'),
-            ),
-          ],
-        ),
-      ],
+        );
+      },
     );
   }
 }
 
-class QnaList extends StatelessWidget {
+
+class QnaList extends StatefulWidget {
+
   @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        ExpansionTile(
-          title: Text('Q&A 1'),
-          children: <Widget>[
-            ListTile(
-              title: Text('Q&A 1의 상세 내용입니다.'),
-            ),
-          ],
-        ),
-        ExpansionTile(
-          title: Text('Q&A 2'),
-          children: <Widget>[
-            ListTile(
-              title: Text('Q&A 2의 상세 내용입니다.'),
-            ),
-          ],
-        ),
-        ExpansionTile(
-          title: Text('Q&A 3'),
-          children: <Widget>[
-            ListTile(
-              title: Text('Q&A 3의 상세 내용입니다.'),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
+  _QnaListState createState() => _QnaListState();
 }
+  class _QnaListState extends State<QnaList> {
+  List<QnaModel> list = [];
+
+    @override
+    void initState() {
+      super.initState();
+      getQnaList();
+    }
+
+    void getQnaList() async {
+      Dio dio = Dio(
+        BaseOptions(
+          baseUrl: "http://192.168.0.177:9090",
+          contentType: "application/json",
+        ),
+      );
+
+      try {
+        Response res = await dio.get("/board/listAll");
+        if (res.statusCode == 200) {
+          print(res.data);
+
+          setState(() {
+            list = (res.data as List).map((e) => QnaModel.fromJson(e as Map<String, dynamic>)).toList();
+          });
+          print(list);
+        }
+      } catch (e) {
+        print("Failed to load data: $e");
+      }
+    }
+
+
+    Widget build(BuildContext context) {
+      return ListView.builder(
+          itemCount: list.length,
+          itemBuilder: (context, index) {
+            return ExpansionTile(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(list[index].title ?? "",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  Container(
+                    height: 10,
+                  ),
+                  Text(list[index].regdate != null
+                      ? DateFormat('yyyy-MM-dd HH:mm').format(list[index].regdate!)
+                      : 'No date available',),
+                ],
+              ),
+              children: <Widget>[
+                ListTile(
+                  title: Text(list[index].content ?? "",),
+                ),
+              ],
+            );
+          },
+      );
+    }
+  }
+
+
+
 
