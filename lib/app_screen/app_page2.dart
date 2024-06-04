@@ -45,7 +45,6 @@ class _Page2State extends State<Page2> {
                   },
                   child: Column(
                     children: [
-
                           Image.asset(
                              isLogin ?  "assets/images/backbutton.png" : "assets/images/backbutton.png",
                               width: 26,
