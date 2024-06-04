@@ -22,7 +22,7 @@ void main() async {
     nativeAppKey: 'd664273b8aeac06793c0c6f6f1ed0348',
     javaScriptAppKey: '38e21ce41bf7993c5366257c746421e3',
   );
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 
@@ -90,7 +90,6 @@ Future<void> KakaoLogout() async {
 }
 
 
-//받아라지윤
 class WebLogin extends StatefulWidget {
   WebLogin({super.key});
 
@@ -118,6 +117,7 @@ class _WebLoginState extends State<WebLogin> {
       print(e);
     }
   }
+
 
 
   @override
