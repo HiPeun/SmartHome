@@ -4,12 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:loginproject/app_screen/app_fpw.dart';
 import 'package:loginproject/app_screen/app_join.dart';
-import 'package:loginproject/app_screen/app_myinfo.dart';
+import 'app_main.dart';
 
 // 로그인 완료시 main페이지로 이동
 void navigateToMainPage(BuildContext context) {
   Navigator.of(context).pushReplacement(
-    MaterialPageRoute(builder: (context) => InfoPage()),
+    MaterialPageRoute(builder: (context) => AppMainView()),
   );
 }
 
@@ -60,6 +60,7 @@ Future<void> KakaoLogout() async {
     print('로그아웃 실패, SDK에서 토큰 삭제 $error');
   }
 }
+
 class AppLogin extends StatefulWidget {
   AppLogin({super.key});
 
@@ -181,32 +182,27 @@ class _AppLoginState extends State<AppLogin> {
                 obscureText: true,
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Color(0xFFD3CDC8),
-              ),
-              margin: EdgeInsets.only(top: 20),
-              width: 300,
-              height: 55,
-
-                child: InkWell(
-                    onTap: () {
-                      login();
-                    },
-                  child: Center(
-                    child: Text(
-                      "로 그 인",
-                      style: TextStyle(
-                        fontSize: 19,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  elevation: 1,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: EdgeInsets.all(16)),
+              onPressed: () {
+                login();
+              },
+              child: Center(
+                child: Text(
+                  "로 그 인",
+                  style: TextStyle(
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
               ),
-
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -264,6 +260,3 @@ class _AppLoginState extends State<AppLogin> {
     );
   }
 }
-
-
-

@@ -100,7 +100,7 @@ class _Page1State extends State<Page1> {
             showNotices
                 ? Column(
                     children: [
-//원래 ServiceTile이 있던 자리 이제는 DB에 내용을 저장해서 꺼내는 식으로 함
+                      //원래 ServiceTile이 있던 자리 이제는 DB에 내용을 저장해서 꺼내는 식으로 함
                     ],
                   )
                 : QnASection(
@@ -225,7 +225,6 @@ class QnASection extends StatelessWidget {
           child: Text(
             "글쓰기",
             style: TextStyle(fontWeight: FontWeight.bold),
-
           ),
         ),
       ],
