@@ -7,6 +7,7 @@ import 'package:loginproject/Web/Web_Cus/web_notice.dart';
 import 'package:loginproject/Web/Web_Member/web_fid.dart';
 import 'package:loginproject/Web/Web_Member/web_fpw.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
+import 'package:loginproject/Web/Web_Member/web_login_screen.dart';
 import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 
 import '../webmain.dart';
@@ -21,7 +22,7 @@ void main() async {
     nativeAppKey: 'd664273b8aeac06793c0c6f6f1ed0348',
     javaScriptAppKey: '38e21ce41bf7993c5366257c746421e3',
   );
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 
@@ -89,7 +90,6 @@ Future<void> KakaoLogout() async {
 }
 
 
-//받아라지윤
 class WebLogin extends StatefulWidget {
   WebLogin({super.key});
 
@@ -110,12 +110,14 @@ class _WebLoginState extends State<WebLogin> {
       final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.177:9090"));
         Response res = await dio.post("/user/login", data: data);
           if (res.statusCode == 200) {
-            Navigator.pop(context, true);
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> WebLoginScreen(title: ""),
+            ));
           }
     } catch (e) {
       print(e);
     }
   }
+
 
 
   @override

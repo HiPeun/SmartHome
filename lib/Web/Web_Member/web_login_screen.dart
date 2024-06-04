@@ -22,7 +22,7 @@ class WebLoginScreen extends StatefulWidget {
 
 
 class _WebLoginScreenState extends State<WebLoginScreen> {
-  //bool isLogin = false;
+  bool isLogin = false;
 
   // 이미지 슬라이더 list로 묶음
   final List<String> imgList = [

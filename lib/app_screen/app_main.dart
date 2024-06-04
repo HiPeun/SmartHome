@@ -60,7 +60,7 @@ class _AppMainViewState extends State<AppMainView> {
             children: [
               Center(
                 child: Padding(
-                  padding: EdgeInsets.only(top: 60),
+                  padding: EdgeInsets.only(top: 80),
                   child: Text(
                     "Smart Home",
                     style: TextStyle(

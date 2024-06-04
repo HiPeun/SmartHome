@@ -1,13 +1,16 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:loginproject/Web/Web_Cus/web_notice.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
 import 'package:loginproject/Web/Web_Member/web_login_screen.dart';
+import 'package:get/get.dart';
 
-void main() async {
+import 'Web_Member/user_controller.dart';
+
+void main() {
+  Get.put(UserController()); // UserController 초기화
   runApp(const MyApp());
 }
 
@@ -16,7 +19,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'SmartHome',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -36,10 +39,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-
 class _MyHomePageState extends State<MyHomePage> {
-  bool isLogin = false;
-
   // 이미지 슬라이더 list로 묶음
   final List<String> imgList = [
     'assets/webmain/webmain1.png',
@@ -75,14 +75,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Container(
                         child: InkWell(
                           onTap: () async {
-                           isLogin = await Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => WebLogin(),
-                            ));
-                           setState(() {
-                             Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebLoginScreen(title: ''),
-                             ));
-
-                           });
+                            bool isLogin = await Get.to(() => WebLogin());
+                            if (isLogin) {
+                              Get.to(() => WebLoginScreen(title: ''));
+                            }
                           },
                           child: Text(
                             "로그인",
@@ -98,9 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Container(
                         child: InkWell(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => WebJoin(),
-                            ));
+                            Get.to(() => WebJoin());
                           },
                           child: Text(
                             "회원가입",
@@ -116,9 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Container(
                         child: InkWell(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => WebNotice(),
-                            ));
+                            Get.to(() => WebNotice());
                           },
                           child: Text(
                             "고객센터",
@@ -140,11 +132,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: CarouselSlider.builder(
                       itemCount: imgList.length,
                       itemBuilder: (BuildContext context, int itemIndex,
-                              int pageViewIndex) =>
+                          int pageViewIndex) =>
                           Container(
-                        child: Image.network(imgList[itemIndex],
-                            fit: BoxFit.cover),
-                      ),
+                            child: Image.network(imgList[itemIndex],
+                                fit: BoxFit.cover),
+                          ),
                       options: CarouselOptions(
                         height: 500,
                         // 슬라이더의 높이를 지정
@@ -181,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Text(
                               "일상의 행복한 변화",
                               style:
-                                  TextStyle(fontSize: 40, color: Colors.white),
+                              TextStyle(fontSize: 40, color: Colors.white),
                             ),
                           ),
                         ],
@@ -190,7 +182,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -261,7 +252,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-
               Stack(
                 children: [
                   Center(
@@ -306,7 +296,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-
               Stack(
                 children: [
                   Center(
@@ -351,7 +340,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-
               Stack(
                 children: [
                   Center(
@@ -396,7 +384,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-
               Row(
                 children: [
                   Padding(
@@ -475,3 +462,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
