@@ -3,9 +3,9 @@ import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter/widgets.dart";
-import "package:loginproject/app_screen/app_page1.dart";
-import "package:loginproject/app_screen/app_page2.dart";
-import "package:loginproject/app_screen/app_page3.dart";
+import "package:loginproject/App/app_screen/app_page1.dart";
+import "package:loginproject/App/app_screen/app_page2.dart";
+import "package:loginproject/App/app_screen/app_page3.dart";
 
 
 
@@ -60,7 +60,7 @@ class _AppMainViewState extends State<AppMainView> {
             children: [
               Center(
                 child: Padding(
-                  padding: EdgeInsets.only(top: 80),
+                  padding: EdgeInsets.only(top: 60),
                   child: Text(
                     "Smart Home",
                     style: TextStyle(

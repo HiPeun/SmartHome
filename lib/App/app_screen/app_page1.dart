@@ -20,15 +20,15 @@ class _Page1State extends State<Page1> {
 
   void fetchQnAList() async {
     try {
-      final response =
-          await dio.get("http://192.168.0.177:9090/board/read?pno=2");
+      final response = await dio.get("http://192.168.0.177:9090/board/read?pno=2");
       setState(() {
-        qnaList = List<Map<String, String>>.from(response.data);
+        qnaList = List<Map<String, String>>.from(response.data); // 응답 데이터를 올바르게 파싱
       });
     } catch (e) {
       print(e);
     }
   }
+
 
   void addQnA(Map<String, String> qna) async {
     try {
@@ -99,19 +99,20 @@ class _Page1State extends State<Page1> {
             ),
             showNotices
                 ? Column(
-                    children: [
-                      //원래 ServiceTile이 있던 자리 이제는 DB에 내용을 저장해서 꺼내는 식으로 함
-                    ],
-                  )
+              children: [
+                //원래 ServiceTile이 있던 자리 이제는 DB에 내용을 저장해서 꺼내는 식으로 함
+              ],
+            )
                 : QnASection(
-                    qnaList: qnaList,
-                    addQnA: addQnA,
-                    updateQnA: updateQnA,
-                    deleteQnA: deleteQnA,
-                  ),
+              qnaList: qnaList,
+              addQnA: addQnA,
+              updateQnA: updateQnA,
+              deleteQnA: deleteQnA,
+            ),
           ],
         ),
       ),
+
     );
   }
 }
@@ -132,7 +133,7 @@ class CustomService extends StatelessWidget {
             onPressed: () => toggleView(true),
             child: Column(
               children: [
-                Image.asset("assets/images/noteimage.png"),
+                Image.asset("assets/images/speakerimage.png"),
                 Text(
                   "공지사항",
                   style: TextStyle(
@@ -146,7 +147,7 @@ class CustomService extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               minimumSize: Size(150, 150),
               backgroundColor:
-                  isNoticeSelected ? Colors.grey : Color(0xFFE5E5E1),
+              isNoticeSelected ? Colors.grey : Color(0xFFE5E5E1),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
             ),
           ),
@@ -154,9 +155,9 @@ class CustomService extends StatelessWidget {
             onPressed: () => toggleView(false),
             child: Column(
               children: [
-                Image.asset("assets/images/speakerimage.png"),
+                Image.asset("assets/images/noteimage.png"),
                 Text(
-                  "Q&A",
+                  "고객센터",
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -168,7 +169,7 @@ class CustomService extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               minimumSize: Size(150, 150),
               backgroundColor:
-                  isNoticeSelected ? Color(0xFFE5E5E1) : Colors.grey,
+              isNoticeSelected ? Color(0xFFE5E5E1) : Colors.grey,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.zero,
               ),
@@ -188,31 +189,34 @@ class QnASection extends StatelessWidget {
 
   QnASection(
       {required this.qnaList,
-      required this.addQnA,
-      required this.updateQnA,
-      required this.deleteQnA});
+        required this.addQnA,
+        required this.updateQnA,
+        required this.deleteQnA});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         for (int i = 0; i < qnaList.length; i++)
-          ListTile(
+          ExpansionTile(
             title: Text(qnaList[i]['title'] ?? ""),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => QnADetailPage(
-                    qna: qnaList[i],
-                    updateQnA: updateQnA,
-                    deleteQnA: deleteQnA,
-                    index: i,
-                  ),
-                ),
-              );
-            },
+            children: [
+              ListTile(
+                title: Text(qnaList[i]['content'] ?? ""),
+                subtitle: Text("작성자: ${qnaList[i]['author'] ?? ""}"),
+              ),
+            ],
           ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(
+            5,
+                (index) => IconButton(
+              icon: Icon(Icons.circle, size: 10),
+              onPressed: () {},
+            ),
+          ),
+        ),
         ElevatedButton(
           onPressed: () {
             Navigator.push(
@@ -302,157 +306,6 @@ class _AddQnAPageState extends State<AddQnAPage> {
             ElevatedButton(
               onPressed: _submit,
               child: Text("글 등록"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class QnADetailPage extends StatelessWidget {
-  final Map<String, String> qna;
-  final Function(int, Map<String, String>) updateQnA;
-  final Function(int) deleteQnA;
-  final int index;
-
-  QnADetailPage(
-      {required this.qna,
-      required this.updateQnA,
-      required this.deleteQnA,
-      required this.index});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(qna['title'] ?? "상세보기"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("작성자: ${qna['author'] ?? ""}", style: TextStyle(fontSize: 18)),
-            SizedBox(height: 10),
-            Text(qna['content'] ?? "", style: TextStyle(fontSize: 16)),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EditQnAPage(
-                          qna: qna,
-                          updateQnA: updateQnA,
-                          index: index,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Text("수정"),
-                ),
-                SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    deleteQnA(index);
-                    Navigator.pop(context);
-                  },
-                  child: Text("삭제"),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class EditQnAPage extends StatefulWidget {
-  final Map<String, String> qna;
-  final Function(int, Map<String, String>) updateQnA;
-  final int index;
-
-  EditQnAPage(
-      {required this.qna, required this.updateQnA, required this.index});
-
-  @override
-  _EditQnAPageState createState() => _EditQnAPageState();
-}
-
-class _EditQnAPageState extends State<EditQnAPage> {
-  late TextEditingController _titleController;
-  late TextEditingController _authorController;
-  late TextEditingController _contentController;
-
-  @override
-  void initState() {
-    super.initState();
-    _titleController = TextEditingController(text: widget.qna['title']);
-    _authorController = TextEditingController(text: widget.qna['author']);
-    _contentController = TextEditingController(text: widget.qna['content']);
-  }
-
-  void _submit() {
-    if (_titleController.text.isEmpty ||
-        _authorController.text.isEmpty ||
-        _contentController.text.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text("오류"),
-          content: Text("작성자, 제목, 내용을 모두 입력하세요."),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("확인"),
-            ),
-          ],
-        ),
-      );
-      return;
-    }
-
-    final qna = {
-      'title': _titleController.text,
-      'author': _authorController.text,
-      'content': _contentController.text,
-    };
-    widget.updateQnA(widget.index, qna);
-    Navigator.pop(context);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("글 수정"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: InputDecoration(labelText: "제목"),
-            ),
-            TextField(
-              controller: _authorController,
-              decoration: InputDecoration(labelText: "작성자"),
-            ),
-            TextField(
-              controller: _contentController,
-              decoration: InputDecoration(labelText: "내용"),
-              maxLines: 10,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _submit,
-              child: Text("수정"),
             ),
           ],
         ),

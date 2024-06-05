@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:loginproject/app_screen/app_join.dart';
+import 'package:loginproject/App/app_screen/app_join.dart';
+
 
 
 
@@ -284,4 +285,6 @@ class _SmartControl2State extends State<SmartControl2> {
       ),
     );
   }
+
 }
+

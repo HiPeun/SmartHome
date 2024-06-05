@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
-import 'package:loginproject/app_screen/app_main.dart';
+import 'package:loginproject/App/app_screen/app_main.dart';
+import 'package:loginproject/App/app_screen/app_page2.dart';
 
 void main() {
   // 웹 환경에서 카카오 로그인을 정상적으로 완료하려면 runApp() 호출 전 아래 메서드 호출 필요

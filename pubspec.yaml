@@ -52,6 +52,8 @@ dependencies:
   intl: ^0.19.0
 
   get_storage: ^2.1.1
+  json_serializable:
+  build_runner:
 
 
 
@@ -60,6 +62,7 @@ dev_dependencies:
     sdk: flutter
   slang_build_runner: ^2.4.9
   file_picker: ^4.0.0
+
 
 
   # The "flutter_lints" package below contains a set of recommended lints to
