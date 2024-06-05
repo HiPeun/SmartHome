@@ -11,6 +11,8 @@ import '../../model/notice_model.dart';
 import '../../model/qna_model.dart';
 import '../Web_Member/web_login.dart';
 
+
+
 class WebNotice extends StatefulWidget {
   WebNotice({super.key});
 
@@ -20,7 +22,6 @@ class WebNotice extends StatefulWidget {
 class _WebNoticeState extends State<WebNotice> {
   bool showNotices = true;
   bool isLogin = false;
-
 
 
   void _showLoginAlert(BuildContext context) {
@@ -166,7 +167,7 @@ class _WebNoticeState extends State<WebNotice> {
               padding: const EdgeInsets.fromLTRB(50, 0, 50, 0), // 양쪽에 여백 추가
               child: Container(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     ElevatedButton(
                       onPressed: () {
@@ -190,7 +191,6 @@ class _WebNoticeState extends State<WebNotice> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 20),
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
@@ -214,6 +214,24 @@ class _WebNoticeState extends State<WebNotice> {
                       ),
                     ),
 
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _showLoginAlert(context);
+                        },
+                        child: Text("글쓰기"),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(160, 45),
+                          backgroundColor: Color(0xFFD3CDC8),
+                          textStyle: TextStyle(fontSize: 20),
+                          foregroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -233,30 +251,14 @@ class _WebNoticeState extends State<WebNotice> {
                 child: showNotices ? NoticeList() : QnaList(),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  _showLoginAlert(context);
-                },
-                child: Text("글쓰기"),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(160, 45),
-                  backgroundColor: Color(0xFFD3CDC8),
-                  textStyle: TextStyle(fontSize: 20),
-                  foregroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
-                  ),
-                ),
-              ),
-            ),
+
           ],
         ),
       ),
     );
   }
 }
+
 
 class NoticeList extends StatefulWidget {
   @override
@@ -265,6 +267,7 @@ class NoticeList extends StatefulWidget {
 
 class _NoticeListState extends State<NoticeList> {
   List<NoticeModel> list = [];
+
 
   @override
   void initState() {
@@ -275,7 +278,7 @@ class _NoticeListState extends State<NoticeList> {
   void getNoticeList() async {
     Dio dio = Dio(
       BaseOptions(
-        baseUrl: "http://192.168.0.177:9090",
+        baseUrl: "http://192.168.0.188:9090",
         contentType: "application/json",
       ),
     );
@@ -286,7 +289,8 @@ class _NoticeListState extends State<NoticeList> {
         print(res.data);
 
         setState(() {
-          list = (res.data as List).map((e) => NoticeModel.fromJson(e as Map<String, dynamic>)).toList();
+          list = (res.data as List).map((e) =>
+              NoticeModel.fromJson(e as Map<String, dynamic>)).toList();
         });
         print(list);
       }
@@ -300,6 +304,7 @@ class _NoticeListState extends State<NoticeList> {
     return ListView.builder(
       itemCount: list.length,
       itemBuilder: (context, index) {
+        final String date = DateFormat('yyyy-MM-dd').format(DateTime.fromMillisecondsSinceEpoch(list[index].regdate ?? 0));
         return ExpansionTile(
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -307,16 +312,16 @@ class _NoticeListState extends State<NoticeList> {
               Text(
                 list[index].title ?? "",
                 style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               Container(
                 height: 10,
               ),
-              Text(list[index].regdate != null
-                  ? DateFormat('yyyy-MM-dd HH:mm').format(list[index].regdate!)
-                  : 'No date available',)
+              Text(
+                date,
+              ),
             ],
           ),
           children: <Widget>[
@@ -368,11 +373,16 @@ class QnaList extends StatefulWidget {
       }
     }
 
+    void Qnainsert(String) {
+
+    }
+
 
     Widget build(BuildContext context) {
       return ListView.builder(
           itemCount: list.length,
           itemBuilder: (context, index) {
+            final String date = DateFormat('yyyy-MM-dd').format(DateTime.fromMillisecondsSinceEpoch(list[index].regdate ?? 0));
             return ExpansionTile(
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -386,15 +396,32 @@ class QnaList extends StatefulWidget {
                   Container(
                     height: 10,
                   ),
-                  Text(list[index].regdate != null
-                      ? DateFormat('yyyy-MM-dd HH:mm').format(list[index].regdate!)
-                      : 'No date available',),
+                  Text(
+                    date
+                  ),
                 ],
               ),
               children: <Widget>[
                 ListTile(
                   title: Text(list[index].content ?? "",),
                 ),
+                ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 1000,
+                        child: TextField(),
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          child: Text('댓글쓰기'),
+                        ),
+                      ),
+                    ],
+                  )
+                )
               ],
             );
           },
