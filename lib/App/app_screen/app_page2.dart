@@ -10,7 +10,8 @@ class Page2 extends StatefulWidget {
   final bool isLogin;
   final String userData;
 
-  const Page2({Key? key, this.isLogin = false, this.userData = ''}) : super(key: key);
+  const Page2({Key? key, this.isLogin = false, this.userData = ''})
+      : super(key: key);
 
   @override
   State<Page2> createState() => _Page2State();
@@ -122,7 +123,8 @@ class _Page2State extends State<Page2> {
                 ],
               ),
               if (widget.isLogin)
-                Text("환영합니다, ${widget.userData}님!", style: TextStyle(fontSize: 18)),
+                Text("환영합니다, ${widget.userData}님!",
+                    style: TextStyle(fontSize: 18)),
               AppMainView(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -225,7 +227,10 @@ class _BottomBarState extends State<BottomBar> {
     _widgetOptions = <Widget>[
       Page1(),
       Page2(isLogin: widget.isLogin, userData: widget.userData),
-      Page3(isLogin: widget.isLogin, userData: widget.userData,),
+      Page3(
+        isLogin: widget.isLogin,
+        userData: widget.userData,
+      ),
     ];
   }
 
@@ -260,7 +265,7 @@ class _BottomBarState extends State<BottomBar> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: "로그인",
+            label: "내 정보",
           ),
         ],
       ),

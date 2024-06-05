@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'app_fpw.dart';
 import 'app_join.dart';
@@ -28,6 +31,35 @@ class AppLogin extends StatefulWidget {
 class _AppLoginState extends State<AppLogin> {
   final TextEditingController _id = TextEditingController();
   final TextEditingController _pw = TextEditingController();
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserId();
+    _checkAutoLogin();
+  }
+
+  Future<void> _loadUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? savedId = prefs.getString('user_id');
+    if (savedId != null) {
+      setState(() {
+        _id.text = savedId;
+      });
+    }
+  }
+
+  Future<void> _checkAutoLogin() async {
+    String? token = await secureStorage.read(key: 'auth_token');
+    if (token != null) {
+      // 이미 로그인된 상태라면 메인 페이지로 이동
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => BottomBar(isLogin: true)),
+      );
+    }
+  }
 
   void login() async {
     if (_id.text.isEmpty || _pw.text.isEmpty) {
@@ -62,13 +94,17 @@ class _AppLoginState extends State<AppLogin> {
       print("Response data: ${res.data}");
 
       if (res.statusCode == 200 && res.data is bool && res.data == true) {
-        // 로그인 성공 시 메인 페이지로 이동
+        // 로그인 성공 시 토큰 저장 및 메인 페이지로 이동
+        await secureStorage.write(key: 'auth_token', value: 'your_token');
+        await _saveUserId(_id.text);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => BottomBar(isLogin: true)),
         );
       } else if (res.statusCode == 200 && res.data is Map<String, dynamic>) {
         final userData = res.data['userData'] as String; // 사용자 데이터를 받아옴
+        await secureStorage.write(key: 'auth_token', value: 'your_token');
+        await _saveUserId(_id.text);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -136,6 +172,11 @@ class _AppLoginState extends State<AppLogin> {
         },
       );
     }
+  }
+
+  Future<void> _saveUserId(String userId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_id', userId);
   }
 
   @override
