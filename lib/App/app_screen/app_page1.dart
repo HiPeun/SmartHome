@@ -11,8 +11,6 @@ class _Page1State extends State<Page1> {
   List<Map<String, String>> qnaList = [];
   bool isNoticeSelected = true;
   final Dio dio = Dio();
-  int currentPage = 1;
-  final int pageSize = 10; // 한 페이지에 표시할 QnA 개수
 
   @override
   void initState() {
@@ -22,10 +20,12 @@ class _Page1State extends State<Page1> {
 
   void fetchQnAList() async {
     try {
-      final response = await dio.get("http://192.168.0.177:9090/board/read?pno=$currentPage");
-      setState(() {
-        qnaList = List<Map<String, String>>.from(response.data);
-      });
+      final response = await dio.get("http://192.168.0.177:9090/board/read?pno=2");
+      if (mounted) {
+        setState(() {
+          qnaList = List<Map<String, String>>.from(response.data); // 응답 데이터를 올바르게 파싱
+        });
+      }
     } catch (e) {
       print(e);
     }
@@ -59,11 +59,10 @@ class _Page1State extends State<Page1> {
     });
   }
 
-  void changePage(int page) {
-    setState(() {
-      currentPage = page;
-      fetchQnAList(); // 페이지 변경 후 리스트를 다시 불러옵니다
-    });
+  @override
+  void dispose() {
+    // 리소스 해제 등 필요한 작업 수행
+    super.dispose();
   }
 
   @override
@@ -108,7 +107,7 @@ class _Page1State extends State<Page1> {
             showNotices
                 ? Column(
               children: [
-                // 공지사항 관련 위젯
+                //원래 ServiceTile이 있던 자리 이제는 DB에 내용을 저장해서 꺼내는 식으로 함
               ],
             )
                 : QnASection(
@@ -116,12 +115,11 @@ class _Page1State extends State<Page1> {
               addQnA: addQnA,
               updateQnA: updateQnA,
               deleteQnA: deleteQnA,
-              currentPage: currentPage,
-              changePage: changePage,
             ),
           ],
         ),
       ),
+
     );
   }
 }
@@ -195,17 +193,12 @@ class QnASection extends StatelessWidget {
   final Function(Map<String, String>) addQnA;
   final Function(int, Map<String, String>) updateQnA;
   final Function(int) deleteQnA;
-  final int currentPage;
-  final Function(int) changePage;
 
-  QnASection({
-    required this.qnaList,
-    required this.addQnA,
-    required this.updateQnA,
-    required this.deleteQnA,
-    required this.currentPage,
-    required this.changePage,
-  });
+  QnASection(
+      {required this.qnaList,
+        required this.addQnA,
+        required this.updateQnA,
+        required this.deleteQnA});
 
   @override
   Widget build(BuildContext context) {
@@ -227,8 +220,7 @@ class QnASection extends StatelessWidget {
             5,
                 (index) => IconButton(
               icon: Icon(Icons.circle, size: 10),
-              onPressed: () => changePage(index + 1),
-              color: currentPage == index + 1 ? Colors.blue : Colors.grey,
+              onPressed: () {},
             ),
           ),
         ),

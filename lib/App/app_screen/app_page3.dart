@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'app_login.dart';
 
 class Page3 extends StatefulWidget {
-  const Page3({super.key});
+  final bool isLogin;
+  final String userData;
+
+  const Page3({Key? key, this.isLogin = false, this.userData = ''}) : super(key: key);
 
   @override
   State<Page3> createState() => _Page3State();
@@ -14,6 +18,19 @@ class _Page3State extends State<Page3> {
   TextEditingController pw2 = TextEditingController();
   TextEditingController name = TextEditingController();
   TextEditingController id = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isLogin) {
+      // 로그인된 상태라면 userData를 통해 초기값 설정
+      // 예를 들어, userData를 JSON으로 파싱하여 초기값을 설정하는 경우
+      // Map<String, dynamic> userDataMap = jsonDecode(widget.userData);
+      // email.text = userDataMap['email'];
+      // name.text = userDataMap['name'];
+      // id.text = userDataMap['id'];
+    }
+  }
 
   Future<void> updateUserInfo() async {
     if (pw.text != pw2.text) {
@@ -190,47 +207,98 @@ class _Page3State extends State<Page3> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
+        child: widget.isLogin ? _buildUserInfoForm() : _buildLoginPrompt(),
+      ),
+    );
+  }
+
+  Widget _buildUserInfoForm() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 10,
+          height: 10,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              child: ElevatedButton(
+                onPressed: () {},
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset("assets/images/pencil.png"),
+                    Text(
+                      "회원정보 수정",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(150, 150),
+                  backgroundColor: Color(0xFFE5E5E1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero),
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          width: double.infinity,
+          height: 40,
+        ),
+        Container(
+          width: double.infinity,
+          height: 10,
+          color: Color(0xFFE5E5E1),
+        ),
+        SizedBox(
+          width: double.infinity,
+          height: 10,
+        ),
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: 10,
-              height: 10,
+            TextField(
+              controller: id,
+              decoration: InputDecoration(
+                labelText: "아이디",
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset("assets/images/pencil.png"),
-                        Text(
-                          "회원정보 수정",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ],
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(150, 150),
-                      backgroundColor: Color(0xFFE5E5E1),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero),
-                    ),
-                  ),
-                ),
-              ],
+            TextField(
+              controller: pw,
+              decoration: InputDecoration(
+                labelText: "비밀번호",
+              ),
+              obscureText: true,
             ),
-            SizedBox(
-              width: double.infinity,
-              height: 40,
+            TextField(
+              controller: pw2,
+              decoration: InputDecoration(
+                labelText: "비밀번호 확인",
+              ),
+              obscureText: true,
             ),
+            TextField(
+              controller: name,
+              decoration: InputDecoration(
+                labelText: "이름",
+              ),
+            ),
+            TextField(
+              controller: email,
+              decoration: InputDecoration(
+                labelText: "이메일",
+              ),
+            ),
+            SizedBox(height: 20),
             Container(
               width: double.infinity,
               height: 10,
@@ -240,81 +308,55 @@ class _Page3State extends State<Page3> {
               width: double.infinity,
               height: 10,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                TextField(
-                  controller: id,
-                  decoration: InputDecoration(
-                    labelText: "아이디",
-                  ),
-                ),
-                TextField(
-                  controller: pw,
-                  decoration: InputDecoration(
-                    labelText: "비밀번호",
-                  ),
-                  obscureText: true,
-                ),
-                TextField(
-                  controller: pw2,
-                  decoration: InputDecoration(
-                    labelText: "비밀번호 확인",
-                  ),
-                  obscureText: true,
-                ),
-                TextField(
-                  controller: name,
-                  decoration: InputDecoration(
-                    labelText: "이름",
-                  ),
-                ),
-                TextField(
-                  controller: email,
-                  decoration: InputDecoration(
-                    labelText: "이메일",
-                  ),
-                ),
-                SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  height: 10,
-                  color: Color(0xFFE5E5E1),
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      onPressed: updateUserInfo,
-                      child: Text("회원정보수정"),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(10, 30),
-                        backgroundColor: Color(0xFFE5E5E1),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(1),
-                        ),
-                      ),
+                ElevatedButton(
+                  onPressed: updateUserInfo,
+                  child: Text("회원정보수정"),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(10, 30),
+                    backgroundColor: Color(0xFFE5E5E1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(1),
                     ),
-                    ElevatedButton(
-                      onPressed: deleteUser,
-                      child: Text("회원탈퇴"),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(10, 30),
-                        backgroundColor: Color(0xFFE5E5E1),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(1)),
-                      ),
-                    ),
-                  ],
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: deleteUser,
+                  child: Text("회원탈퇴"),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(10, 30),
+                    backgroundColor: Color(0xFFE5E5E1),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(1)),
+                  ),
                 ),
               ],
             ),
           ],
         ),
+      ],
+    );
+  }
+
+  Widget _buildLoginPrompt() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("로그인이 필요합니다.", style: TextStyle(fontSize: 18)),
+          SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AppLogin()),
+              );
+            },
+            child: Text("로그인 페이지로 이동"),
+          ),
+        ],
       ),
     );
   }

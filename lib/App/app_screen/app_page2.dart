@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
+
 import 'app_join.dart';
 import 'app_login.dart';
 import 'app_page1.dart';
@@ -17,6 +17,37 @@ class Page2 extends StatefulWidget {
 }
 
 class _Page2State extends State<Page2> {
+  //로그아웃 메서드 생성 부분
+  void _logout() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('로그아웃'),
+          content: Text('정말 로그아웃하시겠습니까?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+              },
+              child: Text('취소'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => Page2()),
+                ); // 로그인 페이지로 이동
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -43,14 +74,7 @@ class _Page2State extends State<Page2> {
                     child: InkWell(
                       onTap: () {
                         if (widget.isLogin) {
-                          setState(() {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AppLogin(),
-                              ),
-                            );
-                          });
+                          _logout(); // 로그아웃 확인 다이얼로그 표시
                         } else {
                           Navigator.push(
                             context,
@@ -178,14 +202,13 @@ class _Page2State extends State<Page2> {
   }
 }
 
-
-
 // 바텀바 부분
 class BottomBar extends StatefulWidget {
   final bool isLogin;
   final String userData;
 
-  const BottomBar({Key? key, this.isLogin = false, this.userData = ''}) : super(key: key);
+  const BottomBar({Key? key, this.isLogin = false, this.userData = ''})
+      : super(key: key);
 
   @override
   State<BottomBar> createState() => _BottomBarState();
@@ -202,7 +225,7 @@ class _BottomBarState extends State<BottomBar> {
     _widgetOptions = <Widget>[
       Page1(),
       Page2(isLogin: widget.isLogin, userData: widget.userData),
-      Page3(),
+      Page3(isLogin: widget.isLogin, userData: widget.userData,),
     ];
   }
 
@@ -245,7 +268,6 @@ class _BottomBarState extends State<BottomBar> {
   }
 }
 
-
 class SmartControl extends StatelessWidget {
   final String text;
   final String image;
@@ -253,9 +275,9 @@ class SmartControl extends StatelessWidget {
 
   const SmartControl(
       {required this.iconButton,
-        required this.image,
-        required this.text,
-        super.key});
+      required this.image,
+      required this.text,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -325,16 +347,16 @@ class _AppMainViewState extends State<AppMainView> {
             items: imgList
                 .map(
                   (e) => Container(
-                child: Image.asset(
-                  e,
-                  fit: BoxFit.cover,
-                  width: 1000,
-                ),
-              ),
-            )
+                    child: Image.asset(
+                      e,
+                      fit: BoxFit.cover,
+                      width: 1000,
+                    ),
+                  ),
+                )
                 .toList(),
             options: CarouselOptions(
-              // 화면 전환을 자동으로 할건지 설정
+                // 화면 전환을 자동으로 할건지 설정
                 autoPlay: true,
                 //슬라이더가 화면의 비율에 맞춰지도록 합니다.
                 aspectRatio: 1.6,

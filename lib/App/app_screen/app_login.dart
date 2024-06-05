@@ -2,9 +2,23 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
-import 'package:loginproject/App/app_screen/app_fpw.dart';
-import 'package:loginproject/App/app_screen/app_join.dart';
-import 'package:loginproject/App/app_screen/app_page2.dart';
+import 'app_fpw.dart';
+import 'app_join.dart';
+import 'app_page2.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Kakao SDK
+  KakaoSdk.init(
+    nativeAppKey: 'd664273b8aeac06793c0c6f6f1ed0348',
+    javaScriptAppKey: '38e21ce41bf7993c5366257c746421e3',
+  );
+
+  runApp(MaterialApp(
+    home: BottomBar(),
+  ));
+}
 
 class AppLogin extends StatefulWidget {
   @override
@@ -47,8 +61,14 @@ class _AppLoginState extends State<AppLogin> {
 
       print("Response data: ${res.data}");
 
-      if (res.statusCode == 200 && res.data is Map<String, dynamic> && res.data== true) {
-        final userData = res.data as String; // 사용자 데이터를 받아옴
+      if (res.statusCode == 200 && res.data is bool && res.data == true) {
+        // 로그인 성공 시 메인 페이지로 이동
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => BottomBar(isLogin: true)),
+        );
+      } else if (res.statusCode == 200 && res.data is Map<String, dynamic>) {
+        final userData = res.data['userData'] as String; // 사용자 데이터를 받아옴
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -77,6 +97,25 @@ class _AppLoginState extends State<AppLogin> {
           },
         );
       }
+    } on DioException catch (e) {
+      print("Error: $e");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('서버 오류'),
+            content: Text('서버에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
     } catch (e) {
       print("Error: $e");
       showDialog(
@@ -324,7 +363,8 @@ Future<void> _loginWithKakaoAccount(BuildContext context) async {
 
 void navigateToMainPage(BuildContext context, String userData) {
   Navigator.of(context).pushReplacement(
-    MaterialPageRoute(builder: (context) => BottomBar(isLogin: true, userData: userData)),
+    MaterialPageRoute(
+        builder: (context) => BottomBar(isLogin: true, userData: userData)),
   );
 }
 
