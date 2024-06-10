@@ -102,21 +102,47 @@ class _WebLoginState extends State<WebLogin> {
   final TextEditingController _pw = TextEditingController();
 
   void login() async {
+    if (_id.text.isEmpty || _pw.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('입력 오류'),
+            content: Text('아이디와 비밀번호를 입력해주세요'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
     try {
       final Map<String, dynamic> data = {
-        "id" : _id.text,
-        "pw" : _pw.text,
+        "id": _id.text,
+        "pw": _pw.text,
       };
-      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.177:9090"));
-        Response res = await dio.post("/user/login", data: data);
-          if (res.statusCode == 200) {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> WebLoginScreen(title: ""),
-            ));
-          }
+      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.182:9090"));
+      Response res = await dio.post("/user/login", data: data);
+      if (res.statusCode == 200) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WebLoginScreen(title: ""),
+          ),
+        );
+      }
     } catch (e) {
       print(e);
     }
   }
+
 
 
 
@@ -361,3 +387,4 @@ class _WebLoginState extends State<WebLogin> {
     );
   }
 }
+
