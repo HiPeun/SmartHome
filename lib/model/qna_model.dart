@@ -7,7 +7,8 @@ part 'qna_model.g.dart';
 class QnaModel with _$QnaModel {
   const factory QnaModel ({
     int? pno,
-    String? id,
+    int? mbno,
+    String? name,
     String? title,
     String? content,
     String? attachment,

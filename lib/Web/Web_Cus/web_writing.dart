@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import '../Web_Member/web_login.dart';
 import '../Web_Member/web_join.dart';
 import '../Web_Cus/web_notice.dart';
@@ -14,26 +15,33 @@ class WebWriting extends StatefulWidget {
 
 class _WebWritingState extends State<WebWriting> {
   TextEditingController titleController = TextEditingController();
-  TextEditingController writerController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   TextEditingController contentController = TextEditingController();
+  TextEditingController attachmentController = TextEditingController();
 
   @override
   void dispose() {
     titleController.dispose();
-    writerController.dispose();
     contentController.dispose();
+    nameController.dispose();
+    attachmentController.dispose();
     super.dispose();
   }
 
-  void submitPost(String title, String content, String writer, String attachment) async {
+  void submitPost(String name, String title, String content, String attachment) async {
     try {
       final Map<String, dynamic> data = {
-        'id': 'ljy3852',
+        'name': name,
         'title': title,
         'content': content,
         'attachment': attachment,
       };
-      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.177:9090/"));
+      final Dio dio = Dio(BaseOptions(
+        baseUrl: "http://192.168.0.188:9090",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ));
       Response response = await dio.post("/board/insert/", data: data);
       if (response.statusCode == 200) {
         print('글이 등록되었습니다.');
@@ -183,7 +191,7 @@ class _WebWritingState extends State<WebWriting> {
                       SizedBox(
                         width: 900,
                         child: TextField(
-                          controller: writerController,
+                          controller: nameController,
                           decoration: InputDecoration(
                             labelText: "작성자",
                             border: OutlineInputBorder(),
@@ -206,8 +214,8 @@ class _WebWritingState extends State<WebWriting> {
                             submitPost(
                               titleController.text,
                               contentController.text,
-                              writerController.text,
-                              "dd",
+                              nameController.text,
+                              attachmentController.text,
                             );
                           },
                           child: Text("글등록"),
@@ -233,7 +241,3 @@ class _WebWritingState extends State<WebWriting> {
     );
   }
 }
-
-
-
-
