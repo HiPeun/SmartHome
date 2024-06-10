@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:loginproject/Web/Web_Cus/web_notice.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
 import 'package:loginproject/Web/Web_Member/web_login_screen.dart';
 
+import 'Web_Member/user_controller.dart';
+
+// void main() {
+//   runApp(const MyApp());
+// }
+
+
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  Get.put(UserController()); // UserController 초기화
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
