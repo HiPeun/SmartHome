@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'dart:convert';  // 추가
 
 class Page1 extends StatefulWidget {
   @override
@@ -21,10 +22,12 @@ class _Page1State extends State<Page1> {
   void fetchQnAList() async {
     try {
       final response = await dio.get("http://192.168.0.177:9090/board/read?pno=2");
+      print('Response data: ${response.data}');
       if (mounted) {
-        setState(() {
-          qnaList = List<Map<String, String>>.from(response.data); // 응답 데이터를 올바르게 파싱
-        });
+        // JSON 응답 데이터를 파싱하여 List<Map<String, String>> 형태로 변환
+        List<dynamic> data = jsonDecode(response.data);  // 추가
+        qnaList = data.map((item) => Map<String, String>.from(item)).toList();
+        setState(() {});
       }
     } catch (e) {
       print(e);
@@ -119,7 +122,6 @@ class _Page1State extends State<Page1> {
           ],
         ),
       ),
-
     );
   }
 }

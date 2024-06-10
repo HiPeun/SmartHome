@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'app_login.dart';
+import 'dart:convert';
+
+import 'package:loginproject/App/app_screen/app_login.dart';
 
 class Page3 extends StatefulWidget {
   final bool isLogin;
   final String userData;
 
-  const Page3({Key? key, this.isLogin = false, this.userData = ''}) : super(key: key);
+  const Page3({Key? key, this.isLogin = false, this.userData = ''})
+      : super(key: key);
 
   @override
   State<Page3> createState() => _Page3State();
@@ -19,22 +22,29 @@ class _Page3State extends State<Page3> {
   TextEditingController name = TextEditingController();
   TextEditingController id = TextEditingController();
 
+  bool isPwMatched = false;
+  String mbno = '';
+
   @override
   void initState() {
     super.initState();
     if (widget.isLogin) {
-      // 로그인된 상태라면 userData를 통해 초기값 설정
-      // 예를 들어, userData를 JSON으로 파싱하여 초기값을 설정하는 경우
-      // Map<String, dynamic> userDataMap = jsonDecode(widget.userData);
-      // email.text = userDataMap['email'];
-      // name.text = userDataMap['name'];
-      // id.text = userDataMap['id'];
+      try {
+        if (widget.userData.isNotEmpty) {
+          Map<String, dynamic> userDataMap = jsonDecode(widget.userData);
+          email.text = userDataMap['email'] ?? '';
+          name.text = userDataMap['name'] ?? '';
+          id.text = userDataMap['id'] ?? '';
+          mbno = userDataMap['mbno'].toString();
+        }
+      } catch (e) {
+        print('Error parsing userData: $e');
+      }
     }
   }
 
-  Future<void> updateUserInfo() async {
+  Future<void> checkPasswords() async {
     if (pw.text != pw2.text) {
-      // 비밀번호가 일치하지 않음
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -56,12 +66,68 @@ class _Page3State extends State<Page3> {
     }
 
     try {
-      var response = await Dio().put(
-        'http://192.168.0.177:9090/user/update${id.text}',
+      var response = await Dio().post(
+        'http://192.168.0.177:9090/user/login',
         data: {
-          'email': email.text,
-          'password': pw.text,
+          'id': id.text,
+          'pw': pw.text,
+        },
+      );
+      if (response.statusCode == 200) {
+        setState(() {
+          isPwMatched = true;
+        });
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('오류'),
+              content: Text('비밀번호가 올바르지 않습니다.'),
+              actions: [
+                TextButton(
+                  child: Text('확인'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (e) {
+      print('Error checking password: $e');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('오류'),
+            content: Text('비밀번호 확인 중 오류가 발생했습니다.'),
+            actions: [
+              TextButton(
+                child: Text('확인'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  Future<void> updateUserInfo() async {
+    if (!isPwMatched) return;
+
+    try {
+      var response = await Dio().post(
+        'http://192.168.0.177:9090/user/update',
+        data: {
           'name': name.text,
+          'email': email.text,
+          'mbno': int.parse(mbno),
         },
       );
       if (response.statusCode == 200) {
@@ -125,8 +191,12 @@ class _Page3State extends State<Page3> {
 
   Future<void> deleteUser() async {
     try {
-      var response = await Dio().delete(
-        'http://192.168.0.177:9090/user/remove${id.text}',
+      var response = await Dio().post(
+        'http://192.168.0.177:9090/user/remove',
+        data: {
+          'id': id.text,
+          'pw': pw.text,
+        },
       );
       if (response.statusCode == 200) {
         showDialog(
@@ -140,7 +210,6 @@ class _Page3State extends State<Page3> {
                   child: Text('확인'),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    // 탈퇴 후 메인 페이지 등으로 이동
                     Navigator.of(context).pushReplacementNamed('/page1');
                   },
                 ),
@@ -216,123 +285,110 @@ class _Page3State extends State<Page3> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          width: 10,
-          height: 10,
-        ),
+        SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset("assets/images/pencil.png"),
-                    Text(
-                      "회원정보 수정",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+            ElevatedButton(
+              onPressed: () {},
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset("assets/images/pencil.png"),
+                  Text(
+                    "회원정보 수정",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
-                  ],
-                ),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(150, 150),
-                  backgroundColor: Color(0xFFE5E5E1),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero),
-                ),
+                  ),
+                ],
+              ),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(150, 150),
+                backgroundColor: Color(0xFFE5E5E1),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
               ),
             ),
           ],
         ),
-        SizedBox(
-          width: double.infinity,
-          height: 40,
-        ),
+        SizedBox(height: 40),
         Container(
           width: double.infinity,
           height: 10,
           color: Color(0xFFE5E5E1),
         ),
-        SizedBox(
+        SizedBox(height: 10),
+        TextField(
+          controller: id,
+          decoration: InputDecoration(labelText: "아이디"),
+          readOnly: true,
+        ),
+        TextField(
+          controller: pw,
+          decoration: InputDecoration(labelText: "비밀번호"),
+          obscureText: true,
+        ),
+        TextField(
+          controller: pw2,
+          decoration: InputDecoration(labelText: "비밀번호 확인"),
+          obscureText: true,
+        ),
+        SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: checkPasswords,
+          child: Text("비밀번호 확인"),
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(10, 30),
+            backgroundColor: Color(0xFFE5E5E1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(1),
+            ),
+          ),
+        ),
+        SizedBox(height: 20),
+        TextField(
+          controller: name,
+          decoration: InputDecoration(labelText: "이름"),
+          enabled: isPwMatched,
+        ),
+        TextField(
+          controller: email,
+          decoration: InputDecoration(labelText: "이메일"),
+          enabled: isPwMatched,
+        ),
+        SizedBox(height: 20),
+        Container(
           width: double.infinity,
           height: 10,
+          color: Color(0xFFE5E5E1),
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            TextField(
-              controller: id,
-              decoration: InputDecoration(
-                labelText: "아이디",
-              ),
-            ),
-            TextField(
-              controller: pw,
-              decoration: InputDecoration(
-                labelText: "비밀번호",
-              ),
-              obscureText: true,
-            ),
-            TextField(
-              controller: pw2,
-              decoration: InputDecoration(
-                labelText: "비밀번호 확인",
-              ),
-              obscureText: true,
-            ),
-            TextField(
-              controller: name,
-              decoration: InputDecoration(
-                labelText: "이름",
-              ),
-            ),
-            TextField(
-              controller: email,
-              decoration: InputDecoration(
-                labelText: "이메일",
-              ),
-            ),
-            SizedBox(height: 20),
-            Container(
-              width: double.infinity,
-              height: 10,
-              color: Color(0xFFE5E5E1),
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: updateUserInfo,
-                  child: Text("회원정보수정"),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(10, 30),
-                    backgroundColor: Color(0xFFE5E5E1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(1),
-                    ),
-                  ),
+            ElevatedButton(
+              onPressed: isPwMatched ? updateUserInfo : null,
+              child: Text("회원정보수정"),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(10, 30),
+                backgroundColor: Color(0xFFE5E5E1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(1),
                 ),
-                ElevatedButton(
-                  onPressed: deleteUser,
-                  child: Text("회원탈퇴"),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(10, 30),
-                    backgroundColor: Color(0xFFE5E5E1),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(1)),
-                  ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: deleteUser,
+              child: Text("회원탈퇴"),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(10, 30),
+                backgroundColor: Color(0xFFE5E5E1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(1),
                 ),
-              ],
+              ),
             ),
           ],
         ),

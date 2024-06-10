@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'app_join.dart';
@@ -205,73 +206,7 @@ class _Page2State extends State<Page2> {
 }
 
 // 바텀바 부분
-class BottomBar extends StatefulWidget {
-  final bool isLogin;
-  final String userData;
 
-  const BottomBar({Key? key, this.isLogin = false, this.userData = ''})
-      : super(key: key);
-
-  @override
-  State<BottomBar> createState() => _BottomBarState();
-}
-
-class _BottomBarState extends State<BottomBar> {
-  int _selectedIndex = 0;
-
-  late final List<Widget> _widgetOptions;
-
-  @override
-  void initState() {
-    super.initState();
-    _widgetOptions = <Widget>[
-      Page1(),
-      Page2(isLogin: widget.isLogin, userData: widget.userData),
-      Page3(
-        isLogin: widget.isLogin,
-        userData: widget.userData,
-      ),
-    ];
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        toolbarHeight: 0,
-      ),
-      body: SafeArea(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.black,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt),
-            label: "Q&A",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "홈",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "내 정보",
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class SmartControl extends StatelessWidget {
   final String text;
