@@ -1,27 +1,14 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'app_fpw.dart';
 import 'app_join.dart';
 import 'app_page2.dart';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize Kakao SDK
-  KakaoSdk.init(
-    nativeAppKey: 'd664273b8aeac06793c0c6f6f1ed0348',
-    javaScriptAppKey: '38e21ce41bf7993c5366257c746421e3',
-  );
-
-  runApp(MaterialApp(
-    home: BottomBar(),
-  ));
-}
+import 'bottom_bar.dart'; // BottomBar를 import합니다.
 
 class AppLogin extends StatefulWidget {
   @override
@@ -90,8 +77,6 @@ class _AppLoginState extends State<AppLogin> {
       };
       final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.177:9090"));
       Response res = await dio.post("/user/login", data: data);
-
-      print("Response data: ${res.data}");
 
       if (res.statusCode == 200 && res.data is bool && res.data == true) {
         // 로그인 성공 시 토큰 저장 및 메인 페이지로 이동
