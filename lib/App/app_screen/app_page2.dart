@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'app_join.dart';
 import 'app_login.dart';
-import 'app_page1.dart';
-import 'app_page3.dart';
+
 
 class Page2 extends StatefulWidget {
   final bool isLogin;

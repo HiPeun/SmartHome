@@ -323,6 +323,7 @@ class _Page3State extends State<Page3> {
         TextField(
           controller: id,
           decoration: InputDecoration(labelText: "아이디"),
+          //읽기전용 모드
           readOnly: true,
         ),
         TextField(

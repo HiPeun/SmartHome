@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_fpw.dart';
 import 'app_join.dart';
-import 'app_page2.dart';
 import 'bottom_bar.dart'; // BottomBar를 import합니다.
 
 class AppLogin extends StatefulWidget {
@@ -24,7 +23,7 @@ class _AppLoginState extends State<AppLogin> {
   void initState() {
     super.initState();
     _loadUserId();
-    _checkAutoLogin();
+    _clearStoredToken(); // 앱 실행 시 토큰 삭제
   }
 
   Future<void> _loadUserId() async {
@@ -37,15 +36,8 @@ class _AppLoginState extends State<AppLogin> {
     }
   }
 
-  Future<void> _checkAutoLogin() async {
-    String? token = await secureStorage.read(key: 'auth_token');
-    if (token != null) {
-      // 이미 로그인된 상태라면 메인 페이지로 이동
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => BottomBar(isLogin: true)),
-      );
-    }
+  Future<void> _clearStoredToken() async {
+    await secureStorage.delete(key: 'auth_token');
   }
 
   void login() async {
