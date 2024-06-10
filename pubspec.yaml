@@ -51,6 +51,12 @@ dependencies:
   get: ^4.6.6
   intl: ^0.19.0
 
+  get_storage: ^2.1.1
+  json_serializable: ^6.8.0
+
+  shared_preferences: ^2.2.3
+  flutter_secure_storage: ^4.2.1
+
 
 
 
@@ -58,7 +64,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   slang_build_runner: ^2.4.9
-  file_picker: ^4.0.0
+  file_picker: ^4.6.1
+
+
 
 
   # The "flutter_lints" package below contains a set of recommended lints to
