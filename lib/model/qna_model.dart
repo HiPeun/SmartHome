@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'qna_model.freezed.dart';
 part 'qna_model.g.dart';
+
 
 @freezed
 class QnaModel with _$QnaModel {
