@@ -123,6 +123,27 @@ class _WebLoginState extends State<WebLogin> {
       return;
     }
 
+    if (_id.text.length > 12 || _pw.text.length > 12) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('입력 오류'),
+            content: Text('아이디와 비밀번호는 12자리 이하여야 합니다'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
     try {
       final Map<String, dynamic> data = {
         "id": _id.text,
@@ -142,7 +163,6 @@ class _WebLoginState extends State<WebLogin> {
       print(e);
     }
   }
-
 
 
 
@@ -285,7 +305,7 @@ class _WebLoginState extends State<WebLogin> {
               margin: EdgeInsets.only(top: 15),
               width: 400,
               child: TextField(
-                maxLength: 12,
+                maxLength: 12, // 최대 12자리까지 입력 가능하도록 설정
                 decoration: InputDecoration(labelText: 'ID'),
                 keyboardType: TextInputType.emailAddress,
                 controller: _id,
@@ -295,7 +315,7 @@ class _WebLoginState extends State<WebLogin> {
             Container(
               width: 400,
               child: TextField(
-                maxLength: 12,
+                maxLength: 12, // 최대 12자리까지 입력 가능하도록 설정
                 decoration: InputDecoration(
                   labelText: 'Password',
                 ),
@@ -304,6 +324,7 @@ class _WebLoginState extends State<WebLogin> {
                 obscureText: true,
               ),
             ),
+
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
