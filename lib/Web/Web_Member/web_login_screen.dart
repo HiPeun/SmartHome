@@ -2,12 +2,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:loginproject/Web/Web_Cus/web_notice.dart';
 import 'package:loginproject/Web/Web_Cus/web_notice_screen.dart';
-import 'package:loginproject/Web/Web_Member/web_join.dart';
-import 'package:loginproject/Web/Web_Member/web_login.dart';
 import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 import 'package:loginproject/Web/webmain.dart';
+
+import 'globals.dart';
 
 
 
@@ -20,9 +19,25 @@ class WebLoginScreen extends StatefulWidget {
   State<WebLoginScreen> createState() => _WebLoginScreenState();
 }
 
-
 class _WebLoginScreenState extends State<WebLoginScreen> {
   bool isLogin = false;
+
+  void _onLoginSuccess(String username, String email,String id) {
+    setState(() {
+      GlobalUser.name = username;
+      GlobalUser.email = email;
+      GlobalUser.id = id;
+      isLogin = true;
+    });
+  }
+
+  void _onLogout() {
+    setState(() {
+      GlobalUser.name = null;
+      GlobalUser.email = null;
+      isLogin = false;
+    });
+  }
 
   // 이미지 슬라이더 list로 묶음
   final List<String> imgList = [
@@ -31,6 +46,19 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
     'assets/webmain/webmain3.png',
     'assets/webmain/webmain4.png',
   ];
+
+  void _login() {
+    setState(() {
+      isLogin = true;
+    });
+  }
+
+  void _logout() {
+    setState(() {
+      isLogin = false;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +106,8 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                         child: InkWell(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => WebModifyProfile(),
+                              builder: (context) => WebModifyProfile(
+                              ),
                             ));
                           },
                           child: Text(

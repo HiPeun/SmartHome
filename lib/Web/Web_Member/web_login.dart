@@ -25,7 +25,6 @@ void main() async {
   runApp(MyApp());
 }
 
-
 // 로그인 완료시 main페이지로 이동
 void navigateToMainPage(BuildContext context) {
   Navigator.of(context as BuildContext).pushReplacement(MaterialPageRoute(
@@ -89,7 +88,6 @@ Future<void> KakaoLogout() async {
   }
 }
 
-
 class WebLogin extends StatefulWidget {
   WebLogin({super.key});
 
@@ -102,23 +100,89 @@ class _WebLoginState extends State<WebLogin> {
   final TextEditingController _pw = TextEditingController();
 
   void login() async {
+    String id = _id.text.trim();
+    String pw = _pw.text.trim();
+
+    if (id.length > 12 || pw.length > 12) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("알림"),
+            content: Text("아이디 또는 비밀번호는 12자리 이하여야 합니다."),
+            actions: <Widget>[
+              TextButton(
+                child: Text("확인"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+
+    if (id.isEmpty || pw.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("알림"),
+            content: Text("아이디 또는 비밀번호를 입력해주세요."),
+            actions: <Widget>[
+              TextButton(
+                child: Text("확인"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
     try {
       final Map<String, dynamic> data = {
-        "id" : _id.text,
-        "pw" : _pw.text,
+        "id" : id,
+        "pw" : pw,
       };
       final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.177:9090"));
-        Response res = await dio.post("/user/login", data: data);
-          if (res.statusCode == 200) {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> WebLoginScreen(title: ""),
-            ));
-          }
+      Response res = await dio.post("/user/login", data: data);
+
+      if (res.statusCode == 200) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context)=> WebLoginScreen(title: "")),
+        );
+      } else if (res.statusCode == 400) {
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("알림"),
+              content: Text("아이디 또는 비밀번호가 틀렸습니다."),
+              actions: <Widget>[
+                TextButton(
+                  child: Text("확인"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
     } catch (e) {
       print(e);
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
