@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:loginproject/Web/Web_Member/user_controller.dart';
 import 'package:loginproject/Web/webmain.dart';
 import '../Web_Cus/web_notice.dart';
 
@@ -13,7 +12,6 @@ class WebModifyProfile extends StatefulWidget {
 }
 
 class _WebModifyProfile extends State<WebModifyProfile> {
-  final UserController userController = Get.find();
 
   TextEditingController mbnoController = TextEditingController();
   TextEditingController idController = TextEditingController();

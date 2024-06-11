@@ -6,9 +6,9 @@ import 'package:loginproject/Web/Web_Cus/web_notice.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
 import 'package:loginproject/Web/Web_Member/web_login_screen.dart';
+import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 
 import '../App/main.dart';
-import 'Web_Member/user_controller.dart';
 
 // void main() {
 //   runApp(const MyApp());
@@ -57,10 +57,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Container(
                         child: InkWell(
                           onTap: () async {
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => WebLogin()),
-                            );
+                            if(user.isEmpty) {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => WebLogin()),
+                              );
+                            } else {
+                              user = {};
+                            }
                             setState(() {
 
                             });
@@ -79,14 +83,23 @@ class _MyHomePageState extends State<MyHomePage> {
                       padding: const EdgeInsets.only(right: 40),
                       child: Container(
                         child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => WebJoin()),
-                            );
+                          onTap: () async {
+                            if(user.isEmpty) {
+                              await Navigator.push(
+                                  context,
+                                MaterialPageRoute(
+                                    builder: (context) => WebJoin()),
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => WebModifyProfile()),
+                              );
+                            }
                           },
                           child: Text(
-                            "회원가입",
+                            user.isEmpty ? '회원가입' : '내 정보',
                             style: TextStyle(
                               fontSize: 20,
                             ),
