@@ -43,7 +43,11 @@ Future<void> KakaoLogin(BuildContext context) async {
         navigateToMainPage(context);
       });
       print('카카오톡으로 로그인 성공');
-      Navigator.pushReplacementNamed(context as BuildContext, '/webmain'); // 로그인 성공 시 메인 페이지로 이동
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WebLoginScreen(title: ""),
+          ));
     } catch (error) {
       print(await KakaoSdk.origin);
       print('카카오톡으로 로그인 실패 $error');
@@ -71,7 +75,11 @@ Future<void> KakaoLogin(BuildContext context) async {
         navigateToMainPage(context);
       });
       print('카카오계정으로 로그인 성공');
-      Navigator.pushReplacementNamed(context as BuildContext, '/webmain'); // 로그인 성공 시 메인 페이지로 이동
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WebLoginScreen(title: ""),
+          ));
     } catch (error) {
       print('카카오계정으로 로그인 실패 $error');
     }
@@ -148,14 +156,32 @@ class _WebLoginState extends State<WebLogin> {
         "id": _id.text,
         "pw": _pw.text,
       };
-      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.188:9090"));
+      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.177:9090"));
       Response res = await dio.post("/user/login", data: data);
-      if (res.statusCode == 200) {
+      if (res.statusCode == 200 && res.data == true) {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => WebLoginScreen(title: ""),
           ),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('입력 오류'),
+              content: Text('등록되지 않은 아이디이거나, 아이디 또는 비밀번호를 잘못 입력 하셨습니다.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
         );
       }
     } catch (e) {

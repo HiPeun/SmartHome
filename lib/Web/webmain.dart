@@ -256,7 +256,219 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-              // 나머지 스택 위젯들도 동일한 방식으로 수정
+
+
+              Stack(
+                children: [
+                  Center(
+                    child: Container(
+                      child: Image.asset(
+                        "assets/webmain/CCTV.png",
+                        width: 1200,
+                        height: 800,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 300),
+                            child: Text(
+                              "CCTV 확인",
+                              style: TextStyle(
+                                fontSize: 50,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF2C2B28),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: Text(
+                              "언제 어디서든 집 확인 서비스",
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF2C2B28),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              Stack(
+                children: [
+                  Center(
+                    child: Container(
+                      child: Image.asset(
+                        "assets/webmain/temperature.png",
+                        width: 1200,
+                        height: 800,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 300),
+                            child: Text(
+                              "온 습도 확인 서비스",
+                              style: TextStyle(
+                                fontSize: 50,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF2C2B28),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: Text(
+                              "따뜻한 집 환경 확인 서비스",
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF2C2B28),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              Stack(
+                children: [
+                  Center(
+                    child: Container(
+                      child: Image.asset(
+                        "assets/webmain/window.png",
+                        width: 1200,
+                        height: 800,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 300),
+                            child: Text(
+                              "창문 개폐 서비스",
+                              style: TextStyle(
+                                fontSize: 50,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF2C2B28),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: Text(
+                              "쾌적한 우리집 환경을 만들어 봐요",
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF2C2B28),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 30),
+                child: Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 100),
+                      child: InkWell(
+                        onTap: () {},
+                        child: Text("이용약관",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Color(0xFFE5E5E1)),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 200,
+                    ),
+                    Container(
+                      child: InkWell(
+                        onTap: () {},
+                        child: Text("개인정보 처리방침",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Color(0xFFE5E5E1)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 100),
+                        child: Text("대표이사/사장 김근재",
+                          style: TextStyle(
+                              color: Color(0xFFE5E5E1)),
+                        )
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                          margin: EdgeInsets.only(left: 100),
+                        child: Text("광주 북구 북문대로242번길 11",
+                          style: TextStyle(
+                              color: Color(0xFFE5E5E1)),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 100),
+                        child: Text("고객센터 010-8805-4754",
+                          style: TextStyle(
+                              color: Color(0xFFE5E5E1)),
+                        )
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                          margin: EdgeInsets.only(left: 100),
+                        child: Text("COPYRIGHT ⓒ 럽팅",
+                          style: TextStyle(
+                              color: Color(0xFFE5E5E1)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )
             ],
           ),
         ),

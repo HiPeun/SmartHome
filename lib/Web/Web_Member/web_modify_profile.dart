@@ -46,12 +46,12 @@ class _WebModifyProfile extends State<WebModifyProfile> {
         return;
       }
 
-      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.182:9090"));
+      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.177:9090"));
       dio.Response res = await dioClient.post("/user/login/info", data: {"mbno": mbno});
       if (res.statusCode == 200) {
         final userInfo = res.data;
         setState(() {
-          idController.text = userInfo["id"];
+          idController.text = userInfo["id"].toString();
           nameController.text = userInfo["name"];
           emailController.text = userInfo["email"];
         });
@@ -93,12 +93,52 @@ class _WebModifyProfile extends State<WebModifyProfile> {
   void updateProfile() async {
     try {
       final Map<String, dynamic> data = {
-        "mbno": int.parse(mbnoController.text),
+        "pw": pwController.text,
+        "pw2": pw2Controller.text,
         "name": nameController.text,
-        "email": emailController.text,
-        "password": pwController.text,
+        "mbno": int.parse(mbnoController.text),
       };
-      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.182:9090"));
+      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.177:9090"));
+      RegExp passwordRegex = RegExp(r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*(),.?":{}|<>]).{5,12}$');
+      if (pwController.text.length > 12 || !passwordRegex.hasMatch(pwController.text)) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('회원 수정 실패'),
+              content: Text('비밀번호는 5자에서 12자 사이이며, 문자와 숫자를 모두 포함해야 합니다.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+        return;
+      } if (pwController.text != pw2Controller.text) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('회원 수정 실패'),
+              content: Text('비밀번호가 서로 같은지 확인해주세요'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+        return;
+      }
       dio.Response res = await dioClient.post("/user/update", data: data);
       if (res.statusCode == 200) {
         showDialog(
@@ -107,6 +147,147 @@ class _WebModifyProfile extends State<WebModifyProfile> {
             return AlertDialog(
               title: Text('성공'),
               content: Text('회원정보가 수정되었습니다.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyApp()),
+                    );
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('실패'),
+              content: Text('서버 오류 발생, 다시 시도해 주세요'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyApp()),
+                    );
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (e) {
+      print(e);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('회원 수정 실패'),
+            content: Text('비밀번호, 이름을 다시 한번 확인해 주세요'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  void cancelChanges() {
+    mbnoController.clear();
+    idController.clear();
+    pwController.clear();
+    pw2Controller.clear();
+    nameController.clear();
+    emailController.clear();
+  }
+
+  void deleteAccount() async {
+    try {
+      // 비밀번호 일치 여부 확인
+      if (pwController.text != pw2Controller.text) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('회원 삭제 실패'),
+              content: Text('비밀번호가 일치하지 않습니다.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+        return;
+      }
+
+      final Map<String, dynamic> data = {
+        "id": idController.text,
+        "pw": pwController.text,
+      };
+      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.177:9090"));
+      dio.Response res = await dioClient.post("/user/remove", data: data);
+
+      if (res.statusCode == 200 && res.data == true) {
+        print(res.data);
+        print(res.statusCode);
+        // 탈퇴 확인 다이얼로그 표시
+        bool confirmed = await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('경고'),
+              content: Text('정말로 탈퇴하시겠습니까?'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false); // 취소를 누르면 false 반환
+                  },
+                  child: Text('취소'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(true); // 확인을 누르면 true 반환
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+
+        // 사용자가 탈퇴를 확인한 경우
+        if (confirmed == true) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => MyApp()),
+                (Route<dynamic> route) => false,
+          );
+        }
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('회원 삭제 실패'),
+              content: Text('아이디와 비밀번호를 다시 한번 확인해 주세요'),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -121,43 +302,24 @@ class _WebModifyProfile extends State<WebModifyProfile> {
       }
     } catch (e) {
       print(e);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('회원 삭제 실패'),
+            content: Text('서버 오류 발생'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
     }
-  }
-
-  void cancelChanges() {
-    mbnoController.clear();
-    idController.clear();
-    pwController.clear();
-    pw2Controller.clear();
-    nameController.clear();
-    emailController.clear();
-  }
-
-  void deleteAccount() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('경고'),
-          content: Text('정말로 탈퇴하시겠습니까?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('취소'),
-            ),
-            TextButton(
-              onPressed: () {
-                // 탈퇴 처리 로직을 여기에 추가
-                Navigator.of(context).pop();
-              },
-              child: Text('확인'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
