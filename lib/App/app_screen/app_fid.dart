@@ -31,7 +31,7 @@ class _AppFidState extends State<AppFid> {
             child: Row(
               children: [
                 Text(
-                  "비밀번호 찾기",
+                  "아이디 찾기",
                   style: TextStyle(
                     fontSize: 30,
                   ),
