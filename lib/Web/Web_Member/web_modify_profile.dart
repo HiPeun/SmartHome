@@ -30,14 +30,14 @@ class _WebModifyProfile extends State<WebModifyProfile> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('입력 오류'),
-              content: Text('유효한 MBNO를 입력해주세요'),
+              title: const Text('입력 오류'),
+              content: const Text('유효한 MBNO를 입력해주세요'),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('확인'),
+                  child: const Text('확인'),
                 ),
               ],
             );
@@ -60,14 +60,14 @@ class _WebModifyProfile extends State<WebModifyProfile> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('오류'),
-              content: Text('사용자 정보를 불러오지 못했습니다x.'),
+              title: const Text('오류'),
+              content: const Text('사용자 정보를 불러오지 못했습니다x.'),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('확인'),
+                  child: const Text('확인'),
                 ),
               ],
             );
@@ -105,14 +105,14 @@ class _WebModifyProfile extends State<WebModifyProfile> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('회원 수정 실패'),
-              content: Text('비밀번호는 5자에서 12자 사이이며, 문자와 숫자를 모두 포함해야 합니다.'),
+              title: const Text('회원 수정 실패'),
+              content: const Text('비밀번호는 5자에서 12자 사이이며, 문자와 숫자를 모두 포함해야 합니다.'),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('확인'),
+                  child: const Text('확인'),
                 ),
               ],
             );
@@ -124,14 +124,14 @@ class _WebModifyProfile extends State<WebModifyProfile> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('회원 수정 실패'),
-              content: Text('비밀번호가 서로 같은지 확인해주세요'),
+              title: const Text('회원 수정 실패'),
+              content: const Text('비밀번호가 서로 같은지 확인해주세요'),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('확인'),
+                  child: const Text('확인'),
                 ),
               ],
             );
@@ -145,17 +145,17 @@ class _WebModifyProfile extends State<WebModifyProfile> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('성공'),
-              content: Text('회원정보가 수정되었습니다.'),
+              title: const Text('성공'),
+              content: const Text('회원정보가 수정되었습니다.'),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MyApp()),
+                      MaterialPageRoute(builder: (context) => const MyHomePage()),
                     );
                   },
-                  child: Text('확인'),
+                  child: const Text('확인'),
                 ),
               ],
             );
@@ -166,17 +166,17 @@ class _WebModifyProfile extends State<WebModifyProfile> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('실패'),
-              content: Text('서버 오류 발생, 다시 시도해 주세요'),
+              title: const Text('실패'),
+              content: const Text('서버 오류 발생, 다시 시도해 주세요'),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MyApp()),
+                      MaterialPageRoute(builder: (context) => const MyHomePage()),
                     );
                   },
-                  child: Text('확인'),
+                  child: const Text('확인'),
                 ),
               ],
             );
@@ -189,14 +189,14 @@ class _WebModifyProfile extends State<WebModifyProfile> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('회원 수정 실패'),
-            content: Text('비밀번호, 이름을 다시 한번 확인해 주세요'),
+            title: const Text('회원 수정 실패'),
+            content: const Text('비밀번호, 이름을 다시 한번 확인해 주세요'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('확인'),
+                child: const Text('확인'),
               ),
             ],
           );
@@ -222,14 +222,14 @@ class _WebModifyProfile extends State<WebModifyProfile> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('회원 삭제 실패'),
-              content: Text('비밀번호가 일치하지 않습니다.'),
+              title: const Text('회원 삭제 실패'),
+              content: const Text('비밀번호가 일치하지 않습니다.'),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('확인'),
+                  child: const Text('확인'),
                 ),
               ],
             );
@@ -253,20 +253,20 @@ class _WebModifyProfile extends State<WebModifyProfile> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('경고'),
-              content: Text('정말로 탈퇴하시겠습니까?'),
+              title: const Text('경고'),
+              content: const Text('정말로 탈퇴하시겠습니까?'),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(false); // 취소를 누르면 false 반환
                   },
-                  child: Text('취소'),
+                  child: const Text('취소'),
                 ),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(true); // 확인을 누르면 true 반환
                   },
-                  child: Text('확인'),
+                  child: const Text('확인'),
                 ),
               ],
             );
@@ -277,7 +277,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
         if (confirmed == true) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => MyApp()),
+            MaterialPageRoute(builder: (context) => const MyHomePage()),
                 (Route<dynamic> route) => false,
           );
         }
@@ -286,14 +286,14 @@ class _WebModifyProfile extends State<WebModifyProfile> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('회원 삭제 실패'),
-              content: Text('아이디와 비밀번호를 다시 한번 확인해 주세요'),
+              title: const Text('회원 삭제 실패'),
+              content: const Text('아이디와 비밀번호를 다시 한번 확인해 주세요'),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('확인'),
+                  child: const Text('확인'),
                 ),
               ],
             );
@@ -306,14 +306,14 @@ class _WebModifyProfile extends State<WebModifyProfile> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('회원 삭제 실패'),
-            content: Text('서버 오류 발생'),
+            title: const Text('회원 삭제 실패'),
+            content: const Text('서버 오류 발생'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('확인'),
+                child: const Text('확인'),
               ),
             ],
           );
@@ -332,7 +332,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
             Container(
               height: 170,
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0xFFD3CDC8),
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(30),
@@ -342,7 +342,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                 padding: const EdgeInsets.only(top: 30, left: 50, bottom: 20),
                 child: Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -368,10 +368,10 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => MyApp(),
+                            builder: (context) => const MyHomePage(),
                           ));
                         },
-                        child: Text(
+                        child: const Text(
                           "로그아웃",
                           style: TextStyle(
                             fontSize: 22,
@@ -387,7 +387,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                             builder: (context) => WebModifyProfile(),
                           ));
                         },
-                        child: Text(
+                        child: const Text(
                           "내 정보",
                           style: TextStyle(
                             fontSize: 22,
@@ -403,7 +403,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                             builder: (context) => WebNotice(),
                           ));
                         },
-                        child: Text(
+                        child: const Text(
                           "고객센터",
                           style: TextStyle(
                             fontSize: 22,
@@ -415,9 +415,9 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                 ),
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             Container(
-              child: Text(
+              child: const Text(
                 "내 정보",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -425,16 +425,16 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                 ),
               ),
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             Padding(
               padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
               child: Container(
                 width: double.infinity,
                 height: 1.5,
-                decoration: BoxDecoration(color: Colors.black54),
+                decoration: const BoxDecoration(color: Colors.black54),
               ),
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -444,123 +444,123 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                       width: 600,
                       child: TextField(
                         controller: mbnoController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: "MBNO",
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: fetchUserInfo,
-                      child: Text("정보 불러오기"),
+                      child: const Text("정보 불러오기"),
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(100, 50),
-                        backgroundColor: Color(0xFFD3CDC8),
-                        textStyle: TextStyle(fontSize: 18),
+                        minimumSize: const Size(100, 50),
+                        backgroundColor: const Color(0xFFD3CDC8),
+                        textStyle: const TextStyle(fontSize: 18),
                         foregroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.zero,
                         ),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     SizedBox(
                       width: 600,
                       child: TextField(
                         controller: idController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: "아이디",
                           border: OutlineInputBorder(),
                         ),
                         readOnly: true,
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     SizedBox(
                       width: 600,
                       child: TextField(
                         controller: pwController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: "비밀번호",
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     SizedBox(
                       width: 600,
                       child: TextField(
                         controller: pw2Controller,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: "비밀번호 확인",
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     SizedBox(
                       width: 600,
                       child: TextField(
                         controller: nameController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: "이름",
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     SizedBox(
                       width: 600,
                       child: TextField(
                         controller: emailController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: "이메일",
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
                           onPressed: updateProfile,
-                          child: Text("회원정보수정"),
+                          child: const Text("회원정보수정"),
                           style: ElevatedButton.styleFrom(
-                            minimumSize: Size(100, 50),
-                            backgroundColor: Color(0xFFD3CDC8),
-                            textStyle: TextStyle(fontSize: 18),
+                            minimumSize: const Size(100, 50),
+                            backgroundColor: const Color(0xFFD3CDC8),
+                            textStyle: const TextStyle(fontSize: 18),
                             foregroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
+                            shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
                             ),
                           ),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         ElevatedButton(
                           onPressed: cancelChanges,
-                          child: Text("취소"),
+                          child: const Text("취소"),
                           style: ElevatedButton.styleFrom(
-                            minimumSize: Size(100, 50),
-                            backgroundColor: Color(0xFFD3CDC8),
-                            textStyle: TextStyle(fontSize: 18),
+                            minimumSize: const Size(100, 50),
+                            backgroundColor: const Color(0xFFD3CDC8),
+                            textStyle: const TextStyle(fontSize: 18),
                             foregroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
+                            shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
                             ),
                           ),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         ElevatedButton(
                           onPressed: deleteAccount,
-                          child: Text("회원 탈퇴"),
+                          child: const Text("회원 탈퇴"),
                           style: ElevatedButton.styleFrom(
-                            minimumSize: Size(100, 50),
-                            backgroundColor: Color(0xFFD3CDC8),
-                            textStyle: TextStyle(fontSize: 18),
+                            minimumSize: const Size(100, 50),
+                            backgroundColor: const Color(0xFFD3CDC8),
+                            textStyle: const TextStyle(fontSize: 18),
                             foregroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
+                            shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
                             ),
                           ),

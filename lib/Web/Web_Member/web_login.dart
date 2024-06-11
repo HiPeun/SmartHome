@@ -14,8 +14,8 @@ import '../webmain.dart';
 
 // 로그인 완료시 main페이지로 이동
 void navigateToMainPage(BuildContext context) {
-  Navigator.of(context as BuildContext).pushReplacement(MaterialPageRoute(
-      builder: (context) => MyApp()
+  Navigator.of(context).pushReplacement(MaterialPageRoute(
+      builder: (context) => const MyHomePage()
   ));
 }
 

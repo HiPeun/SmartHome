@@ -66,7 +66,7 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => MyApp(),
+                            builder: (context) => const MyHomePage(),
                           ));
                         },
                         child: Text(
