@@ -1,25 +1,23 @@
 
 
+
+
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loginproject/Web/Web_Cus/web_notice_screen.dart';
-import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:intl/intl.dart';
+import 'package:loginproject/App/app_cus/app_notice_screen.dart';
+import 'package:loginproject/App/app_screen/app_join.dart';
+import 'package:loginproject/App/app_screen/app_login.dart';
+import 'package:loginproject/model/notice_model.dart';
+import 'package:loginproject/model/qna_model.dart';
 
-import '../../model/notice_model.dart';
-import '../../model/qna_model.dart';
-import '../Web_Member/web_login.dart';
-
-
-
-class WebNotice extends StatefulWidget {
-  WebNotice({super.key});
+class AppNotice extends StatefulWidget {
+  AppNotice({super.key});
 
   @override
-  State<StatefulWidget> createState() => _WebNoticeState();
+  State<StatefulWidget> createState() => _AppNoticeState();
 }
-class _WebNoticeState extends State<WebNotice> {
+class _AppNoticeState extends State<AppNotice> {
   bool showNotices = true;
   bool isLogin = false;
 
@@ -42,11 +40,11 @@ class _WebNoticeState extends State<WebNotice> {
               child: InkWell(
                 onTap: () async {
                   isLogin = await Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => WebLogin(),
+                    builder: (context) => AppLogin(),
                   ));
                   setState(() {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => WebNoticeScreen(),
+                      builder: (context) => AppNoticeScreen(),
                     ));
                   });
                 },
@@ -105,7 +103,7 @@ class _WebNoticeState extends State<WebNotice> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebLogin(),
+                            builder: (context) => AppLogin(),
                           ));
                         },
                         child: Text(
@@ -121,7 +119,7 @@ class _WebNoticeState extends State<WebNotice> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebJoin(),
+                            builder: (context) => AppJoin(),
                           ));
                         },
                         child: Text(
@@ -137,7 +135,7 @@ class _WebNoticeState extends State<WebNotice> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebNotice(),
+                            builder: (context) => AppNotice(),
                           ));
                         },
                         child: Text(
@@ -198,7 +196,7 @@ class _WebNoticeState extends State<WebNotice> {
                         });
                       },
                       child: Text(
-                        "자주묻는질문",
+                        "Q&A",
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -278,7 +276,7 @@ class _NoticeListState extends State<NoticeList> {
   void getNoticeList() async {
     Dio dio = Dio(
       BaseOptions(
-        baseUrl: "http://192.168.0.177:9090",
+        baseUrl: "http://192.168.0.188:9090",
         contentType: "application/json",
       ),
     );
@@ -337,6 +335,7 @@ class _NoticeListState extends State<NoticeList> {
 
 
 class QnaList extends StatefulWidget {
+
   @override
   _QnaListState createState() => _QnaListState();
 }
@@ -372,6 +371,9 @@ class QnaList extends StatefulWidget {
       }
     }
 
+    void Qnainsert(String) {
+
+    }
 
 
     Widget build(BuildContext context) {
@@ -401,6 +403,23 @@ class QnaList extends StatefulWidget {
                 ListTile(
                   title: Text(list[index].content ?? "",),
                 ),
+                ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 1000,
+                        child: TextField(),
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          child: Text('댓글쓰기'),
+                        ),
+                      ),
+                    ],
+                  )
+                )
               ],
             );
           },

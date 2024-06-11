@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:loginproject/App/app_screen/app_fid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_fpw.dart';
@@ -18,12 +19,13 @@ class _AppLoginState extends State<AppLogin> {
   final TextEditingController _id = TextEditingController();
   final TextEditingController _pw = TextEditingController();
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  bool _isAutoLogin = false;
 
   @override
   void initState() {
     super.initState();
-    _loadUserId();
-    _clearStoredToken(); // 앱 실행 시 토큰 삭제
+    //_loadUserId();
+   //_loadAutoLoginStatus();
   }
 
   Future<void> _loadUserId() async {
@@ -36,8 +38,34 @@ class _AppLoginState extends State<AppLogin> {
     }
   }
 
-  Future<void> _clearStoredToken() async {
-    await secureStorage.delete(key: 'auth_token');
+  Future<void> _loadAutoLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? isAutoLogin = prefs.getBool('autoLogin');
+    if (isAutoLogin != null && isAutoLogin) {
+      setState(() {
+        _isAutoLogin = true;
+      });
+      await _attemptAutoLogin();
+    }
+  }
+
+  Future<void> _attemptAutoLogin() async {
+    String? userId = await secureStorage.read(key: 'user_id');
+    String? authToken = await secureStorage.read(key: 'auth_token');
+    if (userId != null && authToken != null) {
+      // 자동 로그인 처리
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BottomBar(isLogin: true),
+        ),
+      );
+    }
+  }
+
+  Future<void> _saveAutoLoginStatus(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('autoLogin', value);
   }
 
   void login() async {
@@ -73,7 +101,9 @@ class _AppLoginState extends State<AppLogin> {
       if (res.statusCode == 200 && res.data is bool && res.data == true) {
         // 로그인 성공 시 토큰 저장 및 메인 페이지로 이동
         await secureStorage.write(key: 'auth_token', value: 'your_token');
+        await secureStorage.write(key: 'user_id', value: _id.text);
         await _saveUserId(_id.text);
+        await _saveAutoLoginStatus(_isAutoLogin);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => BottomBar(isLogin: true)),
@@ -81,7 +111,9 @@ class _AppLoginState extends State<AppLogin> {
       } else if (res.statusCode == 200 && res.data is Map<String, dynamic>) {
         final userData = res.data['userData'] as String; // 사용자 데이터를 받아옴
         await secureStorage.write(key: 'auth_token', value: 'your_token');
+        await secureStorage.write(key: 'user_id', value: _id.text);
         await _saveUserId(_id.text);
+        await _saveAutoLoginStatus(_isAutoLogin);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -163,172 +195,192 @@ class _AppLoginState extends State<AppLogin> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Stack(
-                children: [
-                  Container(
-                    height: 170,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFD3CDC8),
-                      borderRadius: BorderRadius.vertical(
-                        bottom: Radius.circular(30),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 20),
-                    child: Text(
-                      "로그인",
-                      style: TextStyle(
-                        fontSize: 40,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
+          Stack(
+          children: [
+          Container(
+          height: 170,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Color(0xFFD3CDC8),
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(30),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 90),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      kakaoLogin(context);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color(0xffF9E000),
-                      ),
-                      width: 300,
-                      height: 55,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Image.asset(
-                            "assets/images/kakao.png",
-                            width: 30,
-                            height: 30,
-                          ),
-                          Text(
-                            "카카오톡으로 시작하기",
-                            style: TextStyle(
-                              fontSize: 19,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                            height: 10,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, top: 20),
+            child: Text(
+              "로그인",
+              style: TextStyle(
+                fontSize: 40,
+                color: Colors.black,
               ),
-              SizedBox(height: 20),
-              Container(
-                margin: EdgeInsets.only(top: 15),
-                width: 300,
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: 'ID',
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  controller: _id,
-                  obscureText: false,
-                ),
-              ),
-              Container(
-                width: 300,
-                child: TextField(
-                  maxLength: 12,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  controller: _pw,
-                  obscureText: true,
-                ),
-              ),
-              Container(
+            ),
+          ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 90),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                kakaoLogin(context);
+              },
+              child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Color(0xFFD3CDC8),
+                  color: Color(0xffF9E000),
                 ),
-                margin: EdgeInsets.only(top: 20),
                 width: 300,
                 height: 55,
-                child: InkWell(
-                  child: Center(
-                    child: Text(
-                      "로 그 인",
-                      style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Image.asset(
+                      "assets/images/kakao.png",
+                      width: 30,
+                      height: 30,
                     ),
-                  ),
-                  onTap: () {
-                    login();
-                  },
+                    Text(
+                      "카카오톡으로 시작하기",
+                      style: TextStyle(
+                        fontSize: 19,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                      height: 10,
+                    ),
+                  ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 35,
-                    height: 50,
+            ),
+          ),
+          ),
+          SizedBox(height: 20),
+          Container(
+            margin: EdgeInsets.only(top: 15),
+            width: 300,
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: 'ID',
+              ),
+              keyboardType: TextInputType.emailAddress,
+              controller: _id,
+              obscureText: false,
+            ),
+          ),
+          Container(
+            width: 300,
+            child: TextField(
+              maxLength: 12,
+              decoration: InputDecoration(
+                labelText: 'Password',
+              ),
+              keyboardType: TextInputType.emailAddress,
+              controller: _pw,
+              obscureText: true,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(width: 35, height: 50),
+              Text("자동 로그인"),
+              Switch(
+                value: _isAutoLogin,
+                onChanged: (value) {
+                  setState(() {
+                    _isAutoLogin = value;
+                  });
+                  _saveAutoLoginStatus(value);
+                },
+              ),
+              SizedBox(width: 35, height: 50),
+            ],
+          ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Color(0xFFD3CDC8),
+            ),
+            margin: EdgeInsets.only(top: 20),
+            width: 300,
+            height: 55,
+            child: InkWell(
+              child: Center(
+                child: Text(
+                  "로 그 인",
+                  style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+              ),
+              onTap: () {
+                login();
+              },
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 35,
+                height: 50,
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AppFid()));
+                },
+                child: Text(
+                  "아이디 찾기",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "아이디 찾기",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => AppFpw(),
+                  ));
+                },
+                child: Text(
+                  "비밀번호 찾기",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => AppFpw(),
-                      ));
-                    },
-                    child: Text(
-                      "비밀번호 찾기",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
+                ),
+              ),
+              SizedBox(
+                width: 60,
+                height: 10,
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => AppJoin(),
+                  ));
+                },
+                child: Text(
+                  "회원가입",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
-                  SizedBox(
-                    width: 60,
-                    height: 10,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => AppJoin(),
-                      ));
-                    },
-                    child: Text(
-                      "회원가입",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
           ),
+          ],
         ),
       ),
+    ),
     );
   }
 }

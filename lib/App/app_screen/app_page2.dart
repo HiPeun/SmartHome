@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loginproject/App/app_screen/bottom_bar.dart';
 
 import 'app_join.dart';
 import 'app_login.dart';
@@ -38,7 +39,7 @@ class _Page2State extends State<Page2> {
                 Navigator.of(context).pop(); // 다이얼로그 닫기
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => Page2()),
+                  MaterialPageRoute(builder: (context) => BottomBar()),
                 ); // 로그인 페이지로 이동
               },
               child: Text('확인'),
