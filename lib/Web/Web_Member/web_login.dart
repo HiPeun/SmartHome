@@ -12,19 +12,6 @@ import 'package:loginproject/Web/Web_Member/web_login_screen.dart';
 import '../webmain.dart';
 
 
-void main() async {
-// 웹 환경에서 카카오 로그인을 정상적으로 완료하려면 runApp() 호출 전 아래 메서드 호출 필요
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // runApp() 호출 전 Flutter SDK 초기화
-  KakaoSdk.init(
-    nativeAppKey: 'd664273b8aeac06793c0c6f6f1ed0348',
-    javaScriptAppKey: '38e21ce41bf7993c5366257c746421e3',
-  );
-  runApp(MyApp());
-}
-
-
 // 로그인 완료시 main페이지로 이동
 void navigateToMainPage(BuildContext context) {
   Navigator.of(context as BuildContext).pushReplacement(MaterialPageRoute(
@@ -156,9 +143,9 @@ class _WebLoginState extends State<WebLogin> {
         "id": _id.text,
         "pw": _pw.text,
       };
-      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.177:9090"));
+      final Dio dio = Dio(BaseOptions(baseUrl: "http://172.29.112.112:9090"));
       Response res = await dio.post("/user/login", data: data);
-      if (res.statusCode == 200 && res.data == true) {
+      if (res.statusCode == 200 && res.data is Map<String, dynamic>) {
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -166,6 +153,7 @@ class _WebLoginState extends State<WebLogin> {
           ),
         );
       } else {
+        print(res.data.runtimeType);
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -186,6 +174,23 @@ class _WebLoginState extends State<WebLogin> {
       }
     } catch (e) {
       print(e);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('서버 오루'),
+            content: Text('다시 시도해ㅔ 주세요'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 

@@ -278,7 +278,7 @@ class _NoticeListState extends State<NoticeList> {
   void getNoticeList() async {
     Dio dio = Dio(
       BaseOptions(
-        baseUrl: "http://192.168.0.177:9090",
+        baseUrl: "http://172.29.112.112:9090",
         contentType: "application/json",
       ),
     );
@@ -352,7 +352,7 @@ class QnaList extends StatefulWidget {
     void getQnaList() async {
       Dio dio = Dio(
         BaseOptions(
-          baseUrl: "http://192.168.0.177:9090",
+          baseUrl: "http://172.29.112.112:9090",
           contentType: "application/json",
         ),
       );

@@ -46,7 +46,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
         return;
       }
 
-      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.177:9090"));
+      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://172.29.112.112:9090"));
       dio.Response res = await dioClient.post("/user/login/info", data: {"mbno": mbno});
       if (res.statusCode == 200) {
         final userInfo = res.data;
@@ -61,7 +61,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text('오류'),
-              content: Text('사용자 정보를 불러오지 못했습니다.'),
+              content: Text('사용자 정보를 불러오지 못했습니다x.'),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -98,7 +98,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
         "name": nameController.text,
         "mbno": int.parse(mbnoController.text),
       };
-      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.177:9090"));
+      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://172.29.112.112:9090"));
       RegExp passwordRegex = RegExp(r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*(),.?":{}|<>]).{5,12}$');
       if (pwController.text.length > 12 || !passwordRegex.hasMatch(pwController.text)) {
         showDialog(
@@ -242,7 +242,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
         "id": idController.text,
         "pw": pwController.text,
       };
-      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.177:9090"));
+      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://172.29.112.112:9090"));
       dio.Response res = await dioClient.post("/user/remove", data: data);
 
       if (res.statusCode == 200 && res.data == true) {

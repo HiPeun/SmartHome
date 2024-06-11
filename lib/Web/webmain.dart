@@ -13,13 +13,6 @@ import 'Web_Member/user_controller.dart';
 //   runApp(const MyApp());
 // }
 
-
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  Get.put(UserController()); // UserController 초기화
-  runApp(MyApp());
-}
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
