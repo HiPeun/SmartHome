@@ -33,7 +33,6 @@ class _Page3State extends State<Page3> {
 
     try {
       if (user.isNotEmpty) {
-        
         email.text = user['email'] ?? '';
         name.text = user['name'] ?? '';
         id.text = user['id'] ?? '';
@@ -43,16 +42,11 @@ class _Page3State extends State<Page3> {
       print('Error parsing userData: $e');
     }
   }
+
   Future<void> checkPasswords() async {
     try {
-      var response = await Dio().post(
-        'http://177.29.112.112:9090/user/login',
-        data: {
-          'id': id.text,
-          'pw': pw.text,
-        },
-      );
-      if (response.statusCode == 200) {
+      //만약에 유저가 적은 아이디값과 비번값이
+      if (user["id"] == id.text && user["pw"] == pw.text) {
         setState(() {
           isPwMatched = true;
         });
@@ -190,7 +184,7 @@ class _Page3State extends State<Page3> {
                   onPressed: () {
                     Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) => Page2()));
+                        builder: (BuildContext context) => Page2()));
                   },
                 ),
               ],
@@ -270,9 +264,7 @@ class _Page3State extends State<Page3> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {
-
-              },
+              onPressed: () {},
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -313,7 +305,6 @@ class _Page3State extends State<Page3> {
           decoration: InputDecoration(labelText: "비밀번호"),
           obscureText: true,
         ),
-
         SizedBox(height: 20),
         ElevatedButton(
           onPressed: checkPasswords,
@@ -383,7 +374,7 @@ class _Page3State extends State<Page3> {
           Text("로그인이 필요합니다.", style: TextStyle(fontSize: 18)),
           SizedBox(height: 20),
           ElevatedButton(
-            onPressed: ()async {
+            onPressed: () async {
               await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AppLogin()),
