@@ -9,6 +9,7 @@ import 'package:loginproject/Web/Web_Member/web_fpw.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login_screen.dart';
 
+import '../../App/main.dart';
 import '../webmain.dart';
 
 
@@ -144,14 +145,12 @@ class _WebLoginState extends State<WebLogin> {
         "pw": _pw.text,
       };
       final Dio dio = Dio(BaseOptions(baseUrl: "http://172.29.112.112:9090"));
+
       Response res = await dio.post("/user/login", data: data);
+
       if (res.statusCode == 200 && res.data is Map<String, dynamic>) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => WebLoginScreen(title: ""),
-          ),
-        );
+        user = res.data;
+        Navigator.pop(context);
       } else {
         print(res.data.runtimeType);
         showDialog(
@@ -235,22 +234,6 @@ class _WebLoginState extends State<WebLogin> {
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebLogin(),
-                          ));
-                        },
-                        child: Text(
-                          "로그인",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
                       ),
                     ),
                     Padding(

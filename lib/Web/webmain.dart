@@ -7,6 +7,7 @@ import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
 import 'package:loginproject/Web/Web_Member/web_login_screen.dart';
 
+import '../App/main.dart';
 import 'Web_Member/user_controller.dart';
 
 // void main() {
@@ -50,24 +51,23 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.only(right: 40),
                       child: Container(
                         child: InkWell(
                           onTap: () async {
-                            bool isLogin = await Navigator.push(
+                            await Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => WebLogin()),
                             );
-                            if (isLogin ?? false) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => WebLoginScreen(title: '')),
-                              );
-                            }
+                            setState(() {
+
+                            });
                           },
                           child: Text(
-                            "로그인",
+                            // isEmpty 빈값이면
+                            user.isEmpty ? '로그인' : '로그아웃',
                             style: TextStyle(
                               fontSize: 20,
                             ),
