@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'dart:convert';
 
 import 'package:loginproject/App/app_screen/app_login.dart';
 import 'package:loginproject/App/app_screen/bottom_bar.dart';
+import 'package:loginproject/App/main.dart';
 
 class Page3 extends StatefulWidget {
-  final bool isLogin;
-  final String userData;
-
-  const Page3({Key? key, this.isLogin = false, this.userData = ''})
-      : super(key: key);
+  const Page3({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<Page3> createState() => _Page3State();
@@ -29,18 +29,17 @@ class _Page3State extends State<Page3> {
   @override
   void initState() {
     super.initState();
-    if (widget.isLogin) {
-      try {
-        if (widget.userData.isNotEmpty) {
-          Map<String, dynamic> userDataMap = jsonDecode(widget.userData);
-          email.text = userDataMap['email'] ?? '';
-          name.text = userDataMap['name'] ?? '';
-          id.text = userDataMap['id'] ?? '';
-          mbno = userDataMap['mbno'].toString();
-        }
-      } catch (e) {
-        print('Error parsing userData: $e');
+
+    try {
+      if (user.isNotEmpty) {
+        
+        email.text = user['email'] ?? '';
+        name.text = user['name'] ?? '';
+        id.text = user['id'] ?? '';
+        mbno = user['mbno'].toString();
       }
+    } catch (e) {
+      print('Error parsing userData: $e');
     }
   }
 
@@ -278,7 +277,7 @@ class _Page3State extends State<Page3> {
         ),
       ),
       body: SingleChildScrollView(
-        child: widget.isLogin ? _buildUserInfoForm() : _buildLoginPrompt(),
+        child: user.isEmpty ? _buildUserInfoForm() : _buildLoginPrompt(),
       ),
     );
   }

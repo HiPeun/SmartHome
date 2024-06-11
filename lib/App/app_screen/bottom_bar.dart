@@ -28,8 +28,7 @@ class _BottomBarState extends State<BottomBar> {
       AppNotice(),
       Page2(),
       Page3(
-        isLogin: widget.isLogin,
-        userData: widget.userData,
+
       ),
     ];
   }
