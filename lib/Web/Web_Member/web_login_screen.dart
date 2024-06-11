@@ -44,7 +44,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                 padding: const EdgeInsets.only(top: 30, left: 30),
                 child: Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                       child: Text(
                         "Conven",
                         style: TextStyle(
@@ -59,11 +59,11 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                       child: Container(
                         child: InkWell(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyApp(),
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MyHomePage(),
                             ));
                           },
 
-                          child: Text(
+                          child: const Text(
                             "로그아웃",
                             style: TextStyle(
                               fontSize: 20,
@@ -81,7 +81,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                               builder: (context) => WebModifyProfile(),
                             ));
                           },
-                          child: Text(
+                          child: const Text(
                             "내 정보",
                             style: TextStyle(
                               fontSize: 20,
@@ -99,7 +99,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                               builder: (context) => WebNoticeScreen(),
                             ));
                           },
-                          child: Text(
+                          child: const Text(
                             "고객센터",
                             style: TextStyle(
                               fontSize: 20,
@@ -147,8 +147,8 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                       Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 180),
-                            child: Text(
+                            margin: const EdgeInsets.only(top: 180),
+                            child: const Text(
                               "Smart Home",
                               style: TextStyle(
                                   fontSize: 80,
@@ -157,7 +157,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                             ),
                           ),
                           Container(
-                            child: Text(
+                            child: const Text(
                               "일상의 행복한 변화",
                               style:
                               TextStyle(fontSize: 40, color: Colors.white),
@@ -178,7 +178,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                       Padding(
                         padding: const EdgeInsets.only(top: 100),
                         child: Container(
-                          child: Text(
+                          child: const Text(
                             "당신의 일상을 더 똑똑하고 편리하게 바꿔보세요",
                             style: TextStyle(
                               fontSize: 30,
@@ -188,7 +188,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                         ),
                       ),
                       Container(
-                        child: Text(
+                        child: const Text(
                           "누구 스마트홈 앱 하나로 언제 어디서나 가전제품은 물론, 우리집 안팎 곳곳을 컨트롤할 수 있습니다.",
                           style: TextStyle(fontSize: 15, color: Colors.grey),
                         ),
@@ -214,8 +214,8 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                       Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 300),
-                            child: Text(
+                            margin: const EdgeInsets.only(top: 300),
+                            child: const Text(
                               "조명 제어",
                               style: TextStyle(
                                 fontSize: 50,
@@ -225,7 +225,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                             ),
                           ),
                           Container(
-                            child: Text(
+                            child: const Text(
                               "우리집 조명 어디서든 제어 할 수 있어요",
                               style: TextStyle(
                                 fontSize: 30,
@@ -245,7 +245,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                 children: [
                   Center(
                     child: Container(
-                      margin: EdgeInsets.only(top: 50),
+                      margin: const EdgeInsets.only(top: 50),
                       child: Image.asset(
                         "assets/webmain/CCTV.png",
                         width: 1200,
@@ -259,8 +259,8 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                       Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 350),
-                            child: Text(
+                            margin: const EdgeInsets.only(top: 350),
+                            child: const Text(
                               "CCTV 확인",
                               style: TextStyle(
                                 fontSize: 50,
@@ -270,7 +270,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                             ),
                           ),
                           Container(
-                            child: Text(
+                            child: const Text(
                               "언제 어디서든 집 확인 서비스",
                               style: TextStyle(
                                 fontSize: 30,
@@ -290,7 +290,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                 children: [
                   Center(
                     child: Container(
-                      margin: EdgeInsets.only(top: 50),
+                      margin: const EdgeInsets.only(top: 50),
                       child: Image.asset(
                         "assets/webmain/temperature.png",
                         width: 1200,
@@ -304,8 +304,8 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                       Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 350),
-                            child: Text(
+                            margin: const EdgeInsets.only(top: 350),
+                            child: const Text(
                               "온 습도 확인",
                               style: TextStyle(
                                 fontSize: 50,
@@ -315,7 +315,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                             ),
                           ),
                           Container(
-                            child: Text(
+                            child: const Text(
                               "따뜻한 환경 유지 서비스",
                               style: TextStyle(
                                 fontSize: 30,
@@ -335,7 +335,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                 children: [
                   Center(
                     child: Container(
-                      margin: EdgeInsets.only(top: 50),
+                      margin: const EdgeInsets.only(top: 50),
                       child: Image.asset(
                         "assets/webmain/window.png",
                         width: 1200,
@@ -349,8 +349,8 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                       Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(top: 350),
-                            child: Text(
+                            margin: const EdgeInsets.only(top: 350),
+                            child: const Text(
                               "창문 개폐 서비스",
                               style: TextStyle(
                                 fontSize: 50,
@@ -360,7 +360,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                             ),
                           ),
                           Container(
-                            child: Text(
+                            child: const Text(
                               "쾌적한 우리집을 만들어 봐요",
                               style: TextStyle(
                                 fontSize: 30,
@@ -383,7 +383,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                     child: Container(
                       child: InkWell(
                           onTap: () {},
-                          child: Text(
+                          child: const Text(
                             "이용약관",
                             style: TextStyle(color: Colors.grey),
                           )),
@@ -394,7 +394,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                     child: Container(
                       child: InkWell(
                         onTap: () {},
-                        child: Text(
+                        child: const Text(
                           "개인정보 처리방침",
                           style: TextStyle(color: Colors.grey),
                         ),
@@ -403,8 +403,8 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                   )
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50),
+              const Padding(
+                padding: EdgeInsets.only(left: 50),
                 child: Row(
                   children: [
                     Text(
@@ -414,8 +414,8 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50),
+              const Padding(
+                padding: EdgeInsets.only(left: 50),
                 child: Row(
                   children: [
                     Text(
@@ -425,8 +425,8 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50),
+              const Padding(
+                padding: EdgeInsets.only(left: 50),
                 child: Row(
                   children: [
                     Text(
@@ -436,8 +436,8 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50, bottom: 30),
+              const Padding(
+                padding: EdgeInsets.only(left: 50, bottom: 30),
                 child: Row(
                   children: [
                     Text(

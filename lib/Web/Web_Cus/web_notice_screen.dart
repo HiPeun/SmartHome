@@ -66,7 +66,7 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => MyApp(),
+                            builder: (context) => const MyHomePage(),
                           ));
                         },
                         child: Text(
@@ -238,7 +238,7 @@ class _NoticeListState extends State<NoticeList> {
   void getNoticeList() async {
     Dio dio = Dio(
       BaseOptions(
-        baseUrl: "http://192.168.0.177:9090",
+        baseUrl: "http://172.29.112.112:9090",
         contentType: "application/json",
       ),
     );
@@ -314,7 +314,7 @@ class _QnaListState extends State<QnaList> {
   void getQnaList() async {
     Dio dio = Dio(
       BaseOptions(
-        baseUrl: "http://177.29.112.112:9090",
+        baseUrl: "http://172.29.112.112:9090",
         contentType: "application/json",
       ),
     );

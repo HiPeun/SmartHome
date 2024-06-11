@@ -7,39 +7,15 @@ import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
 import 'package:loginproject/Web/Web_Member/web_login_screen.dart';
 
+import '../App/main.dart';
 import 'Web_Member/user_controller.dart';
 
 // void main() {
 //   runApp(const MyApp());
 // }
 
-
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  Get.put(UserController()); // UserController 초기화
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'SmartHome',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Smart Home Page'),
-    );
-  }
-}
-
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -75,24 +51,23 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.only(right: 40),
                       child: Container(
                         child: InkWell(
                           onTap: () async {
-                            bool isLogin = await Navigator.push(
+                            await Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => WebLogin()),
                             );
-                            if (isLogin ?? false) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => WebLoginScreen(title: '')),
-                              );
-                            }
+                            setState(() {
+
+                            });
                           },
                           child: Text(
-                            "로그인",
+                            // isEmpty 빈값이면
+                            user.isEmpty ? '로그인' : '로그아웃',
                             style: TextStyle(
                               fontSize: 20,
                             ),
