@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:loginproject/Web/Web_Member/user_controller.dart';
-import 'package:loginproject/Web/Web_Member/web_join.dart';
-import 'package:loginproject/Web/Web_Member/web_login.dart';
 import 'package:loginproject/Web/webmain.dart';
 import '../Web_Cus/web_notice.dart';
 
@@ -16,31 +15,149 @@ class WebModifyProfile extends StatefulWidget {
 class _WebModifyProfile extends State<WebModifyProfile> {
   final UserController userController = Get.find();
 
+  TextEditingController mbnoController = TextEditingController();
   TextEditingController idController = TextEditingController();
   TextEditingController pwController = TextEditingController();
   TextEditingController pw2Controller = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    if (userController.userId.isNotEmpty && userController.userName.isNotEmpty && userController.userEmail.isNotEmpty) {
-      idController.text = userController.userId.value;
-      nameController.text = userController.userName.value;
-      emailController.text = userController.userEmail.value;
+  void fetchUserInfo() async {
+    try {
+      final int? mbno = int.tryParse(mbnoController.text);
+      if (mbno == null) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('입력 오류'),
+              content: Text('유효한 MBNO를 입력해주세요'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+        return;
+      }
+
+      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.182:9090"));
+      dio.Response res = await dioClient.post("/user/login/info", data: {"mbno": mbno});
+      if (res.statusCode == 200) {
+        final userInfo = res.data;
+        setState(() {
+          idController.text = userInfo["id"];
+          nameController.text = userInfo["name"];
+          emailController.text = userInfo["email"];
+        });
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('오류'),
+              content: Text('사용자 정보를 불러오지 못했습니다.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
-
-
   @override
   void dispose() {
+    mbnoController.dispose();
+    idController.dispose();
     pwController.dispose();
     pw2Controller.dispose();
     nameController.dispose();
     emailController.dispose();
     super.dispose();
+  }
+
+  void updateProfile() async {
+    try {
+      final Map<String, dynamic> data = {
+        "mbno": int.parse(mbnoController.text),
+        "name": nameController.text,
+        "email": emailController.text,
+        "password": pwController.text,
+      };
+      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.182:9090"));
+      dio.Response res = await dioClient.post("/user/update", data: data);
+      if (res.statusCode == 200) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('성공'),
+              content: Text('회원정보가 수정되었습니다.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void cancelChanges() {
+    mbnoController.clear();
+    idController.clear();
+    pwController.clear();
+    pw2Controller.clear();
+    nameController.clear();
+    emailController.clear();
+  }
+
+  void deleteAccount() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('경고'),
+          content: Text('정말로 탈퇴하시겠습니까?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('취소'),
+            ),
+            TextButton(
+              onPressed: () {
+                // 탈퇴 처리 로직을 여기에 추가
+                Navigator.of(context).pop();
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -164,11 +281,37 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                     SizedBox(
                       width: 600,
                       child: TextField(
+                        controller: mbnoController,
+                        decoration: InputDecoration(
+                          labelText: "MBNO",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: fetchUserInfo,
+                      child: Text("정보 불러오기"),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(100, 50),
+                        backgroundColor: Color(0xFFD3CDC8),
+                        textStyle: TextStyle(fontSize: 18),
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    SizedBox(
+                      width: 600,
+                      child: TextField(
                         controller: idController,
                         decoration: InputDecoration(
                           labelText: "아이디",
                           border: OutlineInputBorder(),
                         ),
+                        readOnly: true,
                       ),
                     ),
                     SizedBox(height: 16),
@@ -220,7 +363,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: updateProfile,
                           child: Text("회원정보수정"),
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(100, 50),
@@ -234,7 +377,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                         ),
                         SizedBox(width: 10),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: cancelChanges,
                           child: Text("취소"),
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(100, 50),
@@ -248,7 +391,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                         ),
                         SizedBox(width: 10),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: deleteAccount,
                           child: Text("회원 탈퇴"),
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(100, 50),
@@ -272,3 +415,4 @@ class _WebModifyProfile extends State<WebModifyProfile> {
     );
   }
 }
+

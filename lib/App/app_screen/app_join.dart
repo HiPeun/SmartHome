@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loginproject/App/app_screen/app_login.dart';
 
-import 'package:loginproject/app_screen/app_login.dart';
 
 class AppJoin extends StatefulWidget {
   AppJoin({super.key});
