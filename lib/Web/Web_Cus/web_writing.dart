@@ -1,5 +1,3 @@
-import 'dart:html';
-import 'dart:js';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +56,7 @@ class _WebWritingState extends State<WebWriting> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Q&A'),
+                title: Text('자주묻는질문'),
                 content: Text('글이 등록되었습니다.'),
                 actions: <Widget>[
                   TextButton(

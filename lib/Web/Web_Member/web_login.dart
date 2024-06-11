@@ -8,7 +8,6 @@ import 'package:loginproject/Web/Web_Member/web_fid.dart';
 import 'package:loginproject/Web/Web_Member/web_fpw.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login_screen.dart';
-import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 
 import '../webmain.dart';
 
