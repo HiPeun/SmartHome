@@ -58,7 +58,7 @@ class _WebJoinState extends State<WebJoin> {
 
     try {
       final response = await dio.post(
-        "http://192.168.0.182:9090/user/join",
+        "http://192.168.0.177:9090/user/join",
         data: {
           'id': id,
           'pw': pw,
@@ -525,7 +525,7 @@ class _WebJoinState extends State<WebJoin> {
                           }
 
 
-                          RegExp passwordRegex = RegExp(r'^(?=.*\d)(?=.*[a-zA-Z]).{5,12}$');
+                          RegExp passwordRegex = RegExp(r'^(?=.*\d)(?=.*[a-zA-Z])(~?=.*[!@#$%^&*(),.?":{}|<>]).{5,12}$');
                           if (joinPw.length > 12 || !passwordRegex.hasMatch(joinPw)) {
                             showDialog(
                               context: context,
