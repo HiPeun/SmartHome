@@ -1,9 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loginproject/App/app_screen/bottom_bar.dart';
 import 'package:loginproject/App/main.dart';
-
 import 'app_join.dart';
 import 'app_login.dart';
 

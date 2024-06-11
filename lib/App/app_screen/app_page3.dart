@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import 'dart:convert';
 
 import 'package:loginproject/App/app_screen/app_login.dart';
-import 'package:loginproject/App/app_screen/bottom_bar.dart';
+import 'package:loginproject/App/app_screen/app_page2.dart';
+
 import 'package:loginproject/App/main.dart';
 
 class Page3 extends StatefulWidget {
@@ -42,29 +43,7 @@ class _Page3State extends State<Page3> {
       print('Error parsing userData: $e');
     }
   }
-
   Future<void> checkPasswords() async {
-    if (pw.text != pw2.text) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('오류'),
-            content: Text('비밀번호가 일치하지 않습니다.'),
-            actions: [
-              TextButton(
-                child: Text('확인'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-      return;
-    }
-
     try {
       var response = await Dio().post(
         'http://177.29.112.112:9090/user/login',
@@ -83,7 +62,7 @@ class _Page3State extends State<Page3> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text('오류'),
-              content: Text('비밀번호가 올바르지 않습니다.'),
+              content: Text('아이디 또는 비밀번호가 올바르지 않습니다.'),
               actions: [
                 TextButton(
                   child: Text('확인'),
@@ -103,7 +82,7 @@ class _Page3State extends State<Page3> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('오류'),
-            content: Text('비밀번호 확인 중 오류가 발생했습니다.'),
+            content: Text('아이디 또는 비밀번호 확인 중 오류가 발생했습니다.'),
             actions: [
               TextButton(
                 child: Text('확인'),
@@ -211,7 +190,7 @@ class _Page3State extends State<Page3> {
                   onPressed: () {
                     Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => BottomBar()));
+                          builder: (BuildContext context) => Page2()));
                   },
                 ),
               ],
@@ -277,7 +256,7 @@ class _Page3State extends State<Page3> {
         ),
       ),
       body: SingleChildScrollView(
-        child: user.isEmpty ? _buildUserInfoForm() : _buildLoginPrompt(),
+        child: user.isNotEmpty ? _buildUserInfoForm() : _buildLoginPrompt(),
       ),
     );
   }
@@ -291,7 +270,9 @@ class _Page3State extends State<Page3> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+
+              },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -332,11 +313,7 @@ class _Page3State extends State<Page3> {
           decoration: InputDecoration(labelText: "비밀번호"),
           obscureText: true,
         ),
-        TextField(
-          controller: pw2,
-          decoration: InputDecoration(labelText: "비밀번호 확인"),
-          obscureText: true,
-        ),
+
         SizedBox(height: 20),
         ElevatedButton(
           onPressed: checkPasswords,
@@ -406,8 +383,8 @@ class _Page3State extends State<Page3> {
           Text("로그인이 필요합니다.", style: TextStyle(fontSize: 18)),
           SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () {
-              Navigator.push(
+            onPressed: ()async {
+              await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AppLogin()),
               );

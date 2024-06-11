@@ -1,9 +1,7 @@
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loginproject/App/app_cus/app_notice.dart';
-
 
 import '../app_screen/app_join.dart';
 import '../app_screen/app_login.dart';
@@ -30,8 +28,9 @@ class _AppWritingState extends State<AppWriting> {
     super.dispose();
   }
 
-  void submitPost(String name, String title, String content, String attachment, BuildContext context) async {
-    const int mbno = 133;  // 하드코딩된 mbno 값
+  void submitPost(String name, String title, String content, String attachment,
+      BuildContext context) async {
+    const int mbno = 133; // 하드코딩된 mbno 값
     try {
       final Map<String, dynamic> data = {
         'mbno': mbno,
@@ -69,7 +68,6 @@ class _AppWritingState extends State<AppWriting> {
                 ],
               );
             },
-
           );
         });
       } else {
@@ -126,54 +124,7 @@ class _AppWritingState extends State<AppWriting> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AppLogin(),
-                          ));
-                        },
-                        child: Text(
-                          "로그인",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AppJoin(),
-                          ));
-                        },
-                        child: Text(
-                          "회원가입",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AppNotice(),
-                          ));
-                        },
-                        child: Text(
-                          "고객센터",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                    ),
+
                   ],
                 ),
               ),
