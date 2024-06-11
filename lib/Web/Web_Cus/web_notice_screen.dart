@@ -159,7 +159,7 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
                         });
                       },
                       child: Text(
-                        "Q&A",
+                        "자주묻는질문",
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -362,25 +362,6 @@ class _QnaListState extends State<QnaList> {
                 list[index].content ?? "",
               ),
             ),
-            ListTile(
-              subtitle: Text('댓글입니다.'),
-            ),
-            ListTile(
-                title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 1000,
-                  child: TextField(),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Container(
-                    child: Text('댓글쓰기'),
-                  ),
-                ),
-              ],
-            ))
           ],
         );
       },
