@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:loginproject/App/app_screen/app_fid.dart';
+import 'package:loginproject/App/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_fpw.dart';
@@ -24,8 +25,8 @@ class _AppLoginState extends State<AppLogin> {
   @override
   void initState() {
     super.initState();
-    //_loadUserId();
-   //_loadAutoLoginStatus();
+    _loadUserId();
+   _loadAutoLoginStatus();
   }
 
   Future<void> _loadUserId() async {
@@ -95,34 +96,17 @@ class _AppLoginState extends State<AppLogin> {
         "id": _id.text,
         "pw": _pw.text,
       };
-      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.177:9090"));
+      final Dio dio = Dio(BaseOptions(baseUrl: "http://172.29.112.112:9090"));
       Response res = await dio.post("/user/login", data: data);
-
-      if (res.statusCode == 200 && res.data is bool && res.data == true) {
+print(res.data.runtimeType);
+      if (res.statusCode == 200 && res.data is Map<String, dynamic>) {
         // 로그인 성공 시 토큰 저장 및 메인 페이지로 이동
         await secureStorage.write(key: 'auth_token', value: 'your_token');
         await secureStorage.write(key: 'user_id', value: _id.text);
         await _saveUserId(_id.text);
         await _saveAutoLoginStatus(_isAutoLogin);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => BottomBar(isLogin: true)),
-        );
-      } else if (res.statusCode == 200 && res.data is Map<String, dynamic>) {
-        final userData = res.data['userData'] as String; // 사용자 데이터를 받아옴
-        await secureStorage.write(key: 'auth_token', value: 'your_token');
-        await secureStorage.write(key: 'user_id', value: _id.text);
-        await _saveUserId(_id.text);
-        await _saveAutoLoginStatus(_isAutoLogin);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BottomBar(
-              isLogin: true,
-              userData: userData,
-            ),
-          ),
-        );
+        user = res.data;
+        Navigator.pop(context);
       } else {
         showDialog(
           context: context,
@@ -283,29 +267,13 @@ class _AppLoginState extends State<AppLogin> {
               obscureText: true,
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(width: 35, height: 50),
-              Text("자동 로그인"),
-              Switch(
-                value: _isAutoLogin,
-                onChanged: (value) {
-                  setState(() {
-                    _isAutoLogin = value;
-                  });
-                  _saveAutoLoginStatus(value);
-                },
-              ),
-              SizedBox(width: 35, height: 50),
-            ],
-          ),
+          SizedBox(width: 35, height: 50),
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Color(0xFFD3CDC8),
             ),
-            margin: EdgeInsets.only(top: 20),
+
             width: 300,
             height: 55,
             child: InkWell(

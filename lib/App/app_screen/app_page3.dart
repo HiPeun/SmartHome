@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'dart:convert';
 
 import 'package:loginproject/App/app_screen/app_login.dart';
+import 'package:loginproject/App/app_screen/bottom_bar.dart';
 
 class Page3 extends StatefulWidget {
   final bool isLogin;
@@ -67,7 +68,7 @@ class _Page3State extends State<Page3> {
 
     try {
       var response = await Dio().post(
-        'http://192.168.0.177:9090/user/login',
+        'http://177.29.112.112:9090/user/login',
         data: {
           'id': id.text,
           'pw': pw.text,
@@ -123,7 +124,7 @@ class _Page3State extends State<Page3> {
 
     try {
       var response = await Dio().post(
-        'http://192.168.0.177:9090/user/update',
+        'http://177.29.112.112:9090/user/update',
         data: {
           'name': name.text,
           'email': email.text,
@@ -192,7 +193,7 @@ class _Page3State extends State<Page3> {
   Future<void> deleteUser() async {
     try {
       var response = await Dio().post(
-        'http://192.168.0.177:9090/user/remove',
+        'http://177.29.112.112:9090/user/remove',
         data: {
           'id': id.text,
           'pw': pw.text,
@@ -210,7 +211,8 @@ class _Page3State extends State<Page3> {
                   child: Text('확인'),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    Navigator.of(context).pushReplacementNamed('/page1');
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => BottomBar()));
                   },
                 ),
               ],

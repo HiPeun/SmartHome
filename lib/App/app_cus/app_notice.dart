@@ -6,10 +6,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:loginproject/App/app_cus/app_notice_screen.dart';
-import 'package:loginproject/App/app_screen/app_join.dart';
-import 'package:loginproject/App/app_screen/app_login.dart';
-import 'package:loginproject/model/notice_model.dart';
-import 'package:loginproject/model/qna_model.dart';
+
+import '../../model/notice_model.dart';
+import '../../model/qna_model.dart';
+import '../app_screen/app_login.dart';
 
 class AppNotice extends StatefulWidget {
   AppNotice({super.key});
@@ -98,59 +98,11 @@ class _AppNoticeState extends State<AppNotice> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AppLogin(),
-                          ));
-                        },
-                        child: Text(
-                          "로그인",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AppJoin(),
-                          ));
-                        },
-                        child: Text(
-                          "회원가입",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AppNotice(),
-                          ));
-                        },
-                        child: Text(
-                          "고객센터",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 20),
             Container(
               child: Text(
                 "고객센터",
@@ -160,78 +112,75 @@ class _AppNoticeState extends State<AppNotice> {
                 ),
               ),
             ),
-            SizedBox(height: 70),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(50, 0, 50, 0), // 양쪽에 여백 추가
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          showNotices = true;
-                        });
-                      },
-                      child: Text(
-                        "공지사항",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(70, 50),
-                        backgroundColor: showNotices ? Colors.grey : null,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
+            SizedBox(height: 30),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        showNotices = true;
+                      });
+                    },
+                    child: Text(
+                      "공지사항",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          showNotices = false;
-                        });
-                      },
-                      child: Text(
-                        "Q&A",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(70, 50),
-                        backgroundColor: !showNotices ? Colors.grey : null,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(70, 50),
+                      backgroundColor: showNotices ? Colors.grey : null,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
                       ),
                     ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        showNotices = false;
+                      });
+                    },
+                    child: Text(
+                      "Q&A",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(70, 50),
+                      backgroundColor: !showNotices ? Colors.grey : null,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                      ),
+                    ),
+                  ),
 
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _showLoginAlert(context);
-                        },
-                        child: Text("글쓰기"),
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(160, 45),
-                          backgroundColor: Color(0xFFD3CDC8),
-                          textStyle: TextStyle(fontSize: 20),
-                          foregroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero,
-                          ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _showLoginAlert(context);
+                      },
+                      child: Text("글쓰기"),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(160, 45),
+                        backgroundColor: Color(0xFFD3CDC8),
+                        textStyle: TextStyle(fontSize: 20),
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             Padding(
@@ -276,7 +225,7 @@ class _NoticeListState extends State<NoticeList> {
   void getNoticeList() async {
     Dio dio = Dio(
       BaseOptions(
-        baseUrl: "http://192.168.0.188:9090",
+        baseUrl: "http://177.29.112.112:9090",
         contentType: "application/json",
       ),
     );
@@ -335,7 +284,6 @@ class _NoticeListState extends State<NoticeList> {
 
 
 class QnaList extends StatefulWidget {
-
   @override
   _QnaListState createState() => _QnaListState();
 }
@@ -351,7 +299,7 @@ class QnaList extends StatefulWidget {
     void getQnaList() async {
       Dio dio = Dio(
         BaseOptions(
-          baseUrl: "http://192.168.0.177:9090",
+          baseUrl: "http://177.29.112.112:9090",
           contentType: "application/json",
         ),
       );
@@ -371,8 +319,46 @@ class QnaList extends StatefulWidget {
       }
     }
 
-    void Qnainsert(String) {
-
+    void qnainsert(int pno, int mbno, String content, int regdate) async {
+      final dio = Dio();
+      try {
+        final response = await dio.get(
+          "http://177.29.112.112:9090/comm/insert",
+        data: {
+            'pno': pno,
+            'mbno': mbno,
+            'content': content,
+            'regdate': regdate,
+        },
+          options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          ),
+        );
+        if(response.statusCode == 200) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: Text("댓글 작성이 완료되었습니다."),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('확인'),
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          print("글 등록 실패: ${response.data}");
+        }
+      } catch (e) {
+        print("글 등록 실패: $e");
+      }
     }
 
 
@@ -404,6 +390,9 @@ class QnaList extends StatefulWidget {
                   title: Text(list[index].content ?? "",),
                 ),
                 ListTile(
+                  subtitle: Text('댓글입니다.'),
+                ),
+                ListTile(
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -412,7 +401,9 @@ class QnaList extends StatefulWidget {
                         child: TextField(),
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+
+                        },
                         child: Container(
                           child: Text('댓글쓰기'),
                         ),
