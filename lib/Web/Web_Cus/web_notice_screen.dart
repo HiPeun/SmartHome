@@ -1,9 +1,13 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:loginproject/Web/Web_Cus/web_writing.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/webmain.dart';
 
+import '../../model/notice_model.dart';
+import '../../model/qna_model.dart';
 import '../Web_Member/web_login.dart';
 
 class WebNoticeScreen extends StatefulWidget {
@@ -124,7 +128,7 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
               padding: const EdgeInsets.fromLTRB(50, 0, 0, 0),
               child: Container(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     ElevatedButton(
                       onPressed: () {
@@ -148,7 +152,6 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 20),
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
@@ -171,26 +174,26 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 40, 10),
-                            child: Container(
-                              child: SearchBar(
-                                trailing: [Icon(Icons.search)],
-                                hintText: "검색어를 입력하세요",
-                                constraints: BoxConstraints(
-                                  maxWidth: 250,
-                                  minHeight: 50,
-                                ),
-                              ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => WebWriting(),
+                          ));
+                        },
+                        child: Text("글쓰기"),
+                        style: ElevatedButton.styleFrom(
+                            minimumSize: Size(160, 45),
+                            backgroundColor: Color(0xFFD3CDC8),
+                            textStyle: TextStyle(fontSize: 20),
+                            foregroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.zero,
                             ),
-                          ),
-                        ],
+                        ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -204,26 +207,11 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
               ),
             ),
             SizedBox(height: 30),
-            showNotices ? NoticeList() : QnaList(),
-            Spacer(),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => WebWriting(),
-                  ));
-                },
-                child: Text("글쓰기"),
-                style: ElevatedButton.styleFrom(
-                    minimumSize: Size(160, 45),
-                    backgroundColor: Color(0xFFD3CDC8),
-                    textStyle: TextStyle(fontSize: 20),
-                    foregroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero
-                    )
-                ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                // 공지사항과 Q&A 리스트에 좌우 여백 추가
+                child: showNotices ? NoticeList() : QnaList(),
               ),
             ),
           ],
@@ -233,26 +221,169 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
   }
 }
 
-class NoticeList extends StatelessWidget {
+class NoticeList extends StatefulWidget {
+  @override
+  _NoticeListState createState() => _NoticeListState();
+}
+
+class _NoticeListState extends State<NoticeList> {
+  List<NoticeModel> list = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getNoticeList();
+  }
+
+  void getNoticeList() async {
+    Dio dio = Dio(
+      BaseOptions(
+        baseUrl: "http://192.168.0.188:9090",
+        contentType: "application/json",
+      ),
+    );
+
+    try {
+      Response res = await dio.get("/board1/list");
+      if (res.statusCode == 200) {
+        print(res.data);
+
+        setState(() {
+          list = (res.data as List)
+              .map((e) => NoticeModel.fromJson(e as Map<String, dynamic>))
+              .toList();
+        });
+        print(list);
+      }
+    } catch (e) {
+      print("Failed to load data: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("공지사항 목록"),
-        ],
-      ),
+    return ListView.builder(
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        final String date = DateFormat('yyyy-MM-dd').format(
+            DateTime.fromMillisecondsSinceEpoch(list[index].regdate ?? 0));
+        return ExpansionTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                list[index].title ?? "",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(
+                height: 10,
+              ),
+              Text(
+                date,
+              ),
+            ],
+          ),
+          children: <Widget>[
+            ListTile(
+              title: Text(list[index].content ?? ""),
+            ),
+          ],
+        );
+      },
     );
   }
 }
 
-class QnaList extends StatelessWidget {
+class QnaList extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text("Q&A 목록"),
-    );
+  _QnaListState createState() => _QnaListState();
+}
+
+class _QnaListState extends State<QnaList> {
+  List<QnaModel> list = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getQnaList();
   }
 
+  void getQnaList() async {
+    Dio dio = Dio(
+      BaseOptions(
+        baseUrl: "http://192.168.0.177:9090",
+        contentType: "application/json",
+      ),
+    );
+
+    try {
+      Response res = await dio.get("/board/listAll");
+      if (res.statusCode == 200) {
+        print(res.data);
+
+        setState(() {
+          list = (res.data as List)
+              .map((e) => QnaModel.fromJson(e as Map<String, dynamic>))
+              .toList();
+        });
+        print(list);
+      }
+    } catch (e) {
+      print("Failed to load data: $e");
+    }
+  }
+
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        final String date = DateFormat('yyyy-MM-dd').format(
+            DateTime.fromMillisecondsSinceEpoch(list[index].regdate ?? 0));
+        return ExpansionTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                list[index].title ?? "",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Container(
+                height: 10,
+              ),
+              Text(date),
+            ],
+          ),
+          children: <Widget>[
+            ListTile(
+              title: Text(
+                list[index].content ?? "",
+              ),
+            ),
+            ListTile(
+              subtitle: Text('댓글입니다.'),
+            ),
+            ListTile(
+                title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 1000,
+                  child: TextField(),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    child: Text('댓글쓰기'),
+                  ),
+                ),
+              ],
+            ))
+          ],
+        );
+      },
+    );
+  }
 }

@@ -8,7 +8,6 @@ import 'package:loginproject/Web/Web_Member/web_fid.dart';
 import 'package:loginproject/Web/Web_Member/web_fpw.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login_screen.dart';
-import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 
 import '../webmain.dart';
 
@@ -149,7 +148,7 @@ class _WebLoginState extends State<WebLogin> {
         "id": _id.text,
         "pw": _pw.text,
       };
-      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.182:9090"));
+      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.188:9090"));
       Response res = await dio.post("/user/login", data: data);
       if (res.statusCode == 200) {
         Navigator.push(
