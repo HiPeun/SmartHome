@@ -1,3 +1,6 @@
+import 'dart:html';
+import 'dart:js';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
@@ -28,9 +31,11 @@ class _WebWritingState extends State<WebWriting> {
     super.dispose();
   }
 
-  void submitPost(String name, String title, String content, String attachment) async {
+  void submitPost(String name, String title, String content, String attachment, BuildContext context) async {
+    const int mbno = 133;  // 하드코딩된 mbno 값
     try {
       final Map<String, dynamic> data = {
+        'mbno': mbno,
         'name': name,
         'title': title,
         'content': content,
@@ -45,6 +50,29 @@ class _WebWritingState extends State<WebWriting> {
       Response response = await dio.post("/board/insert/", data: data);
       if (response.statusCode == 200) {
         print('글이 등록되었습니다.');
+        Navigator.pop(context); // 현재 페이지를 닫습니다.
+
+        // 잠시 지연 후 showDialog 호출
+        Future.delayed(Duration(milliseconds: 100), () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Q&A'),
+                content: Text('글이 등록되었습니다.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // 대화 상자를 닫습니다.
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            },
+
+          );
+        });
       } else {
         print('글 등록에 실패했습니다: ${response.statusMessage}');
       }
@@ -216,6 +244,7 @@ class _WebWritingState extends State<WebWriting> {
                               contentController.text,
                               nameController.text,
                               attachmentController.text,
+                              context,
                             );
                           },
                           child: Text("글등록"),
