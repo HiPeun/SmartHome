@@ -60,7 +60,7 @@ class _AppJoinState extends State<AppJoin> {
     try {
       final response = await dio.post(
         // 텍스트 필드로 입력한 아이디,패스워드,이름,이메일을 서버에 post 요청 보내서 DB에 저장시킴
-        "http://192.168.0.177:9090/user/join", // 서버에 POST 요청 보냄
+        "http://177.29.112.112:9090/user/join", // 서버에 POST 요청 보냄
         data: {
           'id': id,
           'pw': pw,
@@ -106,7 +106,7 @@ class _AppJoinState extends State<AppJoin> {
 
     try {
       final response = await dio.post(
-        "http://192.168.0.177:9090/user/login/duplication", // 서버에 POST 요청 보냄
+        "http://177.29.112.112:9090/user/login/duplication", // 서버에 POST 요청 보냄
         data: {
           'id': id,
         },

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'dart:convert';
 
 import 'package:loginproject/App/app_screen/app_login.dart';
+import 'package:loginproject/App/app_screen/bottom_bar.dart';
+import 'package:loginproject/App/main.dart';
 
 class Page3 extends StatefulWidget {
-  final bool isLogin;
-  final String userData;
-
-  const Page3({Key? key, this.isLogin = false, this.userData = ''})
-      : super(key: key);
+  const Page3({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<Page3> createState() => _Page3State();
@@ -28,18 +29,17 @@ class _Page3State extends State<Page3> {
   @override
   void initState() {
     super.initState();
-    if (widget.isLogin) {
-      try {
-        if (widget.userData.isNotEmpty) {
-          Map<String, dynamic> userDataMap = jsonDecode(widget.userData);
-          email.text = userDataMap['email'] ?? '';
-          name.text = userDataMap['name'] ?? '';
-          id.text = userDataMap['id'] ?? '';
-          mbno = userDataMap['mbno'].toString();
-        }
-      } catch (e) {
-        print('Error parsing userData: $e');
+
+    try {
+      if (user.isNotEmpty) {
+        
+        email.text = user['email'] ?? '';
+        name.text = user['name'] ?? '';
+        id.text = user['id'] ?? '';
+        mbno = user['mbno'].toString();
       }
+    } catch (e) {
+      print('Error parsing userData: $e');
     }
   }
 
@@ -67,7 +67,7 @@ class _Page3State extends State<Page3> {
 
     try {
       var response = await Dio().post(
-        'http://192.168.0.177:9090/user/login',
+        'http://177.29.112.112:9090/user/login',
         data: {
           'id': id.text,
           'pw': pw.text,
@@ -123,7 +123,7 @@ class _Page3State extends State<Page3> {
 
     try {
       var response = await Dio().post(
-        'http://192.168.0.177:9090/user/update',
+        'http://177.29.112.112:9090/user/update',
         data: {
           'name': name.text,
           'email': email.text,
@@ -192,7 +192,7 @@ class _Page3State extends State<Page3> {
   Future<void> deleteUser() async {
     try {
       var response = await Dio().post(
-        'http://192.168.0.177:9090/user/remove',
+        'http://177.29.112.112:9090/user/remove',
         data: {
           'id': id.text,
           'pw': pw.text,
@@ -210,7 +210,8 @@ class _Page3State extends State<Page3> {
                   child: Text('확인'),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    Navigator.of(context).pushReplacementNamed('/page1');
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => BottomBar()));
                   },
                 ),
               ],
@@ -276,7 +277,7 @@ class _Page3State extends State<Page3> {
         ),
       ),
       body: SingleChildScrollView(
-        child: widget.isLogin ? _buildUserInfoForm() : _buildLoginPrompt(),
+        child: user.isEmpty ? _buildUserInfoForm() : _buildLoginPrompt(),
       ),
     );
   }

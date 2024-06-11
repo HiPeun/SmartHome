@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:loginproject/App/app_cus/app_notice.dart';
 import 'app_page1.dart';
 import 'app_page2.dart';
 import 'app_page3.dart';
@@ -23,11 +25,10 @@ class _BottomBarState extends State<BottomBar> {
   void initState() {
     super.initState();
     _widgetOptions = <Widget>[
-      Page1(),
-      Page2(isLogin: widget.isLogin, userData: widget.userData),
+      AppNotice(),
+      Page2(),
       Page3(
-        isLogin: widget.isLogin,
-        userData: widget.userData,
+
       ),
     ];
   }

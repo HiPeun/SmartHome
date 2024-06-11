@@ -198,7 +198,7 @@ class _WebNoticeState extends State<WebNotice> {
                         });
                       },
                       child: Text(
-                        "자주묻는질문",
+                        "Q&A",
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -372,6 +372,47 @@ class QnaList extends StatefulWidget {
       }
     }
 
+    void qnainsert(int pno, int mbno, String content, int regdate) async {
+      final dio = Dio();
+      try {
+        final response = await dio.get(
+          "http://192.168.0.177:9090/comm/insert",
+        data: {
+            'pno': pno,
+            'mbno': mbno,
+            'content': content,
+            'regdate': regdate,
+        },
+          options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          ),
+        );
+        if(response.statusCode == 200) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: Text("댓글 작성이 완료되었습니다."),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('확인'),
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          print("글 등록 실패: ${response.data}");
+        }
+      } catch (e) {
+        print("글 등록 실패: $e");
+      }
+    }
 
 
     Widget build(BuildContext context) {
@@ -401,6 +442,28 @@ class QnaList extends StatefulWidget {
                 ListTile(
                   title: Text(list[index].content ?? "",),
                 ),
+                ListTile(
+                  subtitle: Text('댓글입니다.'),
+                ),
+                ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 1000,
+                        child: TextField(),
+                      ),
+                      InkWell(
+                        onTap: () {
+
+                        },
+                        child: Container(
+                          child: Text('댓글쓰기'),
+                        ),
+                      ),
+                    ],
+                  )
+                )
               ],
             );
           },

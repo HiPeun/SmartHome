@@ -2,17 +2,15 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loginproject/App/app_screen/bottom_bar.dart';
+import 'package:loginproject/App/main.dart';
 
 import 'app_join.dart';
 import 'app_login.dart';
 
-
 class Page2 extends StatefulWidget {
-  final bool isLogin;
-  final String userData;
-
-  const Page2({Key? key, this.isLogin = false, this.userData = ''})
-      : super(key: key);
+  const Page2({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<Page2> createState() => _Page2State();
@@ -37,10 +35,8 @@ class _Page2State extends State<Page2> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // 다이얼로그 닫기
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => BottomBar()),
-                ); // 로그인 페이지로 이동
+                user = {};
+                setState(() {});
               },
               child: Text('확인'),
             ),
@@ -48,6 +44,11 @@ class _Page2State extends State<Page2> {
         );
       },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -74,16 +75,18 @@ class _Page2State extends State<Page2> {
                   Padding(
                     padding: const EdgeInsets.only(right: 3),
                     child: InkWell(
-                      onTap: () {
-                        if (widget.isLogin) {
+                      onTap: () async {
+                        if (user.isNotEmpty) {
                           _logout(); // 로그아웃 확인 다이얼로그 표시
                         } else {
-                          Navigator.push(
+                          await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => AppLogin(),
                             ),
                           );
+
+                          setState(() {});
                         }
                       },
                       child: Column(
@@ -94,38 +97,38 @@ class _Page2State extends State<Page2> {
                             height: 26,
                             fit: BoxFit.cover,
                           ),
-                          Text(widget.isLogin ? "로그아웃" : "로그인"),
+                          Text(user.isEmpty ? "로그인 " : "로그아웃"),
                         ],
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 0, 15, 0),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => AppJoin()));
-                      },
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            widget.isLogin
-                                ? "assets/images/personbutton.png"
-                                : "assets/images/person2.png",
-                            width: 26,
-                            height: 26,
-                            fit: BoxFit.cover,
-                          ),
-                          Text(widget.isLogin ? "내 정보" : "회원가입"),
-                        ],
+                  if (user.isEmpty)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(5, 0, 15, 0),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => AppJoin()));
+                        },
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              user.isEmpty
+                                  ? "assets/images/person2.png"
+                                  : "assets/images/personbutton.png",
+                              width: 26,
+                              height: 26,
+                              fit: BoxFit.cover,
+                            ),
+                            Text(user.isEmpty ? "회원가입" : "내 정보"),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
-              if (widget.isLogin)
-                Text("환영합니다, ${widget.userData}님!",
-                    style: TextStyle(fontSize: 18)),
+              if (user.isNotEmpty)
+                Text("환영합니다, ${user["id"]}님!", style: TextStyle(fontSize: 18)),
               AppMainView(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -206,7 +209,6 @@ class _Page2State extends State<Page2> {
 }
 
 // 바텀바 부분
-
 
 class SmartControl extends StatelessWidget {
   final String text;
