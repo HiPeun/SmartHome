@@ -26,7 +26,7 @@ class _AppLoginState extends State<AppLogin> {
   void initState() {
     super.initState();
     _loadUserId();
-   _loadAutoLoginStatus();
+    _loadAutoLoginStatus();
   }
 
   Future<void> _loadUserId() async {
@@ -96,9 +96,9 @@ class _AppLoginState extends State<AppLogin> {
         "id": _id.text,
         "pw": _pw.text,
       };
-      final Dio dio = Dio(BaseOptions(baseUrl: "http://172.29.112.112:9090"));
+      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.177:9090"));
       Response res = await dio.post("/user/login", data: data);
-print(res.data.runtimeType);
+      print(res.data.runtimeType);
       if (res.statusCode == 200 && res.data is Map<String, dynamic>) {
         // 로그인 성공 시 토큰 저장 및 메인 페이지로 이동
         await secureStorage.write(key: 'auth_token', value: 'your_token');
@@ -179,176 +179,175 @@ print(res.data.runtimeType);
         child: SingleChildScrollView(
           child: Column(
             children: [
-          Stack(
-          children: [
-          Container(
-          height: 170,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Color(0xFFD3CDC8),
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(30),
+              Stack(
+                children: [
+                  Container(
+                    height: 170,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFD3CDC8),
+                      borderRadius: BorderRadius.vertical(
+                        bottom: Radius.circular(30),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, top: 20),
+                    child: Text(
+                      "로그인",
+                      style: TextStyle(
+                        fontSize: 40,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, top: 20),
-            child: Text(
-              "로그인",
-              style: TextStyle(
-                fontSize: 40,
-                color: Colors.black,
+              Padding(
+                padding: const EdgeInsets.only(top: 90),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      kakaoLogin(context);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xffF9E000),
+                      ),
+                      width: 300,
+                      height: 55,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Image.asset(
+                            "assets/images/kakao.png",
+                            width: 30,
+                            height: 30,
+                          ),
+                          Text(
+                            "카카오톡으로 시작하기",
+                            style: TextStyle(
+                              fontSize: 19,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 90),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () {
-                kakaoLogin(context);
-              },
-              child: Container(
+              SizedBox(height: 20),
+              Container(
+                margin: EdgeInsets.only(top: 15),
+                width: 300,
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'ID',
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  controller: _id,
+                  obscureText: false,
+                ),
+              ),
+              Container(
+                width: 300,
+                child: TextField(
+                  maxLength: 12,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  controller: _pw,
+                  obscureText: true,
+                ),
+              ),
+              SizedBox(width: 35, height: 50),
+              Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Color(0xffF9E000),
+                  color: Color(0xFFD3CDC8),
                 ),
                 width: 300,
                 height: 55,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Image.asset(
-                      "assets/images/kakao.png",
-                      width: 30,
-                      height: 30,
-                    ),
-                    Text(
-                      "카카오톡으로 시작하기",
+                child: InkWell(
+                  child: Center(
+                    child: Text(
+                      "로 그 인",
                       style: TextStyle(
-                        fontSize: 19,
+                          fontSize: 19,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                  ),
+                  onTap: () {
+                    login();
+                  },
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 35,
+                    height: 50,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => AppFid()));
+                    },
+                    child: Text(
+                      "아이디 찾기",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
-                    SizedBox(
-                      width: 10,
-                      height: 10,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AppFpw(),
+                      ));
+                    },
+                    child: Text(
+                      "비밀번호 찾기",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          ),
-          SizedBox(height: 20),
-          Container(
-            margin: EdgeInsets.only(top: 15),
-            width: 300,
-            child: TextField(
-              decoration: InputDecoration(
-                labelText: 'ID',
-              ),
-              keyboardType: TextInputType.emailAddress,
-              controller: _id,
-              obscureText: false,
-            ),
-          ),
-          Container(
-            width: 300,
-            child: TextField(
-              maxLength: 12,
-              decoration: InputDecoration(
-                labelText: 'Password',
-              ),
-              keyboardType: TextInputType.emailAddress,
-              controller: _pw,
-              obscureText: true,
-            ),
-          ),
-          SizedBox(width: 35, height: 50),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Color(0xFFD3CDC8),
-            ),
-
-            width: 300,
-            height: 55,
-            child: InkWell(
-              child: Center(
-                child: Text(
-                  "로 그 인",
-                  style: TextStyle(
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                ),
-              ),
-              onTap: () {
-                login();
-              },
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 35,
-                height: 50,
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => AppFid()));
-                },
-                child: Text(
-                  "아이디 찾기",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
                   ),
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => AppFpw(),
-                  ));
-                },
-                child: Text(
-                  "비밀번호 찾기",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                  SizedBox(
+                    width: 60,
+                    height: 10,
                   ),
-                ),
-              ),
-              SizedBox(
-                width: 60,
-                height: 10,
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => AppJoin(),
-                  ));
-                },
-                child: Text(
-                  "회원가입",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AppJoin(),
+                      ));
+                    },
+                    child: Text(
+                      "회원가입",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
-          ],
         ),
       ),
-    ),
     );
   }
 }

@@ -40,7 +40,7 @@ class _AppWritingState extends State<AppWriting> {
         'attachment': attachment,
       };
       final Dio dio = Dio(BaseOptions(
-        baseUrl: "http://192.168.0.188:9090",
+        baseUrl: "http://192.168.0.177:9090",
         headers: {
           'Content-Type': 'application/json',
         },
@@ -56,7 +56,7 @@ class _AppWritingState extends State<AppWriting> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('자주묻는질문'),
+                title: Text('글 등록 성공'),
                 content: Text('글이 등록되었습니다.'),
                 actions: <Widget>[
                   TextButton(

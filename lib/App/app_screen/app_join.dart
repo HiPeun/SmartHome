@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loginproject/App/app_screen/app_login.dart';
 
+import 'app_login.dart';
 
 class AppJoin extends StatefulWidget {
   AppJoin({super.key});
@@ -23,6 +23,7 @@ class _AppJoinState extends State<AppJoin> {
   bool isTermsAgreed = false;
 
   void toggleAgreement(bool value) {
+    //이 값들이 변경되고 위젯이 빈화면이 되었다가 다시 그려짐 (체크가됨),이변수값을 주었으니 다시 그려줌
     setState(() {
       isAgreed = value;
       isPersonAgreed = value;
@@ -59,8 +60,7 @@ class _AppJoinState extends State<AppJoin> {
 
     try {
       final response = await dio.post(
-        // 텍스트 필드로 입력한 아이디,패스워드,이름,이메일을 서버에 post 요청 보내서 DB에 저장시킴
-        "http://177.29.112.112:9090/user/join", // 서버에 POST 요청 보냄
+        "http://192.168.0.188:9090/user/join",
         data: {
           'id': id,
           'pw': pw,
@@ -69,7 +69,7 @@ class _AppJoinState extends State<AppJoin> {
         },
         options: Options(
           headers: {
-            'Content-Type': 'application/json', // 요청 헤더 설정
+            'Content-Type': 'application/json',
           },
         ),
       );
@@ -82,9 +82,9 @@ class _AppJoinState extends State<AppJoin> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop(); // 알림 닫기
+                    Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => AppLogin(), // 로그인 페이지로 이동
+                      builder: (context) => AppLogin(),
                     ));
                   },
                   child: Text('확인'),
@@ -101,229 +101,261 @@ class _AppJoinState extends State<AppJoin> {
     }
   }
 
-  void checkDuplicate(String id) async {
-    final dio = Dio(); //HTTP 클라이언트 라이브러리 Dio의 인스턴스 생성
-
-    try {
-      final response = await dio.post(
-        "http://177.29.112.112:9090/user/login/duplication", // 서버에 POST 요청 보냄
-        data: {
-          'id': id,
-        },
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json', // 요청 헤더 설정
-          },
-        ),
-      );
-      if (response.statusCode == 200) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              content: Text("사용 가능한 아이디 입니다. "),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("닫기"),
-                ),
-              ],
-            );
-          },
-        );
-      } else {
-        print("이미 존재하는 아이디 입니다. : ${response.data}");
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              content: Text("이미 존재하는 아이디 입니다. "),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("닫기"),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    } catch (e) {
-      print("중복 확인 실패 : $e");
-    }
-  }
-
-
   // 이메일 유효성 검사 함수
   bool isValidEmail(String email) {
     final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     return emailRegex.hasMatch(email);
   }
 
+  void check(String id) async {
+    final dio = Dio();
+
+    try {
+      final response = await dio.post(
+        "http://192.168.0.177:9090/user/login/duplication",
+        data: {
+          'id': id,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        bool isDuplicate = response.data as bool;
+        if (isDuplicate) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: Text("이미 사용 중인 아이디입니다."),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('확인'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      } else {
+        print("아이디 중복 확인 실패: ${response.data}");
+      }
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text("사용 가능한 아이디입니다."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("확인"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: 170,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Color(0xFFD3CDC8),
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(30),
+        child: SafeArea(
+          top: true,
+          child: Column(
+            children: [
+              Container(
+                height: 170,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color(0xFFD3CDC8),
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(30),
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 30, left: 50, bottom: 20),
-                child: Row(
-                  children: [
-                    Text(
-                      "Conven",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 50,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Center(
-              child: Column(
-                children: [
-                  SizedBox(
-                    width: 300,
-                    child: TextField(
-                      controller: name,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.person),
-                        labelText: '이름',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 30, left: 50, bottom: 20),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Conven",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 50,
+                              ),
+                            ),
+                            Text(
+                              "계정을 생성합니다",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 200,
-                        child: TextField(
-                          controller: id,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.key),
-                            labelText: '아이디',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
+                ),
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              Center(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 300,
+                      child: TextField(
+                        controller: name,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.person),
+                          labelText: '이름',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      ElevatedButton(
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 218,
+                          child: TextField(
+                            controller: id,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.key),
+                              labelText: '아이디',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        TextButton(
                           onPressed: () {
                             String joinId = id.text;
-                            if (joinId.isNotEmpty) {
-                              checkDuplicate(joinId);
-                            } else {
+                            if (joinId.isEmpty) {
                               showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      content: Text("아이디를 입력해주세요"),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Text("확인"))
-                                      ],
-                                    );
-                                  });
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Text("아이디를 입력하세요."),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('확인'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return;
                             }
+
+                            if (joinId.length > 12 ||
+                                !joinId.contains(RegExp(r'\d'))) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content:
+                                        Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('확인'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return;
+                            }
+
+                            check(joinId);
                           },
                           child: Text(
                             '중복확인',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
+                            style: TextStyle(color: Colors.black),
                           ),
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(10, 55),
+                          style: TextButton.styleFrom(
                             backgroundColor: Color(0xFFD3CDC8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ))
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    width: 300,
-                    child: TextField(
-                      controller: pw,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
-                        labelText: "비밀번호",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-
+                            minimumSize: Size(60, 50),
+                          ),
                         ),
-
-                      ),
-
+                      ],
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  SizedBox(
-                    width: 300,
-                    child: TextField(
-                      controller: pw2,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
-                        labelText: "비밀번호 확인",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                    SizedBox(height: 20),
+                    SizedBox(
+                      width: 300,
+                      child: TextField(
+                        controller: pw,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.lock),
+                          labelText: "비밀번호",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  SizedBox(
-                    width: 300,
-                    child: TextField(
-                      controller: email,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.markunread_rounded),
-                        labelText: "이메일",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                    SizedBox(height: 20),
+                    SizedBox(
+                      width: 300,
+                      child: TextField(
+                        controller: pw2,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.lock),
+                          labelText: "비밀번호 확인",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 16),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 40),
+                    SizedBox(height: 20),
+                    SizedBox(
+                      width: 300,
+                      child: TextField(
+                        controller: email,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.markunread_rounded),
+                          labelText: "이메일",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Container(
+                      width: 300,
+                      alignment: Alignment.centerLeft,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Checkbox(
                             value: isAgreed,
@@ -340,223 +372,229 @@ class _AppJoinState extends State<AppJoin> {
                         ],
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 40),
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          value: isPersonAgreed,
-                          onChanged: (value) {
-                            setState(() {
-                              isPersonAgreed = value!;
-                              if (!value) {
-                                isAgreed = false;
-                              } else if (isTermsAgreed) {
-                                isAgreed = true;
-                              }
-                            });
-                          },
-                        ),
-                        Text(
-                          "[필수] 개인 정보 수집",
-                          style: TextStyle(
-                            fontSize: 16,
+                    Container(
+                      width: 300,
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Checkbox(
+                            value: isPersonAgreed,
+                            onChanged: (value) {
+                              setState(() {
+                                isPersonAgreed = value!;
+                                if (!value) {
+                                  isAgreed = false;
+                                } else if (isTermsAgreed) {
+                                  isAgreed = true;
+                                }
+                              });
+                            },
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 40),
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          value: isTermsAgreed,
-                          onChanged: (value) {
-                            setState(() {
-                              isTermsAgreed = value!;
-                              if (!value) {
-                                isAgreed = false;
-                              } else if (isPersonAgreed) {
-                                isAgreed = true;
-                              }
-                            });
-                          },
-                        ),
-                        Text(
-                          "[필수] 이용약관",
-                          style: TextStyle(
-                            fontSize: 16,
+                          Text(
+                            "[필수] 개인 정보 수집",
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 40),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Material(
-                      elevation: 5.0,
-                      borderRadius: BorderRadius.circular(30.0),
-                      color: const Color(0xFFD3CDC8),
-                      child: MaterialButton(
-                        onPressed: () {
-                          String joinName = name.text;
-                          String joinId = id.text;
-                          String joinPw = pw.text;
-                          String joinPw2 = pw2.text;
-                          String joinEmail = email.text;
+                    Container(
+                      width: 300,
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Checkbox(
+                            value: isTermsAgreed,
+                            onChanged: (value) {
+                              setState(() {
+                                isTermsAgreed = value!;
+                                if (!value) {
+                                  isAgreed = false;
+                                } else if (isPersonAgreed) {
+                                  isAgreed = true;
+                                }
+                              });
+                            },
+                          ),
+                          Text(
+                            "[필수] 이용약관",
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 40),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Material(
+                        elevation: 5.0,
+                        borderRadius: BorderRadius.circular(30.0),
+                        color: const Color(0xFFD3CDC8),
+                        child: MaterialButton(
+                          onPressed: () {
+                            String joinName = name.text;
+                            String joinId = id.text;
+                            String joinPw = pw.text;
+                            String joinPw2 = pw2.text;
+                            String joinEmail = email.text;
 
-                          if (joinName.length > 6) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: Text("이름은 6자리 이하로 입력하세요."),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('확인'),
+                            if (joinName.length > 6) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Text("이름은 6자리 이하로 입력하세요."),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('확인'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return;
+                            }
+
+                            if (joinId.length > 12 ||
+                                !joinId.contains(RegExp(r'\d'))) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content:
+                                        Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('확인'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return;
+                            }
+
+                            RegExp passwordRegex = RegExp(
+                                r'^(?=.*\d)(?=.*[a-zA-Z])(~?=.*[!@#$%^&*(),.?":{}|<>]).{5,12}$');
+                            if (joinPw.length > 12 ||
+                                !passwordRegex.hasMatch(joinPw)) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Text(
+                                      "비밀번호는 5자에서 12자 사이이며, 문자와 숫자를 모두 포함해야 합니다.",
                                     ),
-                                  ],
-                                );
-                              },
-                            );
-                            return;
-                          }
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('확인'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return;
+                            }
 
-                          if (joinId.length > 12 ||
-                              !joinId.contains(RegExp(r'\d'))) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('확인'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                            return;
-                          }
+                            if (joinPw != joinPw2) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Text("비밀번호가 일치하지 않습니다."),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('확인'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return;
+                            }
 
-                          RegExp passwordRegex =
-                              RegExp(r'^(?=.*\d)(?=.*[a-zA-Z]).{5,12}$');
-                          if (joinPw.length > 12 ||
-                              !passwordRegex.hasMatch(joinPw)) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: Text(
-                                      "비밀번호는 5자에서 12자 사이이며, 문자와 숫자를 모두 포함해야 합니다."),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('확인'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                            return;
-                          }
+                            if (joinEmail.isEmpty || !isValidEmail(joinEmail)) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Text("유효한 이메일 주소를 입력하세요."),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('확인'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return;
+                            }
 
-                          if (joinPw != joinPw2) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: Text("비밀번호가 일치하지 않습니다."),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('확인'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                            return;
-                          }
+                            if (!isAgreed) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Text("약관에 동의해야 합니다."),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('확인'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return;
+                            }
 
-                          if (joinEmail.isEmpty || !isValidEmail(joinEmail)) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: Text("유효한 이메일 주소를 입력하세요."),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('확인'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                            return;
-                          }
-
-                          if (!isAgreed) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: Text("약관에 동의해야 합니다."),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('확인'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                            return;
-                          }
-
-                          joins(joinId, joinPw, joinName, joinEmail);
-                        },
-                        child: SizedBox(
-                          width: 500,
-                          height: 45,
-                          child: Center(
-                            child: Text(
-                              "회원가입",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
+                            joins(joinId, joinPw, joinName, joinEmail);
+                          },
+                          child: SizedBox(
+                            width: 300,
+                            height: 45,
+                            child: Center(
+                              child: Text(
+                                "회원가입",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

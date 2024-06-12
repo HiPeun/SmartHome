@@ -56,7 +56,6 @@ class _WebJoinState extends State<WebJoin> {
   }
   void joins(String id, String pw, String name, String email) async {
     final dio = Dio(); //HTTP 클라이언트 라이브러리 Dio의 인스턴스 생성
-
     try {
       final response = await dio.post(
         "http://192.168.0.177:9090/user/join",
