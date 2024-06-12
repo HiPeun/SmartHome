@@ -267,7 +267,7 @@ class _AddQnAPageState extends State<AddQnAPage> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text("오류"),
-          content: Text("작성자, 제목, 내용을 모두 입력하세요."),
+          content: Text("작성자, 제, 내용을 모두 입력하세요."),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),

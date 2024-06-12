@@ -126,7 +126,12 @@ class _Page2State extends State<Page2> {
                 ],
               ),
               if (user.isNotEmpty)
-                Text("환영합니다, ${user["id"]}님!", style: TextStyle(fontSize: 18)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("반가워요, ${user["id"]}님!", style: TextStyle(fontSize: 20)),
+                  ],
+                ),
               AppMainView(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

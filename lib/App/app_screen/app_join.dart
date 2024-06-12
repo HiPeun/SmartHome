@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loginproject/App/app_screen/bottom_bar.dart';
 
 import 'app_login.dart';
 
@@ -23,7 +24,6 @@ class _AppJoinState extends State<AppJoin> {
   bool isTermsAgreed = false;
 
   void toggleAgreement(bool value) {
-    //이 값들이 변경되고 위젯이 빈화면이 되었다가 다시 그려짐 (체크가됨),이변수값을 주었으니 다시 그려줌
     setState(() {
       isAgreed = value;
       isPersonAgreed = value;
@@ -31,9 +31,8 @@ class _AppJoinState extends State<AppJoin> {
     });
   }
 
+  @override
   void initState() {
-    //super.initState 코드는 현재 클래스에서 오버라이드 된
-    // initState() 메서드 내에서 상위 클래스의 initState() 메서드를 호출
     super.initState();
     id = TextEditingController(text: "");
     pw = TextEditingController(text: "");
@@ -42,8 +41,6 @@ class _AppJoinState extends State<AppJoin> {
     name = TextEditingController(text: "");
   }
 
-//각 텍스트 필드의 입력값을 Controller를 사용하여 가져오고
-// dispose을 사용해서 메모리 누수를 방지
   @override
   void dispose() {
     id.dispose();
@@ -51,12 +48,11 @@ class _AppJoinState extends State<AppJoin> {
     pw2.dispose();
     email.dispose();
     name.dispose();
-    //super.dispose를 호출하여 부모 클래스의 dispose 메소드를 실행하여 추가적인 정리 작업을 수행
     super.dispose();
   }
 
   void joins(String id, String pw, String name, String email) async {
-    final dio = Dio(); //HTTP 클라이언트 라이브러리 Dio의 인스턴스 생성
+    final dio = Dio();
 
     try {
       final response = await dio.post(
@@ -82,10 +78,15 @@ class _AppJoinState extends State<AppJoin> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => AppLogin(),
-                    ));
+                    Navigator.pop(context); // 다이얼로그 닫기
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BottomBar(), // MainPage로 변경
+                      ),
+                          (Route<dynamic> route) => false, // 현재 경로를 모두 제거
+                    );
+
                   },
                   child: Text('확인'),
                 ),
@@ -163,6 +164,13 @@ class _AppJoinState extends State<AppJoin> {
         },
       );
     }
+  }
+
+  // 비밀번호 유효성 검사 함수
+  bool isValidPassword(String password) {
+    final RegExp passwordRegex = RegExp(
+        r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{5,12}$');
+    return passwordRegex.hasMatch(password);
   }
 
   @override
@@ -278,7 +286,7 @@ class _AppJoinState extends State<AppJoin> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     content:
-                                        Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
+                                    Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
                                     actions: [
                                       TextButton(
                                         onPressed: () {
@@ -470,7 +478,7 @@ class _AppJoinState extends State<AppJoin> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     content:
-                                        Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
+                                    Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
                                     actions: [
                                       TextButton(
                                         onPressed: () {
@@ -485,10 +493,7 @@ class _AppJoinState extends State<AppJoin> {
                               return;
                             }
 
-                            RegExp passwordRegex = RegExp(
-                                r'^(?=.*\d)(?=.*[a-zA-Z])(~?=.*[!@#$%^&*(),.?":{}|<>]).{5,12}$');
-                            if (joinPw.length > 12 ||
-                                !passwordRegex.hasMatch(joinPw)) {
+                            if (joinPw.length > 12 || !isValidPassword(joinPw)) {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
