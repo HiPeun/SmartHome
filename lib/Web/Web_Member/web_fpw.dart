@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loginproject/App/main.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
 import 'package:loginproject/Web/Web_Member/web_npw.dart';
@@ -37,34 +38,18 @@ class _WebFpwState extends State<WebFpw> {
         ),
       );
       print(response.data);
-
       if (response.statusCode == 200) {
         if (response.data == true) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                content: Text("계정을 찾았습니다. \n새로운 비밀번호를 생성합니다"),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => WebNpw(),
-                      ));
-                    },
-                    child: Text('확인'),
-                  ),
-                ],
-              );
-            },
-          );
+          print('ID: $id');
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => WebNpw(id: id),
+          ));
         } else {
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                content: Text("계정을 찾을 수 없습니다. \n입력한 정보가 정확한지 확인하세요."),
+                content: Text("입력한 정보가 정확한지 확인하세요."),
                 actions: [
                   TextButton(
                     onPressed: () {

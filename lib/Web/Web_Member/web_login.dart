@@ -150,7 +150,9 @@ class _WebLoginState extends State<WebLogin> {
 
       if (res.statusCode == 200 && res.data is Map<String, dynamic>) {
         user = res.data;
-        Navigator.pop(context);
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => MyHomePage(),
+        ));
       } else {
         showDialog(
           context: context,
