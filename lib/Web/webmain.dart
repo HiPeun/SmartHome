@@ -10,6 +10,9 @@ import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 
 import '../App/main.dart';
 
+// void main() {
+//   runApp(const MyApp());
+// }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -54,17 +57,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Container(
                         child: InkWell(
                           onTap: () async {
-                            if(user.isEmpty) {
+                            if (user.isEmpty) {
                               await Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => WebLogin()),
+                                MaterialPageRoute(
+                                    builder: (context) => WebLogin()),
                               );
                             } else {
                               user = {};
                             }
-                            setState(() {
-
-                            });
+                            setState(() {});
                           },
                           child: Text(
                             // isEmpty 빈값이면
@@ -81,9 +83,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Container(
                         child: InkWell(
                           onTap: () async {
-                            if(user.isEmpty) {
+                            if (user.isEmpty) {
                               await Navigator.push(
-                                  context,
+                                context,
                                 MaterialPageRoute(
                                     builder: (context) => WebJoin()),
                               );
@@ -104,25 +106,27 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: Container(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => WebNotice()),
-                            );
-                          },
-                          child: Text(
-                            "고객센터",
-                            style: TextStyle(
-                              fontSize: 20,
+                    if (user.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 40),
+                        child: Container(
+                          child: InkWell(
+                            onTap: () async {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => WebNotice(),
+                                  ));
+                            },
+                            child: Text(
+                              "고객센터",
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),
@@ -132,10 +136,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: const EdgeInsets.only(top: 30),
                     child: CarouselSlider.builder(
                       itemCount: imgList.length,
-                      itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+                      itemBuilder: (BuildContext context, int itemIndex,
+                              int pageViewIndex) =>
                           Container(
-                            child: Image.network(imgList[itemIndex], fit: BoxFit.cover),
-                          ),
+                        child: Image.network(imgList[itemIndex],
+                            fit: BoxFit.cover),
+                      ),
                       options: CarouselOptions(
                         height: 500,
                         viewportFraction: 1.0,
@@ -156,13 +162,17 @@ class _MyHomePageState extends State<MyHomePage> {
                             margin: EdgeInsets.only(top: 180),
                             child: Text(
                               "Smart Home",
-                              style: TextStyle(fontSize: 80, fontWeight: FontWeight.bold, color: Colors.white),
+                              style: TextStyle(
+                                  fontSize: 80,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                           ),
                           Container(
                             child: Text(
                               "일상의 행복한 변화",
-                              style: TextStyle(fontSize: 40, color: Colors.white),
+                              style:
+                                  TextStyle(fontSize: 40, color: Colors.white),
                             ),
                           ),
                         ],
@@ -382,10 +392,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       margin: EdgeInsets.only(left: 100),
                       child: InkWell(
                         onTap: () {},
-                        child: Text("이용약관",
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Color(0xFFE5E5E1)),
+                        child: Text(
+                          "이용약관",
+                          style:
+                              TextStyle(fontSize: 20, color: Color(0xFFE5E5E1)),
                         ),
                       ),
                     ),
@@ -395,10 +405,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     Container(
                       child: InkWell(
                         onTap: () {},
-                        child: Text("개인정보 처리방침",
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Color(0xFFE5E5E1)),
+                        child: Text(
+                          "개인정보 처리방침",
+                          style:
+                              TextStyle(fontSize: 20, color: Color(0xFFE5E5E1)),
                         ),
                       ),
                     ),
@@ -411,21 +421,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   Row(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: 100),
-                        child: Text("대표이사/사장 김근재",
-                          style: TextStyle(
-                              color: Color(0xFFE5E5E1)),
-                        )
-                      ),
+                          margin: EdgeInsets.only(left: 100),
+                          child: Text(
+                            "대표이사/사장 김근재",
+                            style: TextStyle(color: Color(0xFFE5E5E1)),
+                          )),
                     ],
                   ),
                   Row(
                     children: [
                       Container(
-                          margin: EdgeInsets.only(left: 100),
-                        child: Text("광주 북구 북문대로242번길 11",
-                          style: TextStyle(
-                              color: Color(0xFFE5E5E1)),
+                        margin: EdgeInsets.only(left: 100),
+                        child: Text(
+                          "광주 북구 북문대로242번길 11",
+                          style: TextStyle(color: Color(0xFFE5E5E1)),
                         ),
                       ),
                     ],
@@ -433,21 +442,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   Row(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: 100),
-                        child: Text("고객센터 010-8805-4754",
-                          style: TextStyle(
-                              color: Color(0xFFE5E5E1)),
-                        )
-                      ),
+                          margin: EdgeInsets.only(left: 100),
+                          child: Text(
+                            "고객센터 010-8805-4754",
+                            style: TextStyle(color: Color(0xFFE5E5E1)),
+                          )),
                     ],
                   ),
                   Row(
                     children: [
                       Container(
-                          margin: EdgeInsets.only(left: 100),
-                        child: Text("COPYRIGHT ⓒ 럽팅",
-                          style: TextStyle(
-                              color: Color(0xFFE5E5E1)),
+                        margin: EdgeInsets.only(left: 100),
+                        child: Text(
+                          "COPYRIGHT ⓒ 럽팅",
+                          style: TextStyle(color: Color(0xFFE5E5E1)),
                         ),
                       ),
                     ],
