@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:loginproject/Web/Web_Cus/web_notice.dart';
+import 'package:loginproject/Web/Web_Cus/web_notice_screen.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
 import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
@@ -109,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => WebNotice(),
+                                    builder: (context) => WebNoticeScreen(),
                                   ));
                             },
                             child: Text(
