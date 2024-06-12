@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-
 import 'package:loginproject/App/app_screen/app_login.dart';
-import 'package:loginproject/App/app_screen/app_page2.dart';
-import 'package:loginproject/App/app_screen/bottom_bar.dart';
-
 import 'package:loginproject/App/main.dart';
 
 class Page3 extends StatefulWidget {
@@ -41,6 +37,8 @@ class _Page3State extends State<Page3> {
       print('Error parsing userData: $e');
     }
   }
+
+
 
   //아이디와 비밀번호가 맞는지 확인하는 부분
   Future<void> checkPasswords() async {
@@ -185,8 +183,7 @@ class _Page3State extends State<Page3> {
                   onPressed: () {
                     Navigator.of(context).pop();
                     user = {};
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => BottomBar()));
+
                   },
                 ),
               ],
