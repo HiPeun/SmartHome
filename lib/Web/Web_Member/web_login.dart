@@ -144,7 +144,7 @@ class _WebLoginState extends State<WebLogin> {
         "id": _id.text,
         "pw": _pw.text,
       };
-      final Dio dio = Dio(BaseOptions(baseUrl: "http://172.29.112.112:9090"));
+      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.188:9090"));
 
       Response res = await dio.post("/user/login", data: data);
 
@@ -152,7 +152,6 @@ class _WebLoginState extends State<WebLogin> {
         user = res.data;
         Navigator.pop(context);
       } else {
-        print(res.data.runtimeType);
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -246,22 +245,6 @@ class _WebLoginState extends State<WebLogin> {
                         },
                         child: Text(
                           "회원가입",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebNotice(),
-                          ));
-                        },
-                        child: Text(
-                          "고객센터",
                           style: TextStyle(
                             fontSize: 22,
                           ),
