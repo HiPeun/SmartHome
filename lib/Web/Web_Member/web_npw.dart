@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loginproject/App/main.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
 
 class WebNpw extends StatefulWidget {
-  WebNpw({super.key});
+  final String id;
+  WebNpw({Key? key, required this.id}) : super(key: key);
 
 
   @override
@@ -13,13 +15,17 @@ class WebNpw extends StatefulWidget {
 }
 
 class _WebNpwState extends State<WebNpw> {
+  late String id;
   TextEditingController pw = TextEditingController();
   TextEditingController pw2 = TextEditingController();
+
+
 
   void initState(){
     //super.initState 코드는 현재 클래스에서 오버라이드 된
     // initState() 메서드 내에서 상위 클래스의 initState() 메서드를 호출
     super.initState();
+    id = widget.id; // 생성자에서 받아온 id 값을 초기화
     pw = TextEditingController(text: "");
     pw2 = TextEditingController(text: "");
   }
@@ -35,11 +41,11 @@ class _WebNpwState extends State<WebNpw> {
 
   void updatePassword() async {
     final dio = Dio();
-
     try {
       final response = await dio.post(
-        "http://192.168.0.177:9090/user/update",
+        "http://192.168.0.188:9090/user/login/pwfind",
         data: {
+          'id': id,
           'pw': pw.text,
         },
         options: Options(
@@ -48,6 +54,26 @@ class _WebNpwState extends State<WebNpw> {
           },
         ),
       );
+      RegExp passwordRegex = RegExp(r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*(),.?":{}|<>]).{5,12}$');
+      if (pw.text.length > 12 || !passwordRegex.hasMatch(pw.text)) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text("비밀번호는 5자에서 12자 사이이며, 문자와 숫자를 모두 포함해야 합니다."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+        return;
+      }
 
       if (response.statusCode == 200) {
         showDialog(

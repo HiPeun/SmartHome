@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loginproject/App/app_screen/app_join.dart';
+import 'package:loginproject/App/app_screen/app_login.dart';
 
 class AppFpw extends StatefulWidget {
   AppFpw({super.key});
@@ -97,7 +99,10 @@ class _AppFpwState extends State<AppFpw> {
                         height: 10,
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) => AppLogin()));
+                        },
                         child: Text(
                           "로그인",
                           style: TextStyle(
@@ -107,13 +112,17 @@ class _AppFpwState extends State<AppFpw> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
-                        child: Text("회원가입",
-
-                            style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) => AppJoin()));
+                        },
+                        child: Text(
+                          "회원가입",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
                       ),
                     ],
                   ),
