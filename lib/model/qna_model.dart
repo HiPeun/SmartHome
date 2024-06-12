@@ -10,6 +10,7 @@ class QnaModel with _$QnaModel {
     int? pno,
     int? mbno,
     String? name,
+    String? id,
     String? title,
     String? content,
     String? attachment,

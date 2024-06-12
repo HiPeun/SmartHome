@@ -5,10 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:loginproject/Web/Web_Cus/web_writing.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/webmain.dart';
-
 import '../../model/notice_model.dart';
 import '../../model/qna_model.dart';
-import '../Web_Member/web_login.dart';
 
 class WebNoticeScreen extends StatefulWidget {
   WebNoticeScreen({super.key});
@@ -311,10 +309,11 @@ class _QnaListState extends State<QnaList> {
     getQnaList();
   }
 
+
   void getQnaList() async {
     Dio dio = Dio(
       BaseOptions(
-        baseUrl: "http://172.29.112.112:9090",
+        baseUrl: "http://192.168.0.177:9090",
         contentType: "application/json",
       ),
     );
@@ -336,6 +335,32 @@ class _QnaListState extends State<QnaList> {
     }
   }
 
+  void deleteQna(int? pno) async {
+    Dio dio = Dio(
+      BaseOptions(
+        baseUrl: "http://192.168.0.177:9090",
+        contentType: "application/json",
+      ),
+    );
+
+    try {
+      Response res = await dio.post("/board/delete", data: {'pno': pno});
+      if (res.statusCode == 200 && res.data == true) {
+        setState(() {
+          list.removeWhere((qna) => qna.pno == pno);
+        });
+        print("삭제되었습니다.");
+      } else {
+        print("삭제에 실패했습니다.");
+      }
+    } catch (e) {
+      print("Failed to delete data: $e");
+    }
+  }
+
+
+
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: list.length,
@@ -350,16 +375,56 @@ class _QnaListState extends State<QnaList> {
                 list[index].title ?? "",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              Container(
-                height: 10,
-              ),
               Text(date),
             ],
           ),
           children: <Widget>[
             ListTile(
-              title: Text(
-                list[index].content ?? "",
+              title: Text(list[index].content ?? ""),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => WebWriting(qna: list[index]),
+                        ),
+                      ).then((value) => getQnaList());
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("삭제 확인"),
+                            content: Text("정말 삭제하시겠습니까?"),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text("취소"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  deleteQna(list[index].pno);
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text("확인"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
+
+                ],
               ),
             ),
           ],

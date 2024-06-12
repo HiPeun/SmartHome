@@ -1,16 +1,16 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:loginproject/App/main.dart';
 import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
-import '../Web_Member/web_login.dart';
-import '../Web_Member/web_join.dart';
+import '../../model/qna_model.dart';
 import '../Web_Cus/web_notice.dart';
 
 class WebWriting extends StatefulWidget {
-  WebWriting({Key? key}) : super(key: key);
+  final QnaModel? qna;
+
+  WebWriting({Key? key, this.qna}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _WebWritingState();
@@ -22,10 +22,15 @@ class _WebWritingState extends State<WebWriting> {
   TextEditingController contentController = TextEditingController();
   TextEditingController attachmentController = TextEditingController();
 
+
   @override
   void initState() {
     super.initState();
     nameController.text = user["name"];
+    if (widget.qna != null) {
+      titleController.text = widget.qna!.title ?? '';
+      contentController.text = widget.qna!.content ?? '';
+    }
   }
 
   @override
@@ -36,6 +41,62 @@ class _WebWritingState extends State<WebWriting> {
     attachmentController.dispose();
     super.dispose();
   }
+
+
+  void updatePost() async {
+    try {
+      final Map<String, dynamic> data = {
+        'mbno': user['mbno'],
+        'name': nameController.text,
+        'title': titleController.text,
+        'content': contentController.text,
+        'attachment': attachmentController.text,
+      };
+      final Dio dio = Dio(BaseOptions(
+        baseUrl: "http://192.168.0.177:9090",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ));
+      Response res = await dio.post("/board/update", data: data);
+      if (res.statusCode == 200 && res.data == true) {
+        print('글이 수저되었습니다.');
+        Navigator.pop(context); // 현재 페이지를 닫습니다.
+
+        // 잠시 지연 후 showDialog 호출
+        Future.delayed(Duration(milliseconds: 100), () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('자주묻는질문'),
+                content: Text('글이 등록되었습니다.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // 대화 상자를 닫습니다.
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            },
+
+          );
+        });
+      } else {
+        print('글 수정에 실패했습니다: ${res.statusMessage}');
+      }
+    } catch (e) {
+      if (e is DioError) {
+        print('글 수정에 실패했습니다: 네트워크 오류입니다.');
+        print('DioError: $e');
+      } else {
+        print('글 수정에 실패했습니다: $e');
+      }
+    }
+  }
+
 
   void submitPost() async {
     try {
@@ -229,9 +290,9 @@ class _WebWritingState extends State<WebWriting> {
                       Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            submitPost();
+                            widget.qna != null ? updatePost() : submitPost();
                           },
-                          child: Text("글등록"),
+                          child: Text(widget.qna != null ? "글수정" : "글등록"),
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(150, 50),
                             backgroundColor: Color(0xFFD3CDC8),
@@ -242,6 +303,7 @@ class _WebWritingState extends State<WebWriting> {
                             ),
                           ),
                         ),
+
                       ),
                     ],
                   ),
