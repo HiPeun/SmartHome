@@ -10,9 +10,6 @@ import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 
 import '../App/main.dart';
 
-// void main() {
-//   runApp(const MyApp());
-// }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});

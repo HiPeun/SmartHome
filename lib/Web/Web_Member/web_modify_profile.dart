@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:loginproject/App/main.dart';
 import 'package:loginproject/Web/webmain.dart';
 import '../Web_Cus/web_notice.dart';
 
@@ -11,6 +12,8 @@ class WebModifyProfile extends StatefulWidget {
   State<StatefulWidget> createState() => _WebModifyProfile();
 }
 
+
+
 class _WebModifyProfile extends State<WebModifyProfile> {
 
   TextEditingController mbnoController = TextEditingController();
@@ -20,61 +23,12 @@ class _WebModifyProfile extends State<WebModifyProfile> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
-  void fetchUserInfo() async {
-    try {
-      final int? mbno = int.tryParse(mbnoController.text);
-      if (mbno == null) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('입력 오류'),
-              content: const Text('유효한 MBNO를 입력해주세요'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('확인'),
-                ),
-              ],
-            );
-          },
-        );
-        return;
-      }
-
-      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://172.29.112.112:9090"));
-      dio.Response res = await dioClient.post("/user/login/info", data: {"mbno": mbno});
-      if (res.statusCode == 200) {
-        final userInfo = res.data;
-        setState(() {
-          idController.text = userInfo["id"].toString();
-          nameController.text = userInfo["name"];
-          emailController.text = userInfo["email"];
-        });
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('오류'),
-              content: const Text('사용자 정보를 불러오지 못했습니다x.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('확인'),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    } catch (e) {
-      print(e);
-    }
+  @override
+  void initState() {
+    super.initState();
+    idController.text = user["id"];
+    nameController.text = user["name"];
+    emailController.text = user["email"];
   }
 
   @override
@@ -91,12 +45,12 @@ class _WebModifyProfile extends State<WebModifyProfile> {
   void updateProfile() async {
     try {
       final Map<String, dynamic> data = {
+        "id": idController.text,
         "pw": pwController.text,
         "pw2": pw2Controller.text,
         "name": nameController.text,
-        "mbno": int.parse(mbnoController.text),
       };
-      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://172.29.112.112:9090"));
+      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.188:9090"));
       RegExp passwordRegex = RegExp(r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*(),.?":{}|<>]).{5,12}$');
       if (pwController.text.length > 12 || !passwordRegex.hasMatch(pwController.text)) {
         showDialog(
@@ -240,7 +194,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
         "id": idController.text,
         "pw": pwController.text,
       };
-      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://172.29.112.112:9090"));
+      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.188:9090"));
       dio.Response res = await dioClient.post("/user/remove", data: data);
 
       if (res.statusCode == 200 && res.data == true) {
@@ -262,6 +216,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                 ),
                 TextButton(
                   onPressed: () {
+                    user = {};
                     Navigator.of(context).pop(true); // 확인을 누르면 true 반환
                   },
                   child: const Text('확인'),
@@ -366,22 +321,6 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const MyHomePage(),
-                          ));
-                        },
-                        child: const Text(
-                          "로그아웃",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => WebModifyProfile(),
                           ));
                         },
@@ -441,31 +380,6 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                     SizedBox(
                       width: 600,
                       child: TextField(
-                        controller: mbnoController,
-                        decoration: const InputDecoration(
-                          labelText: "MBNO",
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: fetchUserInfo,
-                      child: const Text("정보 불러오기"),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(100, 50),
-                        backgroundColor: const Color(0xFFD3CDC8),
-                        textStyle: const TextStyle(fontSize: 18),
-                        foregroundColor: Colors.black,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: 600,
-                      child: TextField(
                         controller: idController,
                         decoration: const InputDecoration(
                           labelText: "아이디",
@@ -511,6 +425,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                     SizedBox(
                       width: 600,
                       child: TextField(
+                        readOnly: true,
                         controller: emailController,
                         decoration: const InputDecoration(
                           labelText: "이메일",
