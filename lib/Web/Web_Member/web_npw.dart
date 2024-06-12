@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
 
-import '../Web_Cus/web_notice.dart';
 class WebNpw extends StatefulWidget {
   WebNpw({super.key});
 
@@ -34,14 +33,14 @@ class _WebNpwState extends State<WebNpw> {
     super.dispose();
   }
 
-  void joins(String pw) async {
-    final dio = Dio(); //HTTP 클라이언트 라이브러리 Dio의 인스턴스 생성
+  void updatePassword() async {
+    final dio = Dio();
 
     try {
       final response = await dio.post(
-        "http://177.29.112.112:9090/user/update", // 서버에 POST 요청 보냄
+        "http://192.168.0.177:9090/user/update",
         data: {
-          'pw': pw,
+          'pw': pw.text,
         },
         options: Options(
           headers: {
@@ -49,12 +48,13 @@ class _WebNpwState extends State<WebNpw> {
           },
         ),
       );
+
       if (response.statusCode == 200) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Text("비밀번호 수정이 완료되었습니다. \n로그인페이지로 이동합니다."),
+              content: Text("비밀번호 수정이 완료되었습니다. 로그인 페이지로 이동합니다."),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -71,11 +71,44 @@ class _WebNpwState extends State<WebNpw> {
         );
       } else {
         print("비밀번호 수정 실패: ${response.data}");
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text("비밀번호 수정에 실패했습니다. 다시 시도해주세요."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
       }
     } catch (e) {
       print("비밀번호 수정 실패: $e");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text("비밀번호 수정에 실패했습니다. 다시 시도해주세요."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -150,22 +183,6 @@ class _WebNpwState extends State<WebNpw> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebNotice(),
-                          ));
-                        },
-                        child: Text(
-                          "고객센터",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -212,31 +229,10 @@ class _WebNpwState extends State<WebNpw> {
                       color: const Color(0xFFD3CDC8),
                       child: MaterialButton(
                         onPressed: () {
-                          String joinPw = pw.text;
-                          String joinPw2 = pw2.text;
+                          String newPassword = pw.text;
+                          String newPassword2 = pw2.text;
 
-                          RegExp passwordRegex = RegExp(r'^(?=.*\d)(?=.*[a-zA-Z]).{5,12}$');
-                          if (joinPw.length > 12 || !passwordRegex.hasMatch(joinPw)) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: Text("비밀번호는 5자에서 12자 사이이며, 문자와 숫자를 모두 포함해야 합니다."),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('확인'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                            return;
-                          }
-
-                          if (joinPw != joinPw2) {
+                          if (newPassword != newPassword2) {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -256,9 +252,29 @@ class _WebNpwState extends State<WebNpw> {
                             return;
                           }
 
-                          joins(joinPw);
-                        },
+                          RegExp passwordRegex = RegExp(r'^(?=.*\d)(?=.*[a-zA-Z]).{5,12}$');
+                          if (!passwordRegex.hasMatch(newPassword)) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text("비밀번호는 5자에서 12자 사이이며, 문자와 숫자를 모두 포함해야 합니다."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('확인'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            return;
+                          }
 
+                          updatePassword();
+                        },
                         child: SizedBox(
                           width: 400,
                           height: 45,
