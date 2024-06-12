@@ -55,7 +55,6 @@ class _WebJoinState extends State<WebJoin> {
   }
   void joins(String id, String pw, String name, String email) async {
     final dio = Dio(); //HTTP 클라이언트 라이브러리 Dio의 인스턴스 생성
-
     try {
       final response = await dio.post(
         "http://192.168.0.177:9090/user/join",
@@ -76,7 +75,7 @@ class _WebJoinState extends State<WebJoin> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Text("회원가입이 완료되었습니다. \n로그인페이지로 이동합니다."),
+              content: Text("회원가입이 완료되었습니다."),
               actions: [
                 TextButton(
                   onPressed: () {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
-import 'dart:convert';
+
 
 import 'package:loginproject/App/app_screen/app_login.dart';
 import 'package:loginproject/App/app_screen/app_page2.dart';
@@ -43,11 +42,13 @@ class _Page3State extends State<Page3> {
     }
   }
 
+  //아이디와 비밀번호가 맞는지 확인하는 부분
   Future<void> checkPasswords() async {
     try {
-      //만약에 유저가 적은 아이디값과 비번값이
+      //만약에 유저가 적은 아이디값과 비밀번호 값이 DB와 일치할 경우
       if (user["id"] == id.text && user["pw"] == pw.text) {
         setState(() {
+          //화면을 다시 그려 isPwMatched에 true 값을 줘라
           isPwMatched = true;
         });
       } else {
@@ -91,18 +92,18 @@ class _Page3State extends State<Page3> {
     }
   }
 
+  //회원정보 수정 부분
   Future<void> updateUserInfo() async {
-    if (!isPwMatched) return;
 
     try {
       var response = await Dio().post(
-        'http://177.29.112.112:9090/user/update',
+        'http://192.168.0.177:9090/user/update',
         data: {
           'name': name.text,
           'email': email.text,
-          'mbno': int.parse(mbno),
         },
       );
+
       if (response.statusCode == 200) {
         showDialog(
           context: context,
@@ -161,11 +162,10 @@ class _Page3State extends State<Page3> {
       );
     }
   }
-
   Future<void> deleteUser() async {
     try {
       var response = await Dio().post(
-        'http://177.29.112.112:9090/user/remove',
+        'http://192.168.0.177:9090/user/remove',
         data: {
           'id': id.text,
           'pw': pw.text,
@@ -183,8 +183,6 @@ class _Page3State extends State<Page3> {
                   child: Text('확인'),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => Page2()));
                   },
                 ),
               ],
@@ -350,7 +348,10 @@ class _Page3State extends State<Page3> {
               ),
             ),
             ElevatedButton(
-              onPressed: deleteUser,
+              onPressed: (){
+                deleteUser();
+                Navigator.pop(context);
+              },
               child: Text("회원탈퇴"),
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(10, 30),
