@@ -10,6 +10,10 @@ import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 
 import '../App/main.dart';
 
+// void main() {
+//   runApp(const MyApp());
+// }
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -47,6 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.only(right: 40),
                       child: Container(
@@ -246,6 +251,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
+
+
               Stack(
                 children: [
                   Center(
@@ -289,6 +296,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
+
               Stack(
                 children: [
                   Center(
@@ -332,6 +340,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
+
               Stack(
                 children: [
                   Center(

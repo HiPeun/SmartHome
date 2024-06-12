@@ -112,7 +112,7 @@ class _WebJoinState extends State<WebJoin> {
 
     try {
       final response = await dio.post(
-        "http://192.168.0.182:9090/user/login/duplication",
+        "http://192.168.0.188:9090/user/login/duplication",
         data: {
           'id': id,
         },
@@ -220,18 +220,7 @@ class _WebJoinState extends State<WebJoin> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {},
-                        child: Text(
-                          "회원가입",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                    ),
+
                     Padding(
                       padding: const EdgeInsets.only(right: 40),
                       child: InkWell(
