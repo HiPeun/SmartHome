@@ -102,6 +102,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
               actions: [
                 TextButton(
                   onPressed: () {
+                    user = {};
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const MyHomePage()),

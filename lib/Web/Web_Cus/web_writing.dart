@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
+import 'package:loginproject/App/main.dart';
+import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 import '../Web_Member/web_login.dart';
 import '../Web_Member/web_join.dart';
 import '../Web_Cus/web_notice.dart';
@@ -21,6 +23,12 @@ class _WebWritingState extends State<WebWriting> {
   TextEditingController attachmentController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    nameController.text = user["name"];
+  }
+
+  @override
   void dispose() {
     titleController.dispose();
     contentController.dispose();
@@ -29,24 +37,23 @@ class _WebWritingState extends State<WebWriting> {
     super.dispose();
   }
 
-  void submitPost(String name, String title, String content, String attachment, BuildContext context) async {
-    const int mbno = 133;  // 하드코딩된 mbno 값
+  void submitPost() async {
     try {
       final Map<String, dynamic> data = {
-        'mbno': mbno,
-        'name': name,
-        'title': title,
-        'content': content,
-        'attachment': attachment,
+        'mbno': user['mbno'],
+        'name': nameController.text,
+        'title': titleController.text,
+        'content': contentController.text,
+        'attachment': attachmentController.text,
       };
       final Dio dio = Dio(BaseOptions(
-        baseUrl: "http://192.168.0.188:9090",
+        baseUrl: "http://192.168.0.177:9090",
         headers: {
           'Content-Type': 'application/json',
         },
       ));
-      Response response = await dio.post("/board/insert/", data: data);
-      if (response.statusCode == 200) {
+      Response res = await dio.post("/board/insert", data: data);
+      if (res.statusCode == 200 && res.data == true) {
         print('글이 등록되었습니다.');
         Navigator.pop(context); // 현재 페이지를 닫습니다.
 
@@ -72,12 +79,12 @@ class _WebWritingState extends State<WebWriting> {
           );
         });
       } else {
-        print('글 등록에 실패했습니다: ${response.statusMessage}');
+        print('글 등록에 실패했습니다: ${res.statusMessage}');
       }
     } catch (e) {
       if (e is DioError) {
         print('글 등록에 실패했습니다: 네트워크 오류입니다.');
-        print('DioError: ${e.message}');
+        print('DioError: $e');
       } else {
         print('글 등록에 실패했습니다: $e');
       }
@@ -130,27 +137,11 @@ class _WebWritingState extends State<WebWriting> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebLogin(),
+                            builder: (context) => WebModifyProfile(),
                           ));
                         },
                         child: Text(
-                          "로그인",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebJoin(),
-                          ));
-                        },
-                        child: Text(
-                          "회원가입",
+                          "내정보",
                           style: TextStyle(
                             fontSize: 22,
                           ),
@@ -217,6 +208,7 @@ class _WebWritingState extends State<WebWriting> {
                       SizedBox(
                         width: 900,
                         child: TextField(
+                          readOnly: true,
                           controller: nameController,
                           decoration: InputDecoration(
                             labelText: "작성자",
@@ -237,13 +229,7 @@ class _WebWritingState extends State<WebWriting> {
                       Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            submitPost(
-                              titleController.text,
-                              contentController.text,
-                              nameController.text,
-                              attachmentController.text,
-                              context,
-                            );
+                            submitPost();
                           },
                           child: Text("글등록"),
                           style: ElevatedButton.styleFrom(

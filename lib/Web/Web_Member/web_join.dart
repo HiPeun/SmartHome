@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loginproject/Web/Web_Cus/web_notice.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
+import 'package:loginproject/Web/webmain.dart';
 
 class WebJoin extends StatefulWidget {
   WebJoin({super.key});
@@ -76,13 +77,13 @@ class _WebJoinState extends State<WebJoin> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Text("회원가입이 완료되었습니다. \n로그인페이지로 이동합니다."),
+              content: Text("회원가입이 완료되었습니다."),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => WebLogin(),
+                      builder: (context) => MyHomePage(),
                     ));
                   },
                   child: Text('확인'),
@@ -221,21 +222,6 @@ class _WebJoinState extends State<WebJoin> {
                       ),
                     ),
 
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebNotice(),
-                          ));
-                        },
-                        child: Text(
-                          "고객센터",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -513,8 +499,7 @@ class _WebJoinState extends State<WebJoin> {
                             return;
                           }
 
-
-                          RegExp passwordRegex = RegExp(r'^(?=.*\d)(?=.*[a-zA-Z])(~?=.*[!@#$%^&*(),.?":{}|<>]).{5,12}$');
+                          RegExp passwordRegex = RegExp(r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*(),.?":{}|<>]).{5,12}$');
                           if (joinPw.length > 12 || !passwordRegex.hasMatch(joinPw)) {
                             showDialog(
                               context: context,
