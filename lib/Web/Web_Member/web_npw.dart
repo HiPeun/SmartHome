@@ -39,7 +39,7 @@ class _WebNpwState extends State<WebNpw> {
 
     try {
       final response = await dio.post(
-        "http://177.29.112.112:9090/user/update", // 서버에 POST 요청 보냄
+        "http://192.168.0.177:9090/user/update", // 서버에 POST 요청 보냄
         data: {
           'pw': pw,
         },
