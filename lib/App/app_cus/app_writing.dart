@@ -1,13 +1,17 @@
-import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:loginproject/App/app_cus/app_notice.dart';
 
-import '../app_screen/app_join.dart';
-import '../app_screen/app_login.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+
+import '../../model/qna_model.dart';
+import '../App_Cus/App_notice.dart';
+import '../main.dart';
+import 'app_modify_profile.dart';
+
 
 class AppWriting extends StatefulWidget {
-  AppWriting({Key? key}) : super(key: key);
+  final QnaModel? qna;
+
+  AppWriting({Key? key, this.qna}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _AppWritingState();
@@ -20,6 +24,16 @@ class _AppWritingState extends State<AppWriting> {
   TextEditingController attachmentController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    nameController.text = user["name"];
+    if (widget.qna != null) {
+      titleController.text = widget.qna!.title ?? '';
+      contentController.text = widget.qna!.content ?? '';
+    }
+  }
+
+  @override
   void dispose() {
     titleController.dispose();
     contentController.dispose();
@@ -28,16 +42,14 @@ class _AppWritingState extends State<AppWriting> {
     super.dispose();
   }
 
-  void submitPost(String name, String title, String content, String attachment,
-      BuildContext context) async {
-    const int mbno = 133; // 하드코딩된 mbno 값
+  void updatePost() async {
     try {
       final Map<String, dynamic> data = {
-        'mbno': mbno,
-        'name': name,
-        'title': title,
-        'content': content,
-        'attachment': attachment,
+        'pno': widget.qna?.pno,     // 다시한번
+        'name': nameController.text,
+        'title': titleController.text,
+        'content': contentController.text,
+        'attachment': attachmentController.text,
       };
       final Dio dio = Dio(BaseOptions(
         baseUrl: "http://192.168.0.188:9090",
@@ -45,8 +57,57 @@ class _AppWritingState extends State<AppWriting> {
           'Content-Type': 'application/json',
         },
       ));
-      Response response = await dio.post("/board/insert/", data: data);
-      if (response.statusCode == 200) {
+      Response res = await dio.post("/board/update", data: data);
+      if (res.statusCode == 200 && res.data == true) {
+        print('글이 수정되었습니다.');
+        Navigator.pop(context); // 현재 페이지를 닫습니다.
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('자주묻는질문'),
+              content: Text('글이 수정되었습니다.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // 대화 상자를 닫습니다.
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        print('글 수정에 실패했습니다: ${res.statusMessage}');
+      }
+    } catch (e) {
+      if (e is DioError) {
+        print('글 수정에 실패했습니다: 네트워크 오류입니다.');
+        print('DioError: $e');
+      } else {
+        print('글 수정에 실패했습니다: $e');
+      }
+    }
+  }
+
+  void submitPost() async {
+    try {
+      final Map<String, dynamic> data = {
+        'mbno': user['mbno'],
+        'name': nameController.text,
+        'title': titleController.text,
+        'content': contentController.text,
+        'attachment': attachmentController.text,
+      };
+      final Dio dio = Dio(BaseOptions(
+        baseUrl: "http://192.168.0.188:9090",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      ));
+      Response res = await dio.post("/board/insert", data: data);
+      if (res.statusCode == 200 && res.data == true) {
         print('글이 등록되었습니다.');
         Navigator.pop(context); // 현재 페이지를 닫습니다.
 
@@ -56,7 +117,7 @@ class _AppWritingState extends State<AppWriting> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('글 등록 성공'),
+                title: Text('자주묻는질문'),
                 content: Text('글이 등록되었습니다.'),
                 actions: <Widget>[
                   TextButton(
@@ -71,12 +132,12 @@ class _AppWritingState extends State<AppWriting> {
           );
         });
       } else {
-        print('글 등록에 실패했습니다: ${response.statusMessage}');
+        print('글 등록에 실패했습니다: ${res.statusMessage}');
       }
     } catch (e) {
       if (e is DioError) {
         print('글 등록에 실패했습니다: 네트워크 오류입니다.');
-        print('DioError: ${e.message}');
+        print('DioError: $e');
       } else {
         print('글 등록에 실패했습니다: $e');
       }
@@ -124,7 +185,38 @@ class _AppWritingState extends State<AppWriting> {
                         ],
                       ),
                     ),
-
+                    Padding(
+                      padding: const EdgeInsets.only(right: 40),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AppModifyProfile(),
+                          ));
+                        },
+                        child: Text(
+                          "내정보",
+                          style: TextStyle(
+                            fontSize: 22,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 40),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AppNotice(),
+                          ));
+                        },
+                        child: Text(
+                          "고객센터",
+                          style: TextStyle(
+                            fontSize: 22,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -169,6 +261,7 @@ class _AppWritingState extends State<AppWriting> {
                       SizedBox(
                         width: 900,
                         child: TextField(
+                          readOnly: true,
                           controller: nameController,
                           decoration: InputDecoration(
                             labelText: "작성자",
@@ -189,15 +282,9 @@ class _AppWritingState extends State<AppWriting> {
                       Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            submitPost(
-                              titleController.text,
-                              contentController.text,
-                              nameController.text,
-                              attachmentController.text,
-                              context,
-                            );
+                            widget.qna != null ? updatePost() : submitPost();
                           },
-                          child: Text("글등록"),
+                          child: Text(widget.qna != null ? "글수정" : "글등록"),
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(150, 50),
                             backgroundColor: Color(0xFFD3CDC8),

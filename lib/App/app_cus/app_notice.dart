@@ -2,12 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:loginproject/App/app_cus/app_writing.dart';
-import 'package:loginproject/App/main.dart';
-
 import '../../model/notice_model.dart';
 import '../../model/qna_model.dart';
-import '../app_screen/app_login.dart';
+import '../App_Cus/App_writing.dart';
 
 class AppNotice extends StatefulWidget {
   AppNotice({super.key});
@@ -19,39 +16,6 @@ class AppNotice extends StatefulWidget {
 class _AppNoticeState extends State<AppNotice> {
   bool showNotices = true;
   bool isLogin = false;
-
-  void _showLoginAlert(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('로그인 필요'),
-          content: Text('글쓰기를 하시려면 로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?'),
-          actions: [
-            TextButton(
-              child: Text('취소'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            Container(
-              child: InkWell(
-                onTap: () async {
-                  Navigator.pop(context);
-                  await Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => AppLogin(),
-                  ));
-                  setState(() {});
-
-                },
-                child: Text('확인'),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +34,7 @@ class _AppNoticeState extends State<AppNotice> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(top: 30, left: 50, bottom: 20),
+                padding: const EdgeInsets.only(top: 30, left: 30, bottom: 20),
                 child: Row(
                   children: [
                     Expanded(
@@ -98,7 +62,7 @@ class _AppNoticeState extends State<AppNotice> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             Container(
               child: Text(
                 "고객센터",
@@ -108,10 +72,10 @@ class _AppNoticeState extends State<AppNotice> {
                 ),
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 20),
             Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: () {
@@ -135,6 +99,7 @@ class _AppNoticeState extends State<AppNotice> {
                       ),
                     ),
                   ),
+
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -142,7 +107,7 @@ class _AppNoticeState extends State<AppNotice> {
                       });
                     },
                     child: Text(
-                      "Q&A",
+                      "자주묻는질문",
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -154,29 +119,6 @@ class _AppNoticeState extends State<AppNotice> {
                       backgroundColor: !showNotices ? Colors.grey : null,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.zero,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (user.isEmpty) {
-                          _showLoginAlert(context);
-                        } else {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => AppWriting()));
-                        }
-                      },
-                      child: Text("글쓰기"),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(160, 45),
-                        backgroundColor: Color(0xFFD3CDC8),
-                        textStyle: TextStyle(fontSize: 20),
-                        foregroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
                       ),
                     ),
                   ),
@@ -197,6 +139,26 @@ class _AppNoticeState extends State<AppNotice> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 // 공지사항과 Q&A 리스트에 좌우 여백 추가
                 child: showNotices ? NoticeList() : QnaList(),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => AppWriting(),
+                  ));
+                },
+                child: Text("글쓰기"),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(160, 45),
+                  backgroundColor: Color(0xFFD3CDC8),
+                  textStyle: TextStyle(fontSize: 20),
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),
+                ),
               ),
             ),
           ],
@@ -389,25 +351,6 @@ class _QnaListState extends State<QnaList> {
                 list[index].content ?? "",
               ),
             ),
-            ListTile(
-              subtitle: Text('댓글입니다.'),
-            ),
-            ListTile(
-                title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 1000,
-                  child: TextField(),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Container(
-                    child: Text('댓글쓰기'),
-                  ),
-                ),
-              ],
-            ))
           ],
         );
       },

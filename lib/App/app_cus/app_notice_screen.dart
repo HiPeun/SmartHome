@@ -1,14 +1,13 @@
-
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
-import 'package:loginproject/App/app_cus/app_writing.dart';
 import 'package:loginproject/App/app_screen/app_join.dart';
-import 'package:loginproject/App/app_screen/app_page2.dart';
+import 'package:loginproject/App/app_screen/bottom_bar.dart';
 import 'package:loginproject/model/notice_model.dart';
+import 'package:loginproject/model/qna_model.dart';
 
-import '../../model/qna_model.dart';
+import '../App_Cus/App_writing.dart';
+import '../main.dart';
 
 class AppNoticeScreen extends StatefulWidget {
   AppNoticeScreen({super.key});
@@ -61,52 +60,60 @@ class _AppNoticeScreenState extends State<AppNoticeScreen> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Page2(),
-                          ));
-                        },
-                        child: Text(
-                          "로그아웃",
-                          style: TextStyle(
-                            fontSize: 22,
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              user = {};
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const BottomBar(),
+                              ));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 20),
+                              child: Text(
+                                "로그아웃",
+                                style: TextStyle(
+                                  fontSize: 22,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AppJoin(),
-                          ));
-                        },
-                        child: Text(
-                          "내 정보",
-                          style: TextStyle(
-                            fontSize: 22,
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => AppJoin(),
+                              ));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 20),
+                              child: Text(
+                                "내 정보",
+                                style: TextStyle(
+                                  fontSize: 22,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AppNoticeScreen(),
-                          ));
-                        },
-                        child: Text(
-                          "고객센터",
-                          style: TextStyle(
-                            fontSize: 22,
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => AppNoticeScreen(),
+                              ));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 20),
+                              child: Text(
+                                "고객센터",
+                                style: TextStyle(
+                                  fontSize: 22,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ],
@@ -126,76 +133,75 @@ class _AppNoticeScreenState extends State<AppNoticeScreen> {
             SizedBox(height: 70),
             Padding(
               padding: const EdgeInsets.fromLTRB(50, 0, 0, 0),
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          showNotices = true;
-                        });
-                      },
-                      child: Text(
-                        "공지사항",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        showNotices = true;
+                      });
+                    },
+                    child: Text(
+                      "공지사항",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(70, 50),
+                      backgroundColor: showNotices ? Colors.grey : null,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        showNotices = false;
+                      });
+                    },
+                    child: Text(
+                      "자주묻는질문",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(70, 50),
+                      backgroundColor: !showNotices ? Colors.grey : null,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => AppWriting(),
+                        ));
+                        setState(() {});
+                      },
+                      child: Text("글쓰기"),
                       style: ElevatedButton.styleFrom(
-
-                        backgroundColor: showNotices ? Colors.grey : null,
+                        minimumSize: Size(160, 45),
+                        backgroundColor: Color(0xFFD3CDC8),
+                        textStyle: TextStyle(fontSize: 20),
+                        foregroundColor: Colors.black,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.zero,
                         ),
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          showNotices = false;
-                        });
-                      },
-                      child: Text(
-                        "Q&A",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-
-                        backgroundColor: !showNotices ? Colors.grey : null,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AppWriting(),
-                          ));
-                        },
-                        child: Text("글쓰기"),
-                        style: ElevatedButton.styleFrom(
-
-                            backgroundColor: Color(0xFFD3CDC8),
-                            textStyle: TextStyle(fontSize: 20),
-                            foregroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.zero,
-                            ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             Padding(
@@ -210,7 +216,6 @@ class _AppNoticeScreenState extends State<AppNoticeScreen> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                // 공지사항과 Q&A 리스트에 좌우 여백 추가
                 child: showNotices ? NoticeList() : QnaList(),
               ),
             ),
@@ -336,6 +341,30 @@ class _QnaListState extends State<QnaList> {
     }
   }
 
+  void deleteQna(int? pno) async {
+    Dio dio = Dio(
+      BaseOptions(
+        baseUrl: "http://192.168.0.188:9090",
+        contentType: "application/json",
+      ),
+    );
+
+    try {
+      Response res = await dio.post("/board/delete", data: {'pno': pno});
+      if (res.statusCode == 200 && res.data == true) {
+        setState(() {
+          list.removeWhere((qna) => qna.pno == pno);
+        });
+        print("삭제되었습니다.");
+      } else {
+        print("삭제에 실패했습니다.");
+      }
+    } catch (e) {
+      print("Failed to delete data: $e");
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: list.length,
@@ -350,37 +379,62 @@ class _QnaListState extends State<QnaList> {
                 list[index].title ?? "",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              Container(
-                height: 10,
-              ),
               Text(date),
             ],
           ),
           children: <Widget>[
             ListTile(
-              title: Text(
-                list[index].content ?? "",
+              title: Text(list[index].content ?? ""),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (list[index].mbno == user['mbno'])
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                AppWriting(qna: list[index]),
+                          ),
+                        )
+                            .then((value) => getQnaList());
+                      },
+                    ),
+                  if (list[index].mbno == user['mbno'])
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("삭제 확인"),
+                              content: Text("정말 삭제하시겠습니까?"),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("취소"),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    deleteQna(list[index].pno);
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("확인"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
+                ],
               ),
             ),
-            ListTile(
-              subtitle: Text('댓글입니다.'),
-            ),
-            ListTile(
-                title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 1000,
-                  child: TextField(),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Container(
-                    child: Text('댓글쓰기'),
-                  ),
-                ),
-              ],
-            ))
           ],
         );
       },
