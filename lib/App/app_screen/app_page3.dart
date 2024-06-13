@@ -97,7 +97,7 @@ class _Page3State extends State<Page3> {
 
     try {
       var response = await Dio().post(
-        'http://192.168.0.177:9090/user/update',
+        'http://192.168.45.63:9090/user/update',
         data: {
           'name': name.text,
           'email': email.text,
@@ -165,7 +165,7 @@ class _Page3State extends State<Page3> {
   Future<void> deleteUser() async {
     try {
       var response = await Dio().post(
-        'http://192.168.0.177:9090/user/remove',
+        'http://192.168.45.63:9090/user/remove',
         data: {
           'id': id.text,
           'pw': pw.text,

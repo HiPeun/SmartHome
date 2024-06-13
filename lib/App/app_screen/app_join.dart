@@ -60,7 +60,7 @@ class _AppJoinState extends State<AppJoin> {
 
     try {
       final response = await dio.post(
-        "http://192.168.0.188:9090/user/join",
+        "http://192.168.45.63:9090/user/join",
         data: {
           'id': id,
           'pw': pw,
@@ -112,7 +112,7 @@ class _AppJoinState extends State<AppJoin> {
 
     try {
       final response = await dio.post(
-        "http://192.168.0.177:9090/user/login/duplication",
+        "http://192.168.45.63:9090/user/login/duplication",
         data: {
           'id': id,
         },

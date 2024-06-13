@@ -22,7 +22,6 @@ class _WebWritingState extends State<WebWriting> {
   TextEditingController contentController = TextEditingController();
   TextEditingController attachmentController = TextEditingController();
 
-
   @override
   void initState() {
     super.initState();
@@ -42,35 +41,31 @@ class _WebWritingState extends State<WebWriting> {
     super.dispose();
   }
 
-
   void updatePost() async {
     try {
       final Map<String, dynamic> data = {
-        'mbno': user['mbno'],
+        'pno': widget.qna?.pno,     // 다시한번
         'name': nameController.text,
         'title': titleController.text,
         'content': contentController.text,
         'attachment': attachmentController.text,
       };
       final Dio dio = Dio(BaseOptions(
-        baseUrl: "http://192.168.0.177:9090",
+        baseUrl: "http://192.168.45.63:9090",
         headers: {
           'Content-Type': 'application/json',
         },
       ));
       Response res = await dio.post("/board/update", data: data);
       if (res.statusCode == 200 && res.data == true) {
-        print('글이 수저되었습니다.');
+        print('글이 수정되었습니다.');
         Navigator.pop(context); // 현재 페이지를 닫습니다.
-
-        // 잠시 지연 후 showDialog 호출
-        Future.delayed(Duration(milliseconds: 100), () {
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text('자주묻는질문'),
-                content: Text('글이 등록되었습니다.'),
+                content: Text('글이 수정되었습니다.'),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
@@ -81,9 +76,7 @@ class _WebWritingState extends State<WebWriting> {
                 ],
               );
             },
-
           );
-        });
       } else {
         print('글 수정에 실패했습니다: ${res.statusMessage}');
       }
@@ -97,7 +90,6 @@ class _WebWritingState extends State<WebWriting> {
     }
   }
 
-
   void submitPost() async {
     try {
       final Map<String, dynamic> data = {
@@ -108,7 +100,7 @@ class _WebWritingState extends State<WebWriting> {
         'attachment': attachmentController.text,
       };
       final Dio dio = Dio(BaseOptions(
-        baseUrl: "http://192.168.0.177:9090",
+        baseUrl: "http://192.168.45.63:9090",
         headers: {
           'Content-Type': 'application/json',
         },
@@ -136,7 +128,6 @@ class _WebWritingState extends State<WebWriting> {
                 ],
               );
             },
-
           );
         });
       } else {
@@ -303,7 +294,6 @@ class _WebWritingState extends State<WebWriting> {
                             ),
                           ),
                         ),
-
                       ),
                     ],
                   ),
