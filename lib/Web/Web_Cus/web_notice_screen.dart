@@ -5,7 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:loginproject/App/main.dart';
 import 'package:loginproject/Web/Web_Cus/web_writing.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
+import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 import 'package:loginproject/Web/webmain.dart';
+import 'package:loginproject/model/webjoin_model.dart';
 import '../../model/notice_model.dart';
 import '../../model/qna_model.dart';
 
@@ -82,7 +84,7 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebJoin(),
+                            builder: (context) => WebModifyProfile(),
                           ));
                         },
                         child: Text(
