@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:loginproject/App/main.dart';
 import 'package:loginproject/Web/Web_Cus/web_writing.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/webmain.dart';
@@ -63,6 +64,7 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
                       padding: const EdgeInsets.only(right: 40),
                       child: InkWell(
                         onTap: () {
+                          user = {};
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const MyHomePage(),
                           ));
@@ -175,20 +177,23 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
+                        onPressed: () async {
+                          await Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => WebWriting(),
                           ));
+                          setState(() {
+
+                          });
                         },
                         child: Text("글쓰기"),
                         style: ElevatedButton.styleFrom(
-                            minimumSize: Size(160, 45),
-                            backgroundColor: Color(0xFFD3CDC8),
-                            textStyle: TextStyle(fontSize: 20),
-                            foregroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.zero,
-                            ),
+                          minimumSize: Size(160, 45),
+                          backgroundColor: Color(0xFFD3CDC8),
+                          textStyle: TextStyle(fontSize: 20),
+                          foregroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero,
+                          ),
                         ),
                       ),
                     ),
@@ -309,11 +314,10 @@ class _QnaListState extends State<QnaList> {
     getQnaList();
   }
 
-
   void getQnaList() async {
     Dio dio = Dio(
       BaseOptions(
-        baseUrl: "http://192.168.0.177:9090",
+        baseUrl: "http://192.168.0.188:9090",
         contentType: "application/json",
       ),
     );
@@ -338,7 +342,7 @@ class _QnaListState extends State<QnaList> {
   void deleteQna(int? pno) async {
     Dio dio = Dio(
       BaseOptions(
-        baseUrl: "http://192.168.0.177:9090",
+        baseUrl: "http://192.168.0.188:9090",
         contentType: "application/json",
       ),
     );
@@ -357,8 +361,6 @@ class _QnaListState extends State<QnaList> {
       print("Failed to delete data: $e");
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -384,46 +386,50 @@ class _QnaListState extends State<QnaList> {
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => WebWriting(qna: list[index]),
-                        ),
-                      ).then((value) => getQnaList());
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("삭제 확인"),
-                            content: Text("정말 삭제하시겠습니까?"),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text("취소"),
+                  if (list[index].mbno == user['mbno'])
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    WebWriting(qna: list[index]),
                               ),
-                              TextButton(
-                                onPressed: () {
-                                  deleteQna(list[index].pno);
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text("확인"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                  ),
-
+                            )
+                            .then((value) => getQnaList());
+                      },
+                    ),
+                  if (list[index].mbno == user['mbno'])
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("삭제 확인"),
+                              content: Text("정말 삭제하시겠습니까?"),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("취소"),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    deleteQna(list[index].pno);
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("확인"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
                 ],
               ),
             ),
