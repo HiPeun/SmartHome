@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-
-
 import 'package:loginproject/App/app_screen/app_login.dart';
-import 'package:loginproject/App/app_screen/app_page2.dart';
-
 import 'package:loginproject/App/main.dart';
 
 class Page3 extends StatefulWidget {
@@ -41,6 +37,8 @@ class _Page3State extends State<Page3> {
       print('Error parsing userData: $e');
     }
   }
+
+
 
   //아이디와 비밀번호가 맞는지 확인하는 부분
   Future<void> checkPasswords() async {
@@ -94,7 +92,6 @@ class _Page3State extends State<Page3> {
 
   //회원정보 수정 부분
   Future<void> updateUserInfo() async {
-
     try {
       var response = await Dio().post(
         'http://192.168.45.63:9090/user/update',
@@ -162,6 +159,8 @@ class _Page3State extends State<Page3> {
       );
     }
   }
+
+//회원탈퇴 부분
   Future<void> deleteUser() async {
     try {
       var response = await Dio().post(
@@ -183,6 +182,8 @@ class _Page3State extends State<Page3> {
                   child: Text('확인'),
                   onPressed: () {
                     Navigator.of(context).pop();
+                    user = {};
+
                   },
                 ),
               ],
@@ -348,7 +349,7 @@ class _Page3State extends State<Page3> {
               ),
             ),
             ElevatedButton(
-              onPressed: (){
+              onPressed: () {
                 deleteUser();
                 Navigator.pop(context);
               },

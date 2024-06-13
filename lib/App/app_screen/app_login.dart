@@ -29,6 +29,8 @@ class _AppLoginState extends State<AppLogin> {
     _loadAutoLoginStatus();
   }
 
+
+
   Future<void> _loadUserId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? savedId = prefs.getString('user_id');
@@ -252,7 +254,7 @@ class _AppLoginState extends State<AppLogin> {
                   ),
                   keyboardType: TextInputType.emailAddress,
                   controller: _id,
-                  obscureText: false,
+
                 ),
               ),
               Container(
