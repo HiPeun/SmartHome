@@ -129,7 +129,8 @@ class _Page2State extends State<Page2> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("반가워요, ${user["id"]}님!", style: TextStyle(fontSize: 20)),
+                    Text("반가워요, ${user["id"]}님!",
+                        style: TextStyle(fontSize: 20)),
                   ],
                 ),
               AppMainView(),

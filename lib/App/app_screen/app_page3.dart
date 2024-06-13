@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:loginproject/App/app_screen/app_login.dart';
+import 'package:loginproject/App/app_screen/bottom_bar.dart';
 import 'package:loginproject/App/main.dart';
 
 class Page3 extends StatefulWidget {
@@ -38,15 +39,10 @@ class _Page3State extends State<Page3> {
     }
   }
 
-
-
-  //아이디와 비밀번호가 맞는지 확인하는 부분
   Future<void> checkPasswords() async {
     try {
-      //만약에 유저가 적은 아이디값과 비밀번호 값이 DB와 일치할 경우
       if (user["id"] == id.text && user["pw"] == pw.text) {
         setState(() {
-          //화면을 다시 그려 isPwMatched에 true 값을 줘라
           isPwMatched = true;
         });
       } else {
@@ -90,7 +86,6 @@ class _Page3State extends State<Page3> {
     }
   }
 
-  //회원정보 수정 부분
   Future<void> updateUserInfo() async {
     try {
       var response = await Dio().post(
@@ -160,7 +155,6 @@ class _Page3State extends State<Page3> {
     }
   }
 
-//회원탈퇴 부분
   Future<void> deleteUser() async {
     try {
       var response = await Dio().post(
@@ -171,6 +165,7 @@ class _Page3State extends State<Page3> {
         },
       );
       if (response.statusCode == 200) {
+        if (!mounted) return; // 위젯이 여전히 마운트된 상태인지 확인
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -182,8 +177,15 @@ class _Page3State extends State<Page3> {
                   child: Text('확인'),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    user = {};
-
+                    // 사용자 세션 데이터 초기화
+                    user.clear();
+                    // 로그인 화면으로 이동하고 이전 모든 화면 제거
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BottomBar()), // 로그인 화면으로 이동
+                          (Route<dynamic> route) => false,
+                    );
                   },
                 ),
               ],
@@ -296,7 +298,6 @@ class _Page3State extends State<Page3> {
         TextField(
           controller: id,
           decoration: InputDecoration(labelText: "아이디"),
-          //읽기전용 모드
           readOnly: true,
         ),
         TextField(
@@ -349,9 +350,8 @@ class _Page3State extends State<Page3> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {
-                deleteUser();
-                Navigator.pop(context);
+              onPressed: () async {
+                await deleteUser();
               },
               child: Text("회원탈퇴"),
               style: ElevatedButton.styleFrom(
