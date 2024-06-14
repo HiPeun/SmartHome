@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:loginproject/App/app_screen/app_login.dart'; // 로그인 페이지를 import
+import 'package:loginproject/App/main.dart';
 
 import '../../model/notice_model.dart';
 import '../../model/qna_model.dart';
@@ -15,7 +17,7 @@ class AppNotice extends StatefulWidget {
 
 class _AppNoticeState extends State<AppNotice> {
   bool showNotices = true;
-  bool isLogin = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -145,9 +147,38 @@ class _AppNoticeState extends State<AppNotice> {
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => AppWriting(),
-                  ));
+                  if (user.isNotEmpty) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AppWriting(),
+                    ));
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('로그인 필요'),
+                          content: Text('글쓰기를 하려면 로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('취소'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => AppLogin(),
+                                ));
+                              },
+                              child: Text('확인'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
                 },
                 child: Text("글쓰기"),
                 style: ElevatedButton.styleFrom(
