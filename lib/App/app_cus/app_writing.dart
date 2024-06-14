@@ -1,12 +1,7 @@
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
 import '../../model/qna_model.dart';
-import '../App_Cus/App_notice.dart';
 import '../main.dart';
-import 'app_modify_profile.dart';
-
 
 class AppWriting extends StatefulWidget {
   final QnaModel? qna;
@@ -26,7 +21,8 @@ class _AppWritingState extends State<AppWriting> {
   @override
   void initState() {
     super.initState();
-    nameController.text = user["name"];
+    //String 값에 Null을 허용해주지 않아서 발생하는 오류이다.
+    nameController.text = user["name"] ;
     if (widget.qna != null) {
       titleController.text = widget.qna!.title ?? '';
       contentController.text = widget.qna!.content ?? '';
@@ -45,7 +41,7 @@ class _AppWritingState extends State<AppWriting> {
   void updatePost() async {
     try {
       final Map<String, dynamic> data = {
-        'pno': widget.qna?.pno,     // 다시한번
+        'pno': widget.qna?.pno, // 다시한번
         'name': nameController.text,
         'title': titleController.text,
         'content': contentController.text,
@@ -185,38 +181,6 @@ class _AppWritingState extends State<AppWriting> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AppModifyProfile(),
-                          ));
-                        },
-                        child: Text(
-                          "내정보",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AppNotice(),
-                          ));
-                        },
-                        child: Text(
-                          "고객센터",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -231,7 +195,7 @@ class _AppWritingState extends State<AppWriting> {
                 ),
               ),
             ),
-            SizedBox(height: 50),
+            SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
               child: Container(

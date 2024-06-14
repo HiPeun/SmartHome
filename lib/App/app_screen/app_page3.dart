@@ -1,192 +1,96 @@
+import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
-import 'package:loginproject/App/app_screen/app_login.dart';
-import 'package:loginproject/App/app_screen/bottom_bar.dart';
 import 'package:loginproject/App/main.dart';
 
-class Page3 extends StatefulWidget {
-  const Page3({
-    Key? key,
-  }) : super(key: key);
+import '../app_screen/bottom_bar.dart';
+
+class AppModifyProfile extends StatefulWidget {
+  AppModifyProfile({super.key});
 
   @override
-  State<Page3> createState() => _Page3State();
+  State<StatefulWidget> createState() => _AppModifyProfile();
 }
 
-class _Page3State extends State<Page3> {
-  TextEditingController email = TextEditingController();
-  TextEditingController pw = TextEditingController();
-  TextEditingController pw2 = TextEditingController();
-  TextEditingController name = TextEditingController();
-  TextEditingController id = TextEditingController();
+class _AppModifyProfile extends State<AppModifyProfile> {
+  TextEditingController mbnoController = TextEditingController();
+  TextEditingController idController = TextEditingController();
+  TextEditingController pwController = TextEditingController();
+  TextEditingController pw2Controller = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
-  bool isPwMatched = false;
-  String mbno = '';
 
   @override
   void initState() {
     super.initState();
-
-    try {
-      if (user.isNotEmpty) {
-        email.text = user['email'] ?? '';
-        name.text = user['name'] ?? '';
-        id.text = user['id'] ?? '';
-        mbno = user['mbno'].toString();
-      }
-    } catch (e) {
-      print('Error parsing userData: $e');
-    }
+    idController.text = user["id"];
+    nameController.text = user["name"];
+    emailController.text = user["email"];
   }
 
-  Future<void> checkPasswords() async {
+  @override
+  void dispose() {
+    mbnoController.dispose();
+    idController.dispose();
+    pwController.dispose();
+    pw2Controller.dispose();
+    nameController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
+
+  void updateProfile() async {
     try {
-      if (user["id"] == id.text && user["pw"] == pw.text) {
-        setState(() {
-          isPwMatched = true;
-        });
-      } else {
+      final Map<String, dynamic> data = {
+        "id": idController.text,
+        "pw": pwController.text,
+        "pw2": pw2Controller.text,
+        "name": nameController.text,
+      };
+      final dio.Dio dioClient =
+          dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.188:9090"));
+      RegExp passwordRegex = RegExp(
+          r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*(),.?":{}|<>]).{5,12}$');
+      if (pwController.text.length > 12 ||
+          !passwordRegex.hasMatch(pwController.text)) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('오류'),
-              content: Text('아이디 또는 비밀번호가 올바르지 않습니다.'),
+              title: const Text('회원 수정 실패'),
+              content: const Text('비밀번호는 5자에서 12자 사이이며, 문자와 숫자를 모두 포함해야 합니다.'),
               actions: [
                 TextButton(
-                  child: Text('확인'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
+                  child: const Text('확인'),
                 ),
               ],
             );
           },
         );
+        return;
       }
-    } catch (e) {
-      print('Error checking password: $e');
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('오류'),
-            content: Text('아이디 또는 비밀번호 확인 중 오류가 발생했습니다.'),
-            actions: [
-              TextButton(
-                child: Text('확인'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
-
-  Future<void> updateUserInfo() async {
-    try {
-      var response = await Dio().post(
-        'http://192.168.0.188:9090/user/update',
-        data: {
-          'name': name.text,
-          'email': email.text,
-        },
-      );
-
-      if (response.statusCode == 200) {
+      dio.Response res = await dioClient.post("/user/update", data: data);
+      if (res.statusCode == 200) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('성공'),
-              content: Text('회원정보가 수정되었습니다.'),
+              title: const Text('성공'),
+              content: const Text('회원정보가 수정되었습니다.'),
               actions: [
                 TextButton(
-                  child: Text('확인'),
                   onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('오류'),
-              content: Text('회원정보 수정에 실패했습니다.'),
-              actions: [
-                TextButton(
-                  child: Text('확인'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      }
-    } catch (e) {
-      print('Error updating user info: $e');
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('오류'),
-            content: Text('회원정보 수정 중 오류가 발생했습니다.'),
-            actions: [
-              TextButton(
-                child: Text('확인'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
-
-  Future<void> deleteUser() async {
-    try {
-      var response = await Dio().post(
-        'http://192.168.0.188:9090/user/remove',
-        data: {
-          'id': id.text,
-          'pw': pw.text,
-        },
-      );
-      if (response.statusCode == 200) {
-        if (!mounted) return; // 위젯이 여전히 마운트된 상태인지 확인
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('성공'),
-              content: Text('회원탈퇴가 완료되었습니다.'),
-              actions: [
-                TextButton(
-                  child: Text('확인'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    // 사용자 세션 데이터 초기화
-                    user.clear();
-                    // 로그인 화면으로 이동하고 이전 모든 화면 제거
-                    Navigator.pushAndRemoveUntil(
+                    user = {};
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => BottomBar()), // 로그인 화면으로 이동
-                          (Route<dynamic> route) => false,
+                          builder: (context) => const BottomBar()),
                     );
                   },
+                  child: const Text('확인'),
                 ),
               ],
             );
@@ -197,14 +101,18 @@ class _Page3State extends State<Page3> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('오류'),
-              content: Text('회원탈퇴에 실패했습니다.'),
+              title: const Text('실패'),
+              content: const Text('서버 오류 발생, 다시 시도해 주세요'),
               actions: [
                 TextButton(
-                  child: Text('확인'),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BottomBar()),
+                    );
                   },
+                  child: const Text('확인'),
                 ),
               ],
             );
@@ -212,19 +120,139 @@ class _Page3State extends State<Page3> {
         );
       }
     } catch (e) {
-      print('Error deleting user: $e');
+      print(e);
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('오류'),
-            content: Text('회원탈퇴 중 오류가 발생했습니다.'),
+            title: const Text('회원 수정 실패'),
+            content: const Text('비밀번호, 이름을 다시 한번 확인해 주세요'),
             actions: [
               TextButton(
-                child: Text('확인'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
+                child: const Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  void cancelChanges() {
+    mbnoController.clear();
+    idController.clear();
+    pwController.clear();
+    pw2Controller.clear();
+    nameController.clear();
+    emailController.clear();
+  }
+
+  void deleteAccount() async {
+    try {
+      // 비밀번호 일치 여부 확인
+      if (pwController.text != pw2Controller.text) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('회원 삭제 실패'),
+              content: const Text('비밀번호가 일치하지 않습니다.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+        return;
+      }
+
+      final Map<String, dynamic> data = {
+        "id": idController.text,
+        "pw": pwController.text,
+      };
+      final dio.Dio dioClient =
+
+      dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.188:9090"));
+      dio.Response res = await dioClient.post("/user/remove", data: data);
+
+      if (res.statusCode == 200 && res.data == true) {
+        print(res.data);
+        print(res.statusCode);
+        // 탈퇴 확인 다이얼로그 표시
+        bool confirmed = await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('경고'),
+              content: const Text('정말로 탈퇴하시겠습니까?'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false); // 취소를 누르면 false 반환
+                  },
+                  child: const Text('취소'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    user = {};
+                    Navigator.of(context).pop(true); // 확인을 누르면 true 반환
+                  },
+                  child: const Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+
+        // 사용자가 탈퇴를 확인한 경우
+        if (confirmed == true) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const BottomBar()),
+            (Route<dynamic> route) => false,
+          );
+        }
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('회원 삭제 실패'),
+              content: const Text('아이디와 비밀번호를 다시 한번 확인해 주세요'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (e) {
+      print(e);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('회원 삭제 실패'),
+            content: const Text('서버 오류 발생'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('확인'),
               ),
             ],
           );
@@ -236,155 +264,158 @@ class _Page3State extends State<Page3> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+      body: SafeArea(
+        top: true,
+        child: Column(
           children: [
-            Text(
-              "Conven",
-              style: TextStyle(
-                fontSize: 32.0,
-                fontWeight: FontWeight.bold,
+            Container(
+              height: 170,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Color(0xFFD3CDC8),
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(30),
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: user.isNotEmpty ? _buildUserInfoForm() : _buildLoginPrompt(),
-      ),
-    );
-  }
-
-  Widget _buildUserInfoForm() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {},
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset("assets/images/pencil.png"),
-                  Text(
-                    "회원정보 수정",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 30, left: 50, bottom: 20),
+                child: Row(
+                  children: [
+                    const Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Conven",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 50,
+                            ),
+                          ),
+                          Text(
+                            "내 정보를 수정합니다",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(150, 150),
-                backgroundColor: Color(0xFFE5E5E1),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+            ),
+            SizedBox(height: 30),
+            Container(
+              child: const Text(
+                "내 정보",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                ),
+              ),
+            ),
+            const SizedBox(height: 50),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+              child: Container(
+                width: double.infinity,
+                height: 1.5,
+                decoration: const BoxDecoration(color: Colors.black54),
+              ),
+            ),
+            const SizedBox(height: 50),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 300,
+                      child: TextField(
+                        controller: idController,
+                        decoration: const InputDecoration(
+                          labelText: "아이디",
+                          border: OutlineInputBorder(),
+                        ),
+                        readOnly: true,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: 300,
+                      child: TextField(
+                        controller: pwController,
+                        decoration: const InputDecoration(
+                          labelText: "비밀번호",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: 300,
+                      child: TextField(
+                        controller: nameController,
+                        decoration: const InputDecoration(
+                          labelText: "이름",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: 300,
+                      child: TextField(
+                        readOnly: true,
+                        controller: emailController,
+                        decoration: const InputDecoration(
+                          labelText: "이메일",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: updateProfile,
+                          child: const Text("회원정보수정"),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(50, 50),
+                            backgroundColor: const Color(0xFFD3CDC8),
+                            textStyle: const TextStyle(fontSize: 18),
+                            foregroundColor: Colors.black,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 30),
+                        const SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: deleteAccount,
+                          child: const Text("회원 탈퇴"),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(50, 50),
+                            backgroundColor: const Color(0xFFD3CDC8),
+                            textStyle: const TextStyle(fontSize: 18),
+                            foregroundColor: Colors.black,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.zero,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
         ),
-        SizedBox(height: 40),
-        Container(
-          width: double.infinity,
-          height: 10,
-          color: Color(0xFFE5E5E1),
-        ),
-        SizedBox(height: 10),
-        TextField(
-          controller: id,
-          decoration: InputDecoration(labelText: "아이디"),
-          readOnly: true,
-        ),
-        TextField(
-          controller: pw,
-          decoration: InputDecoration(labelText: "비밀번호"),
-          obscureText: true,
-        ),
-        SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: checkPasswords,
-          child: Text("비밀번호 확인"),
-          style: ElevatedButton.styleFrom(
-            minimumSize: Size(10, 30),
-            backgroundColor: Color(0xFFE5E5E1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(1),
-            ),
-          ),
-        ),
-        SizedBox(height: 20),
-        TextField(
-          controller: name,
-          decoration: InputDecoration(labelText: "이름"),
-          enabled: isPwMatched,
-        ),
-        TextField(
-          controller: email,
-          decoration: InputDecoration(labelText: "이메일"),
-          enabled: isPwMatched,
-        ),
-        SizedBox(height: 20),
-        Container(
-          width: double.infinity,
-          height: 10,
-          color: Color(0xFFE5E5E1),
-        ),
-        SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ElevatedButton(
-              onPressed: isPwMatched ? updateUserInfo : null,
-              child: Text("회원정보수정"),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(10, 30),
-                backgroundColor: Color(0xFFE5E5E1),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(1),
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                await deleteUser();
-              },
-              child: Text("회원탈퇴"),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(10, 30),
-                backgroundColor: Color(0xFFE5E5E1),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(1),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildLoginPrompt() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text("로그인이 필요합니다.", style: TextStyle(fontSize: 18)),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AppLogin()),
-              );
-            },
-            child: Text("로그인 페이지로 이동"),
-          ),
-        ],
       ),
     );
   }

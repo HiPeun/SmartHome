@@ -86,7 +86,6 @@ class _AppJoinState extends State<AppJoin> {
                       ),
                           (Route<dynamic> route) => false, // 현재 경로를 모두 제거
                     );
-
                   },
                   child: Text('확인'),
                 ),
