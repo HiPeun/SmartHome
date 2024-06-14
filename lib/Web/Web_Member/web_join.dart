@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loginproject/Web/Web_Cus/web_notice.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
 import 'package:loginproject/Web/webmain.dart';
 
