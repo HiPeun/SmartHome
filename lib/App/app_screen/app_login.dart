@@ -269,7 +269,7 @@ class _AppLoginState extends State<AppLogin> {
                   obscureText: true,
                 ),
               ),
-              SizedBox(width: 35, height: 50),
+              SizedBox(width: 45, height: 50),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),

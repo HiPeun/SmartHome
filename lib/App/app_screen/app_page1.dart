@@ -1,123 +1,190 @@
-import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'dart:convert';  // 추가
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class Page1 extends StatefulWidget {
+import '../../model/notice_model.dart';
+import '../../model/qna_model.dart';
+import '../App_Cus/App_writing.dart';
+import '../app_screen/app_login.dart';
+import '../main.dart';
+
+class AppNotice extends StatefulWidget {
+  AppNotice({super.key});
+
   @override
-  _Page1State createState() => _Page1State();
+  State<StatefulWidget> createState() => _AppNoticeState();
 }
 
-class _Page1State extends State<Page1> {
+class _AppNoticeState extends State<AppNotice> {
   bool showNotices = true;
-  List<Map<String, String>> qnaList = [];
-  bool isNoticeSelected = true;
-  final Dio dio = Dio();
+  bool isLogin = false;
 
   @override
   void initState() {
     super.initState();
-    fetchQnAList();
-  }
-
-  void fetchQnAList() async {
-    try {
-      final response = await dio.get("http://192.168.0.188:9090/board/read?pno=2");
-      print('Response data: ${response.data}');
-      if (mounted) {
-        // JSON 응답 데이터를 파싱하여 List<Map<String, String>> 형태로 변환
-        List<dynamic> data = jsonDecode(response.data);  // 추가
-        qnaList = data.map((item) => Map<String, String>.from(item)).toList();
-        setState(() {});
-      }
-    } catch (e) {
-      print(e);
+    // 로그인 상태 체크
+    if (user.isEmpty) {
+      // 로그인 페이지로 리디렉션
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => AppLogin()),
+        );
+      });
+    } else {
+      setState(() {
+        isLogin = true;
+      });
     }
-  }
-
-  void addQnA(Map<String, String> qna) async {
-    try {
-      await dio.post("http://192.168.0.188:9090/board/insert", data: qna);
-      fetchQnAList(); // Add QnA 후 리스트를 다시 불러옵니다
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  void updateQnA(int index, Map<String, String> qna) {
-    setState(() {
-      qnaList[index] = qna;
-    });
-  }
-
-  void deleteQnA(int index) {
-    setState(() {
-      qnaList.removeAt(index);
-    });
-  }
-
-  void toggleView(bool showNotices) {
-    setState(() {
-      this.showNotices = showNotices;
-      isNoticeSelected = showNotices;
-    });
-  }
-
-  @override
-  void dispose() {
-    // 리소스 해제 등 필요한 작업 수행
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!isLogin) {
+      return Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      ); // 로그인 상태가 확인될 때까지 로딩 화면 표시
+    }
+
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              "Conven",
-              style: TextStyle(
-                fontSize: 32.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
+      body: SafeArea(
+        top: true,
         child: Column(
           children: [
-            CustomService(
-              toggleView: toggleView,
-              isNoticeSelected: isNoticeSelected,
-            ),
             Container(
-              width: 400,
-              height: 100,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [],
+              height: 170,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Color(0xFFD3CDC8),
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(30),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 30, left: 30, bottom: 20),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Conven",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 50,
+                            ),
+                          ),
+                          Text(
+                            "무엇을 도와드릴까요?",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black54,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
+            SizedBox(height: 30),
             Container(
-              width: double.infinity,
-              height: 10,
-              color: Color(0xFFE5E5E1),
+              child: Text(
+                "고객센터",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                ),
+              ),
             ),
-            showNotices
-                ? Column(
-              children: [
-                //원래 ServiceTile이 있던 자리 이제는 DB에 내용을 저장해서 꺼내는 식으로 함
-              ],
-            )
-                : QnASection(
-              qnaList: qnaList,
-              addQnA: addQnA,
-              updateQnA: updateQnA,
-              deleteQnA: deleteQnA,
+            SizedBox(height: 20),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        showNotices = true;
+                      });
+                    },
+                    child: Text(
+                      "공지사항",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(70, 50),
+                      backgroundColor: showNotices ? Colors.grey : null,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        showNotices = false;
+                      });
+                    },
+                    child: Text(
+                      "자주묻는질문",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(70, 50),
+                      backgroundColor: !showNotices ? Colors.grey : null,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+              child: Container(
+                width: double.infinity,
+                height: 1.5,
+                decoration: BoxDecoration(color: Colors.black54),
+              ),
+            ),
+            SizedBox(height: 30),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                // 공지사항과 Q&A 리스트에 좌우 여백 추가
+                child: showNotices ? NoticeList() : QnaList(),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => AppWriting(),
+                  ));
+                },
+                child: Text("글쓰기"),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(160, 45),
+                  backgroundColor: Color(0xFFD3CDC8),
+                  textStyle: TextStyle(fontSize: 20),
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -126,199 +193,192 @@ class _Page1State extends State<Page1> {
   }
 }
 
-class CustomService extends StatelessWidget {
-  final Function(bool) toggleView;
-  final bool isNoticeSelected;
-
-  CustomService({required this.toggleView, required this.isNoticeSelected});
-
+class NoticeList extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          ElevatedButton(
-            onPressed: () => toggleView(true),
-            child: Column(
-              children: [
-                Image.asset("assets/images/speakerimage.png"),
-                Text(
-                  "공지사항",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ],
-            ),
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(150, 150),
-              backgroundColor:
-              isNoticeSelected ? Colors.grey : Color(0xFFE5E5E1),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () => toggleView(false),
-            child: Column(
-              children: [
-                Image.asset("assets/images/noteimage.png"),
-                Text(
-                  "고객센터",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ],
-            ),
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(150, 150),
-              backgroundColor:
-              isNoticeSelected ? Color(0xFFE5E5E1) : Colors.grey,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.zero,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  _NoticeListState createState() => _NoticeListState();
 }
 
-class QnASection extends StatelessWidget {
-  final List<Map<String, String>> qnaList;
-  final Function(Map<String, String>) addQnA;
-  final Function(int, Map<String, String>) updateQnA;
-  final Function(int) deleteQnA;
+class _NoticeListState extends State<NoticeList> {
+  List<NoticeModel> list = [];
 
-  QnASection(
-      {required this.qnaList,
-        required this.addQnA,
-        required this.updateQnA,
-        required this.deleteQnA});
+  @override
+  void initState() {
+    super.initState();
+    getNoticeList();
+  }
+
+  void getNoticeList() async {
+    Dio dio = Dio(
+      BaseOptions(
+        baseUrl: "http://192.168.0.188:9090",
+        contentType: "application/json",
+      ),
+    );
+
+    try {
+      Response res = await dio.get("/board1/list");
+      if (res.statusCode == 200) {
+        print(res.data);
+
+        setState(() {
+          list = (res.data as List)
+              .map((e) => NoticeModel.fromJson(e as Map<String, dynamic>))
+              .toList();
+        });
+        print(list);
+      }
+    } catch (e) {
+      print("Failed to load data: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        for (int i = 0; i < qnaList.length; i++)
-          ExpansionTile(
-            title: Text(qnaList[i]['title'] ?? ""),
+    return ListView.builder(
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        final String date = DateFormat('yyyy-MM-dd').format(
+            DateTime.fromMillisecondsSinceEpoch(list[index].regdate ?? 0));
+        return ExpansionTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ListTile(
-                title: Text(qnaList[i]['content'] ?? ""),
-                subtitle: Text("작성자: ${qnaList[i]['author'] ?? ""}"),
+              Text(
+                list[index].title ?? "",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(
+                height: 10,
+              ),
+              Text(
+                date,
               ),
             ],
           ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            5,
-                (index) => IconButton(
-              icon: Icon(Icons.circle, size: 10),
-              onPressed: () {},
+          children: <Widget>[
+            ListTile(
+              title: Text(list[index].content ?? ""),
             ),
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AddQnAPage(addQnA: addQnA),
-              ),
-            );
-          },
-          child: Text(
-            "글쓰기",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 }
 
-class AddQnAPage extends StatefulWidget {
-  final Function(Map<String, String>) addQnA;
-
-  AddQnAPage({required this.addQnA});
-
+class QnaList extends StatefulWidget {
   @override
-  _AddQnAPageState createState() => _AddQnAPageState();
+  _QnaListState createState() => _QnaListState();
 }
 
-class _AddQnAPageState extends State<AddQnAPage> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _authorController = TextEditingController();
-  final TextEditingController _contentController = TextEditingController();
-
-  void _submit() {
-    if (_titleController.text.isEmpty ||
-        _authorController.text.isEmpty ||
-        _contentController.text.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text("오류"),
-          content: Text("작성자, 제, 내용을 모두 입력하세요."),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("확인"),
-            ),
-          ],
-        ),
-      );
-      return;
-    }
-
-    final qna = {
-      'title': _titleController.text,
-      'author': _authorController.text,
-      'content': _contentController.text,
-    };
-    widget.addQnA(qna);
-    Navigator.pop(context);
-  }
+class _QnaListState extends State<QnaList> {
+  List<QnaModel> list = [];
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("글 등록"),
+  void initState() {
+    super.initState();
+    getQnaList();
+  }
+
+  void getQnaList() async {
+    Dio dio = Dio(
+      BaseOptions(
+        baseUrl: "http://192.168.0.188:9090",
+        contentType: "application/json",
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: InputDecoration(labelText: "제목"),
-            ),
-            TextField(
-              controller: _authorController,
-              decoration: InputDecoration(labelText: "작성자"),
-            ),
-            TextField(
-              controller: _contentController,
-              decoration: InputDecoration(labelText: "내용"),
-              maxLines: 10,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _submit,
-              child: Text("글 등록"),
+    );
+
+    try {
+      Response res = await dio.get("/board/listAll");
+      if (res.statusCode == 200) {
+        print(res.data);
+
+        setState(() {
+          list = (res.data as List)
+              .map((e) => QnaModel.fromJson(e as Map<String, dynamic>))
+              .toList();
+        });
+        print(list);
+      }
+    } catch (e) {
+      print("Failed to load data: $e");
+    }
+  }
+
+  void qnainsert(int pno, int mbno, String content, int regdate) async {
+    final dio = Dio();
+    try {
+      final response = await dio.get(
+        "http://192.168.0.188:9090/comm/insert",
+        data: {
+          'pno': pno,
+          'mbno': mbno,
+          'content': content,
+          'regdate': regdate,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text("댓글 작성이 완료되었습니다."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        print("글 등록 실패: ${response.data}");
+      }
+    } catch (e) {
+      print("글 등록 실패: $e");
+    }
+  }
+
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        final String date = DateFormat('yyyy-MM-dd').format(
+            DateTime.fromMillisecondsSinceEpoch(list[index].regdate ?? 0));
+        return ExpansionTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                list[index].title ?? "",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Container(
+                height: 10,
+              ),
+              Text(date),
+            ],
+          ),
+          children: <Widget>[
+            ListTile(
+              title: Text(
+                list[index].content ?? "",
+              ),
             ),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 }

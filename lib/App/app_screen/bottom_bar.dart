@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:loginproject/App/app_cus/app_notice.dart';
 import 'package:loginproject/App/app_screen/app_login.dart';
 import '../main.dart';
-import 'app_page1.dart';
 import 'app_page2.dart';
 import 'app_page3.dart';
 
@@ -29,15 +27,19 @@ class _BottomBarState extends State<BottomBar> {
     _widgetOptions = <Widget>[
       AppNotice(),
       Page2(),
-      Page3(),
+      AppModifyProfile(),
     ];
   }
 
-  void _onItemTapped(int index) async{
+  void _onItemTapped(int index) async {
     if (index == 2) {
       if (user.isEmpty) {
-       await Navigator.of(context).push(
-            MaterialPageRoute(builder: (BuildContext context) => AppLogin()));
+        await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => AppLogin(),
+          ),
+        );
+        return;
       }
     }
     setState(() {

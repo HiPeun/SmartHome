@@ -1,13 +1,15 @@
-import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:loginproject/App/app_screen/app_join.dart';
-import 'package:loginproject/App/app_screen/bottom_bar.dart';
-import 'package:loginproject/model/notice_model.dart';
 import 'package:loginproject/model/qna_model.dart';
 
+import '../../model/notice_model.dart';
 import '../App_Cus/App_writing.dart';
+import '../app_screen/app_join.dart';
+import '../app_screen/bottom_bar.dart';
 import '../main.dart';
+
+
 
 class AppNoticeScreen extends StatefulWidget {
   AppNoticeScreen({super.key});
@@ -68,7 +70,7 @@ class _AppNoticeScreenState extends State<AppNoticeScreen> {
                             onTap: () {
                               user = {};
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const BottomBar(),
+                                builder: (context) =>  BottomBar(),
                               ));
                             },
                             child: Padding(
@@ -375,9 +377,11 @@ class _QnaListState extends State<QnaList> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                list[index].title ?? "",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              Expanded(
+                child: Text(
+                  list[index].title ?? "",
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               Text(date),
             ],
@@ -395,8 +399,7 @@ class _QnaListState extends State<QnaList> {
                         Navigator.of(context)
                             .push(
                           MaterialPageRoute(
-                            builder: (context) =>
-                                AppWriting(qna: list[index]),
+                            builder: (context) => AppWriting(qna: list[index]),
                           ),
                         )
                             .then((value) => getQnaList());
