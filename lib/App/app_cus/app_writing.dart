@@ -113,7 +113,7 @@ class _AppWritingState extends State<AppWriting> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('자주묻는질문'),
+                title: Text('글쓰기 완료'),
                 content: Text('글이 등록되었습니다.'),
                 actions: <Widget>[
                   TextButton(
