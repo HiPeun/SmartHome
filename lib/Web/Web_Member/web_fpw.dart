@@ -19,11 +19,31 @@ class _WebFpwState extends State<WebFpw> {
   TextEditingController email = TextEditingController();
 
   void findPassword(String id, String email) async {
+    if (id.isEmpty || email.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text("아이디 또는 이메일을 입력해주세요."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+      return; // 이후 코드 실행을 막음
+    }
+
     final dio = Dio();
 
     try {
       final response = await dio.post(
-        "http://192.168.0.188:9090/user/login/pw",
+        "http://192.168.0.177:9090/user/login/pw",
         data: {
           "email": email,
           "id": id,
@@ -100,6 +120,7 @@ class _WebFpwState extends State<WebFpw> {
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
