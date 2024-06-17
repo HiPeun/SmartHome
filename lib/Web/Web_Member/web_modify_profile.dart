@@ -196,64 +196,66 @@ class _WebModifyProfile extends State<WebModifyProfile> {
         "pw": pwController.text,
       };
       final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.188:9090"));
-      dio.Response res = await dioClient.post("/user/remove", data: data);
 
-      if (res.statusCode == 200 && res.data == true) {
-        print(res.data);
-        print(res.statusCode);
-        // 탈퇴 확인 다이얼로그 표시
-        bool confirmed = await showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('경고'),
-              content: const Text('정말로 탈퇴하시겠습니까?'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(false); // 취소를 누르면 false 반환
-                  },
-                  child: const Text('취소'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    user = {};
-                    Navigator.of(context).pop(true); // 확인을 누르면 true 반환
-                  },
-                  child: const Text('확인'),
-                ),
-              ],
-            );
-          },
-        );
+      // 확인 대화 상자 표시
+      bool confirmed = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('경고'),
+            content: const Text('정말로 탈퇴하시겠습니까?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false); // 취소를 누를 경우 false 반환
+                },
+                child: const Text('취소'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Navigator.of(context).pop(true); // 확인을 누를 경우 true 반환
+                },
+                child: const Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
 
-        // 사용자가 탈퇴를 확인한 경우
-        if (confirmed == true) {
+      // 사용자가 확인을 누른 경우에만 삭제 요청을 보냄
+      if (confirmed == true) {
+        dio.Response res = await dioClient.post("/user/remove", data: data);
+
+        if (res.statusCode == 200 && res.data == true) {
+          // 회원 삭제 성공
+          user = {};
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const MyHomePage()),
                 (Route<dynamic> route) => false,
           );
+        } else {
+          // 회원 삭제 실패
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('회원 삭제 실패'),
+                content: const Text('아이디와 비밀번호를 다시 한 번 확인해 주세요'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('확인'),
+                  ),
+                ],
+              );
+            },
+          );
         }
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('회원 삭제 실패'),
-              content: const Text('아이디와 비밀번호를 다시 한번 확인해 주세요'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('확인'),
-                ),
-              ],
-            );
-          },
-        );
       }
+
     } catch (e) {
       print(e);
       showDialog(
@@ -275,6 +277,9 @@ class _WebModifyProfile extends State<WebModifyProfile> {
       );
     }
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
