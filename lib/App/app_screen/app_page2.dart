@@ -110,7 +110,7 @@ class _Page2State extends State<Page2> {
                       child: Text(
                         "Conven",
                         style: TextStyle(
-                          fontSize: 32.0,
+                          fontSize: 30.0,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -196,6 +196,18 @@ class _Page2State extends State<Page2> {
                   ),
                 ],
               ),
+              if (user.isNotEmpty)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "반가워요, ${user["id"]}님",
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
               Row(
                 children: [
                   SmartControl(

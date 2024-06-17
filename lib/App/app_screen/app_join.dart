@@ -84,7 +84,7 @@ class _AppJoinState extends State<AppJoin> {
                       MaterialPageRoute(
                         builder: (context) => BottomBar(), // MainPage로 변경
                       ),
-                          (Route<dynamic> route) => false, // 현재 경로를 모두 제거
+                      (Route<dynamic> route) => false, // 현재 경로를 모두 제거
                     );
                   },
                   child: Text('확인'),
@@ -167,8 +167,8 @@ class _AppJoinState extends State<AppJoin> {
 
   // 비밀번호 유효성 검사 함수
   bool isValidPassword(String password) {
-    final RegExp passwordRegex = RegExp(
-        r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{5,12}$');
+    final RegExp passwordRegex =
+        RegExp(r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{5,12}$');
     return passwordRegex.hasMatch(password);
   }
 
@@ -285,7 +285,7 @@ class _AppJoinState extends State<AppJoin> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     content:
-                                    Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
+                                        Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
                                     actions: [
                                       TextButton(
                                         onPressed: () {
@@ -477,7 +477,7 @@ class _AppJoinState extends State<AppJoin> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     content:
-                                    Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
+                                        Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
                                     actions: [
                                       TextButton(
                                         onPressed: () {
@@ -492,7 +492,8 @@ class _AppJoinState extends State<AppJoin> {
                               return;
                             }
 
-                            if (joinPw.length > 12 || !isValidPassword(joinPw)) {
+                            if (joinPw.length > 12 ||
+                                !isValidPassword(joinPw)) {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {

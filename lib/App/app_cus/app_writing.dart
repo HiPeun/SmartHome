@@ -22,7 +22,7 @@ class _AppWritingState extends State<AppWriting> {
   void initState() {
     super.initState();
     //String 값에 Null을 허용해주지 않아서 발생하는 오류이다.
-    nameController.text = user["name"] ;
+    nameController.text = user["name"];
     if (widget.qna != null) {
       titleController.text = widget.qna!.title ?? '';
       contentController.text = widget.qna!.content ?? '';
@@ -243,23 +243,44 @@ class _AppWritingState extends State<AppWriting> {
                         ),
                       ),
                       SizedBox(height: 16),
-                      Center(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            widget.qna != null ? updatePost() : submitPost();
-                          },
-                          child: Text(widget.qna != null ? "글수정" : "글등록"),
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(150, 50),
-                            backgroundColor: Color(0xFFD3CDC8),
-                            textStyle: TextStyle(fontSize: 18),
-                            foregroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero,
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              child: Text("첨부파일"),
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(150, 50),
+                                backgroundColor: Color(0xFFD3CDC8),
+                                textStyle: TextStyle(fontSize: 18),
+                                foregroundColor: Colors.black,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.zero,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
+                            SizedBox(
+                              width: 20,
+                              height: 50,
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                widget.qna != null
+                                    ? updatePost()
+                                    : submitPost();
+                              },
+                              child: Text(widget.qna != null ? "글수정" : "글등록"),
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(150, 50),
+                                backgroundColor: Color(0xFFD3CDC8),
+                                textStyle: TextStyle(fontSize: 18),
+                                foregroundColor: Colors.black,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.zero,
+                                ),
+                              ),
+                            ),
+                          ]),
                     ],
                   ),
                 ),
