@@ -1,14 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'app_join.dart';
 import 'app_login.dart';
 
 class AppNpw extends StatefulWidget {
   final String id;
-  AppNpw({Key? key, required this.id}) : super(key: key);
 
+  AppNpw({Key? key, required this.id}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _AppNpwState();
@@ -19,9 +18,7 @@ class _AppNpwState extends State<AppNpw> {
   TextEditingController pw = TextEditingController();
   TextEditingController pw2 = TextEditingController();
 
-
-
-  void initState(){
+  void initState() {
     //super.initState 코드는 현재 클래스에서 오버라이드 된
     // initState() 메서드 내에서 상위 클래스의 initState() 메서드를 호출
     super.initState();
@@ -29,10 +26,11 @@ class _AppNpwState extends State<AppNpw> {
     pw = TextEditingController(text: "");
     pw2 = TextEditingController(text: "");
   }
+
 //각 텍스트 필드의 입력값을 Controller를 사용하여 가져오고
 // dispose을 사용해서 메모리 누수를 방지
   @override
-  void dispose(){
+  void dispose() {
     pw.dispose();
     pw2.dispose();
     //super.dispose를 호출하여 부모 클래스의 dispose 메소드를 실행하여 추가적인 정리 작업을 수행
@@ -54,7 +52,8 @@ class _AppNpwState extends State<AppNpw> {
           },
         ),
       );
-      RegExp passwordRegex = RegExp(r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*(),.?":{}|<>]).{5,12}$');
+      RegExp passwordRegex = RegExp(
+          r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*(),.?":{}|<>]).{5,12}$');
       if (pw.text.length > 12 || !passwordRegex.hasMatch(pw.text)) {
         showDialog(
           context: context,
@@ -134,7 +133,6 @@ class _AppNpwState extends State<AppNpw> {
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -226,9 +224,7 @@ class _AppNpwState extends State<AppNpw> {
                           prefixIcon: Icon(Icons.lock),
                           labelText: "새 비밀번호",
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)
-                          )
-                      ),
+                              borderRadius: BorderRadius.circular(10))),
                     ),
                   ),
                   SizedBox(height: 20),
@@ -242,8 +238,7 @@ class _AppNpwState extends State<AppNpw> {
                           labelText: "비밀번호 확인",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                          )
-                      ),
+                          )),
                     ),
                   ),
                   SizedBox(height: 40),
@@ -278,13 +273,15 @@ class _AppNpwState extends State<AppNpw> {
                             return;
                           }
 
-                          RegExp passwordRegex = RegExp(r'^(?=.*\d)(?=.*[a-zA-Z]).{5,12}$');
+                          RegExp passwordRegex =
+                              RegExp(r'^(?=.*\d)(?=.*[a-zA-Z]).{5,12}$');
                           if (!passwordRegex.hasMatch(newPassword)) {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  content: Text("비밀번호는 5자에서 12자 사이이며, 문자와 숫자를 모두 포함해야 합니다."),
+                                  content: Text(
+                                      "비밀번호는 5자에서 12자 사이이며, 문자와 숫자를 모두 포함해야 합니다."),
                                   actions: [
                                     TextButton(
                                       onPressed: () {

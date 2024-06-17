@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'app_fpw.dart';
 import 'app_join.dart';
 import 'app_login.dart';
@@ -219,7 +218,8 @@ class _AppFidState extends State<AppFid> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(
                             builder: (context) => AppFpw(),
                           ));
                         },
@@ -231,10 +231,14 @@ class _AppFidState extends State<AppFid> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 150,height: 50,),
+                      SizedBox(
+                        width: 150,
+                        height: 50,
+                      ),
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(
                             builder: (context) => AppJoin(),
                           ));
                         },
