@@ -19,7 +19,6 @@ class _WebFpwState extends State<WebFpw> {
   TextEditingController email = TextEditingController();
 
   void findPassword(String id, String email) async {
-    // 입력값이 공백일 경우 경고 메시지 표시
     if (id.isEmpty || email.isEmpty) {
       showDialog(
         context: context,

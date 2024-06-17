@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:loginproject/App/main.dart';
 import 'app_join.dart';
 import 'app_login.dart';
+import 'package:dio/dio.dart';
 
 class Page2 extends StatefulWidget {
   const Page2({
@@ -15,7 +16,10 @@ class Page2 extends StatefulWidget {
 }
 
 class _Page2State extends State<Page2> {
-  //로그아웃 메서드 생성 부분
+  bool isLedOn = false;
+  Dio dio = Dio();
+
+  // 로그아웃 메서드 생성 부분
   void _logout() {
     showDialog(
       context: context,
@@ -35,6 +39,48 @@ class _Page2State extends State<Page2> {
                 Navigator.of(context).pop(); // 다이얼로그 닫기
                 user = {};
                 setState(() {});
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void sendCommand(String command) async {
+    String url = 'http://192.168.0.221/?cmd=$command'; // ESP8266의 IP 주소와 포트를 입력하세요
+
+    try {
+      final response = await dio.get(url);
+      if (response.statusCode == 200) {
+        print('Command sent: $command');
+        setState(() {
+          if (command == '1') {
+            isLedOn = true;
+          } else {
+            isLedOn = false;
+          }
+        });
+      } else {
+        print('Failed to send command. Error code: ${response.statusCode}');
+      }
+    } on DioError catch (e) {
+      print('Error sending command: ${e.response?.statusCode} - ${e.message}');
+    }
+  }
+
+  void showLoginAlert(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('알림'),
+          content: Text('로그인 후 이용해 주세요'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 다이얼로그 닫기
               },
               child: Text('확인'),
             ),
@@ -133,6 +179,7 @@ class _Page2State extends State<Page2> {
                         style: TextStyle(fontSize: 20)),
                   ],
                 ),
+
               AppMainView(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -155,14 +202,25 @@ class _Page2State extends State<Page2> {
                       text: "조명제어",
                       image: "assets/images/lightimage.png",
                       iconButton: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (user.isNotEmpty) {
+                          sendCommand('1'); // '1' 명령어 전송 예제
+                        } else {
+                            showLoginAlert(context);
+                          }
+                        },
                         icon: Icon(Icons.power_settings_new_outlined),
                       )),
                   SmartControl(
                       text: "CCTV",
                       image: "assets/images/cctvimage.png",
                       iconButton: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (user.isNotEmpty) {
+                        } else {
+                            showLoginAlert(context);
+                          }
+                        },
                         icon: Icon(Icons.power_settings_new_outlined),
                       )),
                 ],
@@ -173,14 +231,24 @@ class _Page2State extends State<Page2> {
                       text: "현관문개폐",
                       image: "assets/images/doorimage.png",
                       iconButton: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (user.isNotEmpty) {
+                        } else {
+                            showLoginAlert(context);
+                          }
+                        },
                         icon: Icon(Icons.power_settings_new_outlined),
                       )),
                   SmartControl(
                       text: "창문개폐",
                       image: "assets/images/windowimage.png",
                       iconButton: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (user.isNotEmpty) {
+                        } else {
+                            showLoginAlert(context);
+                          }
+                        },
                         icon: Icon(Icons.power_settings_new_outlined),
                       )),
                 ],
@@ -191,14 +259,24 @@ class _Page2State extends State<Page2> {
                       text: "온습도측정",
                       image: "assets/images/homeimage.png",
                       iconButton: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (user.isNotEmpty) {
+                          } else {
+                            showLoginAlert(context);
+                          }
+                        },
                         icon: Icon(Icons.power_settings_new_outlined),
                       )),
                   SmartControl(
                     text: "화재감지",
                     image: "assets/images/fireimage.png",
                     iconButton: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (user.isNotEmpty) {
+                        } else {
+                          showLoginAlert(context);
+                        }
+                      },
                       icon: Icon(Icons.power_settings_new_outlined),
                     ),
                   ),
@@ -221,9 +299,9 @@ class SmartControl extends StatelessWidget {
 
   const SmartControl(
       {required this.iconButton,
-      required this.image,
-      required this.text,
-      super.key});
+        required this.image,
+        required this.text,
+        super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -293,16 +371,16 @@ class _AppMainViewState extends State<AppMainView> {
             items: imgList
                 .map(
                   (e) => Container(
-                    child: Image.asset(
-                      e,
-                      fit: BoxFit.cover,
-                      width: 1000,
-                    ),
-                  ),
-                )
+                child: Image.asset(
+                  e,
+                  fit: BoxFit.cover,
+                  width: 1000,
+                ),
+              ),
+            )
                 .toList(),
             options: CarouselOptions(
-                // 화면 전환을 자동으로 할건지 설정
+              // 화면 전환을 자동으로 할건지 설정
                 autoPlay: true,
                 //슬라이더가 화면의 비율에 맞춰지도록 합니다.
                 aspectRatio: 1.6,
@@ -347,3 +425,4 @@ class _AppMainViewState extends State<AppMainView> {
     );
   }
 }
+
