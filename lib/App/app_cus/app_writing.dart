@@ -48,7 +48,7 @@ class _AppWritingState extends State<AppWriting> {
         'attachment': attachmentController.text,
       };
       final Dio dio = Dio(BaseOptions(
-        baseUrl: "http://192.168.0.188:9090",
+        baseUrl: "http://192.168.0.182:9090",
         headers: {
           'Content-Type': 'application/json',
         },
@@ -97,7 +97,7 @@ class _AppWritingState extends State<AppWriting> {
         'attachment': attachmentController.text,
       };
       final Dio dio = Dio(BaseOptions(
-        baseUrl: "http://192.168.0.188:9090",
+        baseUrl: "http://192.168.0.182:9090",
         headers: {
           'Content-Type': 'application/json',
         },
