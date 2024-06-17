@@ -204,7 +204,7 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
-                          sendCommand('1'); // '1' 명령어 전송 예제
+                          sendCommand('1');
                         } else {
                             showLoginAlert(context);
                           }

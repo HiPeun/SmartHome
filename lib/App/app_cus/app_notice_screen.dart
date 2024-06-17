@@ -321,7 +321,7 @@ class _QnaListState extends State<QnaList> {
   void getQnaList() async {
     Dio dio = Dio(
       BaseOptions(
-        baseUrl: "http://192.168.0.182:9090",
+        baseUrl: "http://192.168.0.177:9090",
         contentType: "application/json",
       ),
     );
@@ -346,7 +346,7 @@ class _QnaListState extends State<QnaList> {
   void deleteQna(int? pno) async {
     Dio dio = Dio(
       BaseOptions(
-        baseUrl: "http://192.168.0.182:9090",
+        baseUrl: "http://192.168.0.177:9090",
         contentType: "application/json",
       ),
     );

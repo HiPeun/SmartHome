@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loginproject/App/app_cus/app_notice.dart';
+import 'package:loginproject/App/app_cus/app_notice_screen.dart';
 import 'package:loginproject/App/app_screen/app_login.dart';
 import '../main.dart';
 import 'app_page2.dart';

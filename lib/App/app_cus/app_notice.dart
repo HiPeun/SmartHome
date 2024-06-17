@@ -216,7 +216,7 @@ class _NoticeListState extends State<NoticeList> {
   void getNoticeList() async {
     Dio dio = Dio(
       BaseOptions(
-        baseUrl: "http://192.168.0.182:9090",
+        baseUrl: "http://192.168.0.177:9090",
         contentType: "application/json",
       ),
     );
@@ -292,7 +292,7 @@ class _QnaListState extends State<QnaList> {
   void getQnaList() async {
     Dio dio = Dio(
       BaseOptions(
-        baseUrl: "http://192.168.0.182:9090",
+        baseUrl: "http://192.168.0.177:9090",
         contentType: "application/json",
       ),
     );
@@ -314,11 +314,34 @@ class _QnaListState extends State<QnaList> {
     }
   }
 
+  void deleteQna(int? pno) async {
+    Dio dio = Dio(
+      BaseOptions(
+        baseUrl: "http://192.168.0.177:9090",
+        contentType: "application/json",
+      ),
+    );
+
+    try {
+      Response res = await dio.post("/board/delete", data: {'pno': pno});
+      if (res.statusCode == 200 && res.data == true) {
+        setState(() {
+          list.removeWhere((qna) => qna.pno == pno);
+        });
+        print("삭제되었습니다.");
+      } else {
+        print("삭제에 실패했습니다.");
+      }
+    } catch (e) {
+      print("Failed to delete data: $e");
+    }
+  }
+
   void qnainsert(int pno, int mbno, String content, int regdate) async {
     final dio = Dio();
     try {
       final response = await dio.get(
-        "http://192.168.0.182:9090/comm/insert",
+        "http://192.168.0.177:9090/comm/insert",
         data: {
           'pno': pno,
           'mbno': mbno,
@@ -356,6 +379,7 @@ class _QnaListState extends State<QnaList> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: list.length,
@@ -366,20 +390,65 @@ class _QnaListState extends State<QnaList> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                list[index].title ?? "",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              Container(
-                height: 10,
+              Expanded(
+                child: Text(
+                  list[index].title ?? "",
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               Text(date),
             ],
           ),
           children: <Widget>[
             ListTile(
-              title: Text(
-                list[index].content ?? "",
+              title: Text(list[index].content ?? ""),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (list[index].mbno == user['mbno'])
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(
+                          MaterialPageRoute(
+                            builder: (context) => AppWriting(qna: list[index]),
+                          ),
+                        )
+                            .then((value) => getQnaList());
+                      },
+                    ),
+                  if (list[index].mbno == user['mbno'])
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("삭제 확인"),
+                              content: Text("정말 삭제하시겠습니까?"),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("취소"),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    deleteQna(list[index].pno);
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("확인"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
+                ],
               ),
             ),
           ],
