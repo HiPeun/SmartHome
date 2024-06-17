@@ -152,36 +152,12 @@ class _AppModifyProfile extends State<AppModifyProfile> {
 
   void deleteAccount() async {
     try {
-      // 비밀번호 일치 여부 확인
-      if (pwController.text != pw2Controller.text) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('회원 삭제 실패'),
-              content: const Text('비밀번호가 일치하지 않습니다.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('확인'),
-                ),
-              ],
-            );
-          },
-        );
-        return;
-      }
-
       final Map<String, dynamic> data = {
         "id": idController.text,
         "pw": pwController.text,
       };
-      final dio.Dio dioClient =
-
-      dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.188:9090"));
-      dio.Response res = await dioClient.post("/user/remove", data: data);
+      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.188:9090"));
+      final dio.Response res = await dioClient.post("/user/remove", data: data);
 
       if (res.statusCode == 200 && res.data == true) {
         print(res.data);
@@ -202,7 +178,6 @@ class _AppModifyProfile extends State<AppModifyProfile> {
                 ),
                 TextButton(
                   onPressed: () {
-                    user = {};
                     Navigator.of(context).pop(true); // 확인을 누르면 true 반환
                   },
                   child: const Text('확인'),
@@ -214,10 +189,11 @@ class _AppModifyProfile extends State<AppModifyProfile> {
 
         // 사용자가 탈퇴를 확인한 경우
         if (confirmed == true) {
+          user = {};  // 사용자가 확인을 누른 경우에만 user를 초기화
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const BottomBar()),
-            (Route<dynamic> route) => false,
+                (Route<dynamic> route) => false,
           );
         }
       } else {

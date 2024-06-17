@@ -74,7 +74,7 @@ class _AppJoinState extends State<AppJoin> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Text("회원가입이 완료되었습니다. \n로그인페이지로 이동합니다."),
+              content: Text("회원가입이 완료되었습니다."),
               actions: [
                 TextButton(
                   onPressed: () {
