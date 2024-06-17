@@ -1,11 +1,7 @@
-
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:loginproject/App/app_screen/app_fid.dart';
-
 import 'app_join.dart';
-import 'app_login.dart';
 import 'app_npw.dart';
 
 class AppFpw extends StatefulWidget {
@@ -30,9 +26,7 @@ class _AppFpwState extends State<AppFpw> {
           "id": id,
         },
         options: Options(
-          headers: {
-            "Content-Type": "application/json"
-          },
+          headers: {"Content-Type": "application/json"},
           validateStatus: (status) {
             return status! < 500;
           },
@@ -143,13 +137,11 @@ class _AppFpwState extends State<AppFpw> {
                         ],
                       ),
                     ),
-
                   ],
                 ),
               ),
             ),
-            SizedBox(
-                height: 100),
+            SizedBox(height: 100),
             Center(
               child: Column(
                 children: [
@@ -209,7 +201,8 @@ class _AppFpwState extends State<AppFpw> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(
                             builder: (context) => AppFid(),
                           ));
                         },
@@ -221,10 +214,14 @@ class _AppFpwState extends State<AppFpw> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 150,height: 50,),
+                      SizedBox(
+                        width: 150,
+                        height: 50,
+                      ),
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(
                             builder: (context) => AppJoin(),
                           ));
                         },
@@ -247,5 +244,3 @@ class _AppFpwState extends State<AppFpw> {
     );
   }
 }
-
-
