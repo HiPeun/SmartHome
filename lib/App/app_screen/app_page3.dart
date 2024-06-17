@@ -156,64 +156,66 @@ class _AppModifyProfile extends State<AppModifyProfile> {
         "id": idController.text,
         "pw": pwController.text,
       };
-      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.188:9090"));
-      final dio.Response res = await dioClient.post("/user/remove", data: data);
 
-      if (res.statusCode == 200 && res.data == true) {
-        print(res.data);
-        print(res.statusCode);
-        // 탈퇴 확인 다이얼로그 표시
-        bool confirmed = await showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('경고'),
-              content: const Text('정말로 탈퇴하시겠습니까?'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(false); // 취소를 누르면 false 반환
-                  },
-                  child: const Text('취소'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(true); // 확인을 누르면 true 반환
-                  },
-                  child: const Text('확인'),
-                ),
-              ],
-            );
-          },
-        );
+      // 탈퇴 확인 다이얼로그 표시
+      bool confirmed = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('경고'),
+            content: const Text('정말로 탈퇴하시겠습니까?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false); // 취소를 누르면 false 반환
+                },
+                child: const Text('취소'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true); // 확인을 누르면 true 반환
+                },
+                child: const Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
 
-        // 사용자가 탈퇴를 확인한 경우
-        if (confirmed == true) {
-          user = {};  // 사용자가 확인을 누른 경우에만 user를 초기화
+      // 사용자가 탈퇴를 확인한 경우에만 실제 삭제 작업 실행
+      if (confirmed == true) {
+        final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.188:9090"));
+        final dio.Response res = await dioClient.post("/user/remove", data: data);
+
+        if (res.statusCode == 200 && res.data == true) {
+          print(res.data);
+          print(res.statusCode);
+
+          user = {}; // 사용자 데이터 초기화
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const BottomBar()),
                 (Route<dynamic> route) => false,
           );
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('회원 삭제 실패'),
+                content: const Text('아이디와 비밀번호를 다시 한번 확인해 주세요'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('확인'),
+                  ),
+                ],
+              );
+            },
+          );
         }
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('회원 삭제 실패'),
-              content: const Text('아이디와 비밀번호를 다시 한번 확인해 주세요'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('확인'),
-                ),
-              ],
-            );
-          },
-        );
       }
     } catch (e) {
       print(e);

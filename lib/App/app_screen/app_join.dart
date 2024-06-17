@@ -95,9 +95,41 @@ class _AppJoinState extends State<AppJoin> {
         );
       } else {
         print("회원가입 실패: ${response.data}");
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text("아이디를 다시 확인해 주세요."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
       }
     } catch (e) {
       print("회원가입 실패: $e");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text("아이디를 다시 확인해 주세요."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 

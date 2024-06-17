@@ -40,7 +40,7 @@ class _AppFidState extends State<AppFid> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                content: Text("아이디 찾기 성공!\n아이디: $id"),
+                content: Text("아이디: $id"),
                 actions: [
                   TextButton(
                     onPressed: () {
