@@ -44,7 +44,7 @@ class _WebWritingState extends State<WebWriting> {
   void updatePost() async {
     try {
       final Map<String, dynamic> data = {
-        'pno': widget.qna?.pno,     // 다시한번
+        'pno': widget.qna?.pno, // 다시한번
         'name': nameController.text,
         'title': titleController.text,
         'content': contentController.text,
@@ -278,6 +278,16 @@ class _WebWritingState extends State<WebWriting> {
                             labelText: "제목",
                             border: OutlineInputBorder(),
                           ),
+                          onChanged: (text) {
+                            if (text.length > 30) {
+                              setState(() {
+                                titleController.text = text.substring(0, 30);
+                                titleController.selection = TextSelection.fromPosition(
+                                  TextPosition(offset: titleController.text.length),
+                                );
+                              });
+                            }
+                          },
                         ),
                       ),
                       SizedBox(height: 16),
@@ -290,6 +300,7 @@ class _WebWritingState extends State<WebWriting> {
                             labelText: "작성자",
                             border: OutlineInputBorder(),
                           ),
+
                         ),
                       ),
                       SizedBox(height: 16),
@@ -300,7 +311,18 @@ class _WebWritingState extends State<WebWriting> {
                           labelText: "내용",
                           border: OutlineInputBorder(),
                         ),
+                        onChanged: (text) {
+                          if (text.length > 1000) {
+                            setState(() {
+                              contentController.text = text.substring(0, 1000);
+                              contentController.selection = TextSelection.fromPosition(
+                                TextPosition(offset: contentController.text.length),
+                              );
+                            });
+                          }
+                        },
                       ),
+
                       SizedBox(height: 16),
                       Center(
                         child: ElevatedButton(
@@ -310,10 +332,6 @@ class _WebWritingState extends State<WebWriting> {
                             minimumSize: Size(150, 50),
                             backgroundColor: Color(0xFFD3CDC8),
                             textStyle: TextStyle(fontSize: 18),
-                            foregroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero,
-                            ),
                           ),
                         ),
                       ),
@@ -328,4 +346,3 @@ class _WebWritingState extends State<WebWriting> {
     );
   }
 }
-
