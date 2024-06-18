@@ -51,7 +51,7 @@ class _WebWritingState extends State<WebWriting> {
         'attachment': attachmentController.text,
       };
       final Dio dio = Dio(BaseOptions(
-        baseUrl: "http://192.168.45.63:9090",
+        baseUrl: "http://192.168.0.177:9090",
         headers: {
           'Content-Type': 'application/json',
         },
@@ -60,23 +60,23 @@ class _WebWritingState extends State<WebWriting> {
       if (res.statusCode == 200 && res.data == true) {
         print('글이 수정되었습니다.');
         Navigator.pop(context); // 현재 페이지를 닫습니다.
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('자주묻는질문'),
-                content: Text('글이 수정되었습니다.'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // 대화 상자를 닫습니다.
-                    },
-                    child: Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('자주묻는질문'),
+              content: Text('글이 수정되었습니다.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // 대화 상자를 닫습니다.
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
       } else {
         print('글 수정에 실패했습니다: ${res.statusMessage}');
       }
@@ -100,7 +100,7 @@ class _WebWritingState extends State<WebWriting> {
         'attachment': attachmentController.text,
       };
       final Dio dio = Dio(BaseOptions(
-        baseUrl: "http://192.168.45.63:9090",
+        baseUrl: "http://192.168.0.177:9090",
         headers: {
           'Content-Type': 'application/json',
         },
@@ -140,6 +140,30 @@ class _WebWritingState extends State<WebWriting> {
       } else {
         print('글 등록에 실패했습니다: $e');
       }
+    }
+  }
+
+  void validateAndSubmit() {
+    if (titleController.text.isEmpty || contentController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('알림'),
+            content: Text('제목과 내용을 입력해주세요.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      widget.qna != null ? updatePost() : submitPost();
     }
   }
 
@@ -280,9 +304,7 @@ class _WebWritingState extends State<WebWriting> {
                       SizedBox(height: 16),
                       Center(
                         child: ElevatedButton(
-                          onPressed: () {
-                            widget.qna != null ? updatePost() : submitPost();
-                          },
+                          onPressed: validateAndSubmit,
                           child: Text(widget.qna != null ? "글수정" : "글등록"),
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(150, 50),
@@ -306,3 +328,4 @@ class _WebWritingState extends State<WebWriting> {
     );
   }
 }
+

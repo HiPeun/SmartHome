@@ -98,7 +98,7 @@ class _AppLoginState extends State<AppLogin> {
         "id": _id.text,
         "pw": _pw.text,
       };
-      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.45.63:9090"));
+      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.177:9090"));
       Response res = await dio.post("/user/login", data: data);
       print(res.data.runtimeType);
       if (res.statusCode == 200 && res.data is Map<String, dynamic>) {
@@ -276,7 +276,7 @@ class _AppLoginState extends State<AppLogin> {
                   color: Color(0xFFD3CDC8),
                 ),
                 width: 300,
-                height: 55,
+                height: 50,
                 child: InkWell(
                   child: Center(
                     child: Text(

@@ -17,7 +17,13 @@ class Page2 extends StatefulWidget {
 
 class _Page2State extends State<Page2> {
   bool isLedOn = false;
-  Dio dio = Dio();
+  Dio dio = Dio(
+    BaseOptions(
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 5),
+      sendTimeout: Duration(seconds: 5),
+    ),
+  );
 
   // 로그아웃 메서드 생성 부분
   void _logout() {
@@ -62,6 +68,11 @@ class _Page2State extends State<Page2> {
             isLedOn = false;
           }
         });
+        // 알림 메시지를 보여줍니다.
+        final snackBar = SnackBar(
+          content: Text(isLedOn ? '조명이 켜졌습니다' : '조명이 꺼졌습니다'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       } else {
         print('Failed to send command. Error code: ${response.statusCode}');
       }
@@ -216,8 +227,8 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
-                          sendCommand('1');
-                        } else {
+                            sendCommand(isLedOn ? '0' : '1');
+                          } else {
                             showLoginAlert(context);
                           }
                         },
@@ -229,7 +240,7 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
-                        } else {
+                          } else {
                             showLoginAlert(context);
                           }
                         },
@@ -245,7 +256,7 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
-                        } else {
+                          } else {
                             showLoginAlert(context);
                           }
                         },
@@ -257,7 +268,7 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
-                        } else {
+                          } else {
                             showLoginAlert(context);
                           }
                         },
@@ -437,4 +448,5 @@ class _AppMainViewState extends State<AppMainView> {
     );
   }
 }
+
 
