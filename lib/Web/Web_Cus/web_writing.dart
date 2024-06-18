@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
-import 'package:loginproject/App/main.dart';
+import 'package:loginproject/main.dart';
 import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 import '../../model/qna_model.dart';
 import '../Web_Cus/web_notice.dart';
@@ -51,7 +51,7 @@ class _WebWritingState extends State<WebWriting> {
         'attachment': attachmentController.text,
       };
       final Dio dio = Dio(BaseOptions(
-        baseUrl: "http://192.168.0.188:9090",
+        baseUrl: "http://192.168.45.63:9090",
         headers: {
           'Content-Type': 'application/json',
         },
@@ -100,7 +100,7 @@ class _WebWritingState extends State<WebWriting> {
         'attachment': attachmentController.text,
       };
       final Dio dio = Dio(BaseOptions(
-        baseUrl: "http://192.168.0.188:9090",
+        baseUrl: "http://192.168.45.63:9090",
         headers: {
           'Content-Type': 'application/json',
         },

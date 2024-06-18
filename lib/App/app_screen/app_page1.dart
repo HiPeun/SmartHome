@@ -6,7 +6,7 @@ import '../../model/notice_model.dart';
 import '../../model/qna_model.dart';
 import '../App_Cus/App_writing.dart';
 import '../app_screen/app_login.dart';
-import '../main.dart';
+import '../../main.dart';
 
 class AppNotice extends StatefulWidget {
   AppNotice({super.key});
@@ -210,7 +210,7 @@ class _NoticeListState extends State<NoticeList> {
   void getNoticeList() async {
     Dio dio = Dio(
       BaseOptions(
-        baseUrl: "http://192.168.0.188:9090",
+        baseUrl: "http://192.168.45.63:9090",
         contentType: "application/json",
       ),
     );
@@ -286,7 +286,7 @@ class _QnaListState extends State<QnaList> {
   void getQnaList() async {
     Dio dio = Dio(
       BaseOptions(
-        baseUrl: "http://192.168.0.188:9090",
+        baseUrl: "http://192.168.45.63:9090",
         contentType: "application/json",
       ),
     );
@@ -312,7 +312,7 @@ class _QnaListState extends State<QnaList> {
     final dio = Dio();
     try {
       final response = await dio.get(
-        "http://192.168.0.188:9090/comm/insert",
+        "http://192.168.45.63:9090/comm/insert",
         data: {
           'pno': pno,
           'mbno': mbno,

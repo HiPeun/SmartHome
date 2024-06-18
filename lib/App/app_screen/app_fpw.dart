@@ -20,7 +20,7 @@ class _AppFpwState extends State<AppFpw> {
 
     try {
       final response = await dio.post(
-        "http://192.168.0.188:9090/user/login/pw",
+        "http://192.168.45.63:9090/user/login/pw",
         data: {
           "email": email,
           "id": id,
@@ -59,11 +59,12 @@ class _AppFpwState extends State<AppFpw> {
         }
       } else {
         String errorMessage = response.data['message'] ?? "알 수 없는 오류가 발생했습니다.";
+        print("비밀번호 찾기 실패: $errorMessage");
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Text("비밀번호 찾기 실패: $errorMessage"),
+              content: Text("아이디 또는 이메일 다시 확인해주세요"),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -77,11 +78,12 @@ class _AppFpwState extends State<AppFpw> {
         );
       }
     } catch (e) {
+      print("비밀번호 찾기 실패: ${e.toString()}");
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: Text("비밀번호 찾기 실패: ${e.toString()}"),
+            content: Text("아이디 또는 이메일 다시 확인해주세요"),
             actions: [
               TextButton(
                 onPressed: () {

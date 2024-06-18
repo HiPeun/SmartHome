@@ -6,7 +6,7 @@ import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
 import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 
-import '../App/main.dart';
+import '../main.dart';
 
 
 class MyHomePage extends StatefulWidget {

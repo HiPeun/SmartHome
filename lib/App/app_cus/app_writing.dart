@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../../model/qna_model.dart';
-import '../main.dart';
+import '../../main.dart';
 
 class AppWriting extends StatefulWidget {
   final QnaModel? qna;

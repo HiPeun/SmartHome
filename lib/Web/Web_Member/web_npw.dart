@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loginproject/App/main.dart';
+import 'package:loginproject/main.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
 
@@ -43,7 +43,7 @@ class _WebNpwState extends State<WebNpw> {
     final dio = Dio();
     try {
       final response = await dio.post(
-        "http://192.168.0.188:9090/user/login/pwfind",
+        "http://192.168.45.63:9090/user/login/pwfind",
         data: {
           'id': id,
           'pw': pw.text,

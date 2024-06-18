@@ -7,7 +7,7 @@ import '../../model/notice_model.dart';
 import '../App_Cus/App_writing.dart';
 import '../app_screen/app_join.dart';
 import '../app_screen/bottom_bar.dart';
-import '../main.dart';
+import '../../main.dart';
 
 
 

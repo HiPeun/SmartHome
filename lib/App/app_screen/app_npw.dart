@@ -41,7 +41,7 @@ class _AppNpwState extends State<AppNpw> {
     final dio = Dio();
     try {
       final response = await dio.post(
-        "http://192.168.0.188:9090/user/login/pwfind",
+        "http://192.168.45.63:9090/user/login/pwfind",
         data: {
           'id': id,
           'pw': pw.text,
@@ -166,45 +166,13 @@ class _AppNpwState extends State<AppNpw> {
                             ),
                           ),
                           Text(
-                            "비밀번호를 변경합니다",
+                            "계정의 비밀번호를 수정합니다.",
                             style: TextStyle(
                               fontSize: 20,
                               color: Colors.black54,
                             ),
-                          )
+                          ),
                         ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AppLogin(),
-                          ));
-                        },
-                        child: Text(
-                          "로그인",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AppJoin(),
-                          ));
-                        },
-                        child: Text(
-                          "회원가입",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
                       ),
                     ),
                   ],
@@ -216,7 +184,7 @@ class _AppNpwState extends State<AppNpw> {
               child: Column(
                 children: [
                   SizedBox(
-                    width: 400,
+                    width: 300,
                     child: TextField(
                       controller: pw,
                       obscureText: true,
@@ -229,7 +197,7 @@ class _AppNpwState extends State<AppNpw> {
                   ),
                   SizedBox(height: 20),
                   SizedBox(
-                    width: 400,
+                    width: 300,
                     child: TextField(
                       controller: pw2,
                       obscureText: true,
@@ -241,7 +209,7 @@ class _AppNpwState extends State<AppNpw> {
                           )),
                     ),
                   ),
-                  SizedBox(height: 40),
+                  SizedBox(height: 50),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Material(
@@ -299,14 +267,14 @@ class _AppNpwState extends State<AppNpw> {
                           updatePassword();
                         },
                         child: SizedBox(
-                          width: 400,
-                          height: 45,
+                          width: 300,
+                          height: 50,
                           child: Center(
                             child: Text(
                               "비밀번호 수정하기",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 19,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                               ),

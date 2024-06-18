@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
-import 'package:loginproject/App/main.dart';
+import 'package:loginproject/main.dart';
 
 import '../app_screen/bottom_bar.dart';
 
@@ -48,7 +48,7 @@ class _AppModifyProfile extends State<AppModifyProfile> {
         "name": nameController.text,
       };
       final dio.Dio dioClient =
-          dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.188:9090"));
+          dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.45.63:9090"));
       RegExp passwordRegex = RegExp(
           r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*(),.?":{}|<>]).{5,12}$');
       if (pwController.text.length > 12 ||
@@ -184,7 +184,7 @@ class _AppModifyProfile extends State<AppModifyProfile> {
 
       // 사용자가 탈퇴를 확인한 경우에만 실제 삭제 작업 실행
       if (confirmed == true) {
-        final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.188:9090"));
+        final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.45.63:9090"));
         final dio.Response res = await dioClient.post("/user/remove", data: data);
 
         if (res.statusCode == 200 && res.data == true) {

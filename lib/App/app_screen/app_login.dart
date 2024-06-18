@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:loginproject/App/app_screen/app_fid.dart';
-import 'package:loginproject/App/main.dart';
+import 'package:loginproject/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_fpw.dart';
@@ -98,7 +98,7 @@ class _AppLoginState extends State<AppLogin> {
         "id": _id.text,
         "pw": _pw.text,
       };
-      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.0.188:9090"));
+      final Dio dio = Dio(BaseOptions(baseUrl: "http://192.168.45.63:9090"));
       Response res = await dio.post("/user/login", data: data);
       print(res.data.runtimeType);
       if (res.statusCode == 200 && res.data is Map<String, dynamic>) {

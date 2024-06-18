@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:loginproject/App/app_screen/app_login.dart'; // 로그인 페이지를 import
-import 'package:loginproject/App/main.dart';
+import 'package:loginproject/main.dart';
 
 import '../../model/notice_model.dart';
 import '../../model/qna_model.dart';

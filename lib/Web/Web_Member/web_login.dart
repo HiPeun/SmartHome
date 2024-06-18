@@ -9,7 +9,7 @@ import 'package:loginproject/Web/Web_Member/web_fpw.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login_screen.dart';
 
-import '../../App/main.dart';
+import '../../main.dart';
 import '../webmain.dart';
 
 
