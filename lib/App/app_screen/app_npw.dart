@@ -41,7 +41,7 @@ class _AppNpwState extends State<AppNpw> {
     final dio = Dio();
     try {
       final response = await dio.post(
-        "http://192.168.45.63:9090/user/login/pwfind",
+        "http://192.168.0.188:9090/user/login/pwfind",
         data: {
           'id': id,
           'pw': pw.text,
