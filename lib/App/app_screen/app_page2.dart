@@ -55,29 +55,19 @@ class _Page2State extends State<Page2> {
   }
 
   void sendCommand(String command) async {
-    String url = 'http://192.168.0.221/?cmd=$command'; // ESP8266의 IP 주소와 포트를 입력하세요
-
+    String url = 'http://192.168.0.221/?cmd=$command';
     try {
       final response = await dio.get(url);
       if (response.statusCode == 200) {
         print('Command sent: $command');
         setState(() {
-          if (command == '1') {
-            isLedOn = true;
-          } else {
-            isLedOn = false;
-          }
+          isLedOn = command == '1';
         });
-        // 알림 메시지를 보여줍니다.
-        final snackBar = SnackBar(
-          content: Text(isLedOn ? '조명이 켜졌습니다' : '조명이 꺼졌습니다'),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       } else {
         print('Failed to send command. Error code: ${response.statusCode}');
       }
     } on DioError catch (e) {
-      print('Error sending command: ${e.response?.statusCode} - ${e.message}');
+      print('Error sending command: ${e.response?.statusCode} - ${e.message} ${e}');
     }
   }
 
@@ -256,7 +246,7 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
-                          } else {
+                        } else {
                             showLoginAlert(context);
                           }
                         },
@@ -268,7 +258,7 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
-                          } else {
+                        } else {
                             showLoginAlert(context);
                           }
                         },
@@ -448,5 +438,4 @@ class _AppMainViewState extends State<AppMainView> {
     );
   }
 }
-
 

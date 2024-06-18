@@ -44,14 +44,14 @@ class _WebWritingState extends State<WebWriting> {
   void updatePost() async {
     try {
       final Map<String, dynamic> data = {
-        'pno': widget.qna?.pno, // 다시한번
+        'pno': widget.qna?.pno,     // 다시한번
         'name': nameController.text,
         'title': titleController.text,
         'content': contentController.text,
         'attachment': attachmentController.text,
       };
       final Dio dio = Dio(BaseOptions(
-        baseUrl: "http://192.168.0.177:9090",
+        baseUrl: "http://192.168.0.188:9090",
         headers: {
           'Content-Type': 'application/json',
         },
@@ -100,7 +100,7 @@ class _WebWritingState extends State<WebWriting> {
         'attachment': attachmentController.text,
       };
       final Dio dio = Dio(BaseOptions(
-        baseUrl: "http://192.168.0.177:9090",
+        baseUrl: "http://192.168.0.188:9090",
         headers: {
           'Content-Type': 'application/json',
         },

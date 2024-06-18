@@ -20,7 +20,7 @@ class _AppFpwState extends State<AppFpw> {
 
     try {
       final response = await dio.post(
-        "http://192.168.177:9090/user/login/pw",
+        "http://192.168.0.188:9090/user/login/pw",
         data: {
           "email": email,
           "id": id,

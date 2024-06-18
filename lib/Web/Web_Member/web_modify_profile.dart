@@ -50,7 +50,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
         "pw2": pw2Controller.text,
         "name": nameController.text,
       };
-      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.45.63:9090"));
+      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.188:9090"));
       RegExp passwordRegex = RegExp(r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*(),.?":{}|<>]).{5,12}$');
       if (pwController.text.length > 12 || !passwordRegex.hasMatch(pwController.text)) {
         showDialog(
@@ -214,7 +214,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
         "id": idController.text,
         "pw": pwController.text,
       };
-      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.45.63:9090"));
+      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.188:9090"));
 
       // 확인 대화 상자 표시
       bool confirmed = await showDialog(
