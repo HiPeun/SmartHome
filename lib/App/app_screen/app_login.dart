@@ -276,7 +276,7 @@ class _AppLoginState extends State<AppLogin> {
                   color: Color(0xFFD3CDC8),
                 ),
                 width: 300,
-                height: 55,
+                height: 50,
                 child: InkWell(
                   child: Center(
                     child: Text(

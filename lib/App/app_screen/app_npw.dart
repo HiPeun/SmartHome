@@ -214,7 +214,7 @@ class _AppNpwState extends State<AppNpw> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Material(
                       elevation: 5.0,
-                      borderRadius: BorderRadius.circular(30.0),
+                      borderRadius: BorderRadius.circular(10.0),
                       color: const Color(0xFFD3CDC8),
                       child: MaterialButton(
                         onPressed: () {
@@ -266,9 +266,13 @@ class _AppNpwState extends State<AppNpw> {
 
                           updatePassword();
                         },
-                        child: SizedBox(
-                          width: 300,
-                          height: 50,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Color(0xFFD3CDC8),
+                          ),
+                          width: 280,
+                          height: 45,
                           child: Center(
                             child: Text(
                               "비밀번호 수정하기",

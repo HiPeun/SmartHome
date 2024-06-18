@@ -17,7 +17,13 @@ class Page2 extends StatefulWidget {
 
 class _Page2State extends State<Page2> {
   bool isLedOn = false;
-  Dio dio = Dio();
+  Dio dio = Dio(
+    BaseOptions(
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 5),
+      sendTimeout: Duration(seconds: 5),
+    ),
+  );
 
   // 로그아웃 메서드 생성 부분
   void _logout() {
@@ -212,7 +218,7 @@ class _Page2State extends State<Page2> {
                         onPressed: () {
                           if (user.isNotEmpty) {
                             sendCommand(isLedOn ? '0' : '1');
-                        } else {
+                          } else {
                             showLoginAlert(context);
                           }
                         },
@@ -224,7 +230,7 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
-                        } else {
+                          } else {
                             showLoginAlert(context);
                           }
                         },
