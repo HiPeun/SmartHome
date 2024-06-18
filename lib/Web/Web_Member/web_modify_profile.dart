@@ -117,7 +117,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text('성공'),
-              content: const Text('회원정보가 수정되었습니다.'),
+              content: const Text('회원정보가 수정되었습니다.\n다시 로그인해주세요'),
               actions: [
                 TextButton(
                   onPressed: () {
