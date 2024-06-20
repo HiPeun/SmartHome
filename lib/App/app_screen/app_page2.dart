@@ -61,7 +61,7 @@ class _Page2State extends State<Page2> {
       },
     );
   }
-  // led on off 메서드
+  // led on off 메서드!
   void sendCommand(String command) async {
     String url = 'http://192.168.0.223/?cmd=$command';
     try {
