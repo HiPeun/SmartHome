@@ -21,7 +21,7 @@ class _AppFidState extends State<AppFid> {
 
     try {
       final response = await dio.post(
-        "http://192.168.0.188:9090/user/login/findid",
+        "http://192.168.0.177:9090/user/login/findid",
         data: {
           "email": email,
           "name": name,

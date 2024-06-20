@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loginproject/App/Arduino/cctv.dart';
 import 'package:loginproject/main.dart';
 import 'app_join.dart';
 import 'app_login.dart';
@@ -16,14 +17,21 @@ class Page2 extends StatefulWidget {
 }
 
 class _Page2State extends State<Page2> {
-  bool isLedOn = false;
+  bool isLedOn = false;     // led true false
+  String temperatureData = '';
+  String humidityData = '';
   Dio dio = Dio(
     BaseOptions(
       connectTimeout: Duration(seconds: 10),
-      receiveTimeout: Duration(seconds: 5),
-      sendTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 60),
+      sendTimeout: Duration(seconds: 10),
     ),
   );
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   // 로그아웃 메서드 생성 부분
   void _logout() {
@@ -53,9 +61,9 @@ class _Page2State extends State<Page2> {
       },
     );
   }
-
+  // led on off 메서드
   void sendCommand(String command) async {
-    String url = 'http://192.168.0.221/?cmd=$command';
+    String url = 'http://192.168.0.223/?cmd=$command';
     try {
       final response = await dio.get(url);
       if (response.statusCode == 200) {
@@ -70,6 +78,49 @@ class _Page2State extends State<Page2> {
       print('Error sending command: ${e.response?.statusCode} - ${e.message} ${e}');
     }
   }
+
+  // 온습도 받아오는 메서드
+  Future<void> fetchData() async {
+    String urlTemp = 'http://192.168.0.221/temp'; // 온도 정보 요청 URL
+    String urlHumi = 'http://192.168.0.221/humi'; // 습도 정보 요청 URL
+
+    try {
+      Dio dio = Dio(); // Dio 객체 생성
+      // 온도 데이터 요청
+      Response responseTemp = await dio.get(urlTemp);
+      if (responseTemp.statusCode == 200) {
+        temperatureData = responseTemp.data.toString(); // 온도 데이터 저장
+      } else {
+        throw Exception('Failed to fetch temperature data. Error code: ${responseTemp.statusCode}');
+      }
+
+      // 습도 데이터 요청
+      Response responseHumi = await dio.get(urlHumi);
+      if (responseHumi.statusCode == 200) {
+        humidityData = responseHumi.data.toString(); // 습도 데이터 저장
+      } else {
+        throw Exception('Failed to fetch humidity data. Error code: ${responseHumi.statusCode}');
+      }
+
+      // 데이터를 성공적으로 받아왔을 때 스낵바로 메시지 표시
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('현재 온도: $temperatureData \n현재 습도: $humidityData'),
+        ),
+      );
+    } catch (e) {
+      print('Error fetching data: $e');
+      // 에러 발생 시 스낵바로 에러 메시지 표시
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('서버오류 다시 시도해주세요'),
+        ),
+      );
+    }
+  }
+
+
+
 
   void showLoginAlert(BuildContext context) {
     showDialog(
@@ -91,10 +142,7 @@ class _Page2State extends State<Page2> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -230,6 +278,8 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Cctv(),
+                            ),);
                           } else {
                             showLoginAlert(context);
                           }
@@ -274,6 +324,7 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
+                            fetchData();
                           } else {
                             showLoginAlert(context);
                           }
