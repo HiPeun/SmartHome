@@ -249,6 +249,7 @@ class _AppLoginState extends State<AppLogin> {
                 margin: EdgeInsets.only(top: 15),
                 width: 300,
                 child: TextField(
+                  maxLength: 12,
                   decoration: InputDecoration(
                     labelText: 'ID',
                   ),

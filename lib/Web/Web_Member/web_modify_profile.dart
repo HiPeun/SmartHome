@@ -91,6 +91,25 @@ class _WebModifyProfile extends State<WebModifyProfile> {
         );
         return;
       }
+      if (nameController.text.length >6 ) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text("이름은 6자리 이하로 입력하세요."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+        return;
+      }
       dio.Response res = await dioClient.post("/user/update", data: data);
       if (res.statusCode == 200) {
         showDialog(
@@ -98,7 +117,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text('성공'),
-              content: const Text('회원정보가 수정되었습니다.'),
+              content: const Text('회원정보가 수정되었습니다.\n다시 로그인해주세요'),
               actions: [
                 TextButton(
                   onPressed: () {
