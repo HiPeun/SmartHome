@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:loginproject/Web/Web_Member/web_join.dart';
 import 'package:loginproject/Web/Web_Member/web_login.dart';
 
+import '../webmain.dart';
+
 class WebFid extends StatefulWidget {
   WebFid({super.key});
 
@@ -136,11 +138,19 @@ class _WebFidState extends State<WebFid> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Conven",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 50,
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => MyHomePage(),
+                              ));
+                            },
+                            child: Text(
+                              "Conven",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 50,
+                                color: Color(0xFF2C2B28), // 추가: 글자 색상
+                              ),
                             ),
                           ),
                           Text(

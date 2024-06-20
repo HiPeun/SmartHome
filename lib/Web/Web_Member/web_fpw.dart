@@ -146,11 +146,19 @@ class _WebFpwState extends State<WebFpw> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Conven",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 50,
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => MyHomePage(),
+                              ));
+                            },
+                            child: Text(
+                              "Conven",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 50,
+                                color: Color(0xFF2C2B28), // 추가: 글자 색상
+                              ),
                             ),
                           ),
                           Text(
