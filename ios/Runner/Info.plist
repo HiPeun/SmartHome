@@ -68,5 +68,16 @@
         <key>NSAllowsArbitraryLoads</key>
         <true/>
     </dict>
+
+    <!-- 백그라운드 모드 설정 -->
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+        <string>remote-notification</string>
+    </array>
+
+    <!-- 알림 권한 요청 메시지 -->
+    <key>NSUserNotificationUsageDescription</key>
+    <string>앱이 알림을 보내기 위해 권한이 필요합니다.</string>
 </dict>
 </plist>
