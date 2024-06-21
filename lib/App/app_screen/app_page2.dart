@@ -6,6 +6,7 @@ import 'package:loginproject/main.dart';
 import 'app_join.dart';
 import 'app_login.dart';
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 class Page2 extends StatefulWidget {
   const Page2({
@@ -18,12 +19,14 @@ class Page2 extends StatefulWidget {
 
 class _Page2State extends State<Page2> {
   bool isLedOn = false;     // led true false
+  bool is90Degrees = false; // 현관문 개폐
+  bool is90Degrees2 = false; // 창문 개폐
   String temperatureData = '';
   String humidityData = '';
   Dio dio = Dio(
     BaseOptions(
       connectTimeout: Duration(seconds: 10),
-      receiveTimeout: Duration(seconds: 60),
+      receiveTimeout: Duration(seconds: 200),
       sendTimeout: Duration(seconds: 10),
     ),
   );
@@ -85,7 +88,6 @@ class _Page2State extends State<Page2> {
     String urlHumi = 'http://192.168.0.221/humi'; // 습도 정보 요청 URL
 
     try {
-      Dio dio = Dio(); // Dio 객체 생성
       // 온도 데이터 요청
       Response responseTemp = await dio.get(urlTemp);
       if (responseTemp.statusCode == 200) {
@@ -119,9 +121,40 @@ class _Page2State extends State<Page2> {
     }
   }
 
+  // 현관문 개폐 메서드
+  Future<void> setAngle(int angle) async {
+    String url = 'http://192.168.0.229/setAngle1?angle=$angle';
+    try {
+      final res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        print('Angle1 set successfully $angle degrees successfully');
+      } else {
+        print('Failed to set Sorvo 1 angle. Error: ${res.statusCode}');
+      }
+    } catch (e) {
+      print('Failed to set Sorvo 1 angle. Exception: $e');
+    }
+  }
+
+  // 창문 개폐 메서드
+  Future<void> setAngle2(int angle) async {
+    String url = 'http://192.168.0.229/setAngle2?angle=$angle';
+    try {
+      final res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        print('Servo 2 Angle set to $angle degrees successfully');
+      } else {
+        print('Failed to set Servo 2 angle. Error: ${res.statusCode}');
+      }
+    } catch (e) {
+      print('Failed to set Servo 2 angle. Exception: $e');
+
+    }
+  }
 
 
 
+  // 로그인 후
   void showLoginAlert(BuildContext context) {
     showDialog(
       context: context,
@@ -296,6 +329,13 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
+                            if (is90Degrees == false) {
+                              setAngle(180);
+                              is90Degrees = true;
+                            } else {
+                              setAngle(0);
+                              is90Degrees = false;
+                            }
                         } else {
                             showLoginAlert(context);
                           }
@@ -308,6 +348,13 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
+                            if(is90Degrees2 == false) {
+                              setAngle2(0);
+                              is90Degrees2 = true;
+                            } else {
+                              setAngle2(180);
+                              is90Degrees2 = false;
+                            }
                         } else {
                             showLoginAlert(context);
                           }
