@@ -311,12 +311,12 @@ class _WebJoinState extends State<WebJoin> {
                             return;
                           }
 
-                          if (joinId.length > 12 || !joinId.contains(RegExp(r'\d'))) {
+                          if (joinId.length > 12 || !RegExp(r'^(?=.*[a-zA-Z])(?=.*\d)').hasMatch(joinId)) {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  content: Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
+                                  content: Text("아이디는 12자리 이하이고 문자와 숫자를 모두 포함해야 합니다."),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
@@ -522,12 +522,12 @@ class _WebJoinState extends State<WebJoin> {
                             return;
                           }
 
-                          if (joinId.length > 12 || !joinId.contains(RegExp(r'\d'))) {
+                          if (joinId.length > 12 || !RegExp(r'^(?=.*[a-zA-Z])(?=.*\d)').hasMatch(joinId)) {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  content: Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
+                                  content: Text("아이디는 12자리 이하이고 문자와 숫자를 모두 포함해야 합니다."),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
