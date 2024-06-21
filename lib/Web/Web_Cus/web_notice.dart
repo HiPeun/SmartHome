@@ -10,6 +10,7 @@ import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 import '../../model/notice_model.dart';
 import '../../model/qna_model.dart';
 import '../Web_Member/web_login.dart';
+import '../webmain.dart';
 
 class WebNotice extends StatefulWidget {
   WebNotice({super.key});
@@ -47,11 +48,19 @@ class _WebNoticeState extends State<WebNotice> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Conven",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 50,
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => MyHomePage(),
+                              ));
+                            },
+                            child: Text(
+                              "Conven",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 50,
+                                color: Color(0xFF2C2B28), // 추가: 글자 색상
+                              ),
                             ),
                           ),
                           Text(

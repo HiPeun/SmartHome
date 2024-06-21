@@ -23,7 +23,6 @@ class _WebJoinState extends State<WebJoin> {
   bool isTermsAgreed = false;
 
   void toggleAgreement(bool value) {
-    //이 값들이 변경되고 위젯이 빈화면이 되었다가 다시 그려짐 (체크가됨),이변수값을 주었으니 다시 그려줌
     setState(() {
       isAgreed = value;
       isPersonAgreed = value;
@@ -32,8 +31,6 @@ class _WebJoinState extends State<WebJoin> {
   }
 
   void initState(){
-    //super.initState 코드는 현재 클래스에서 오버라이드 된
-    // initState() 메서드 내에서 상위 클래스의 initState() 메서드를 호출
     super.initState();
     id = TextEditingController(text: "");
     pw = TextEditingController(text: "");
@@ -41,8 +38,7 @@ class _WebJoinState extends State<WebJoin> {
     email = TextEditingController(text: "");
     name = TextEditingController(text: "");
   }
-//각 텍스트 필드의 입력값을 Controller를 사용하여 가져오고
-// dispose을 사용해서 메모리 누수를 방지
+
   @override
   void dispose(){
     id.dispose();
@@ -50,11 +46,11 @@ class _WebJoinState extends State<WebJoin> {
     pw2.dispose();
     email.dispose();
     name.dispose();
-    //super.dispose를 호출하여 부모 클래스의 dispose 메소드를 실행하여 추가적인 정리 작업을 수행
     super.dispose();
   }
+
   void joins(String id, String pw, String name, String email) async {
-    final dio = Dio(); //HTTP 클라이언트 라이브러리 Dio의 인스턴스 생성
+    final dio = Dio();
     try {
       final response = await dio.post(
         "http://192.168.0.177:9090/user/join",
@@ -90,8 +86,6 @@ class _WebJoinState extends State<WebJoin> {
             );
           },
         );
-
-
       } else {
         print("회원가입 실패: ${response.data}");
         showDialog(
@@ -132,7 +126,6 @@ class _WebJoinState extends State<WebJoin> {
     }
   }
 
-  // 이메일 유효성 검사 함수
   bool isValidEmail(String email) {
     final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     return emailRegex.hasMatch(email);
@@ -140,7 +133,6 @@ class _WebJoinState extends State<WebJoin> {
 
   void check(String id) async {
     final dio = Dio();
-
     try {
       final response = await dio.post(
         "http://192.168.0.177:9090/user/login/duplication",
@@ -153,7 +145,7 @@ class _WebJoinState extends State<WebJoin> {
           },
         ),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && response.data == true) {
         bool isDuplicate = response.data as bool;
         if (isDuplicate) {
           showDialog(
@@ -178,18 +170,18 @@ class _WebJoinState extends State<WebJoin> {
       }
     } catch (e) {
       showDialog(context: context,
-          builder: (BuildContext context) {
-         return AlertDialog(
-           content: Text("사용 가능한 아이디입니다."),
-           actions: [
-             TextButton(onPressed: () {
-               Navigator.of(context).pop();
-             },
-            child: Text("확인"),
-             ),
-           ],
-         );
-         },
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text("사용 가능한 아이디입니다."),
+            actions: [
+              TextButton(onPressed: () {
+                Navigator.of(context).pop();
+              },
+                child: Text("확인"),
+              ),
+            ],
+          );
+        },
       );
     }
   }
@@ -276,6 +268,8 @@ class _WebJoinState extends State<WebJoin> {
                       ),
                     ),
                   ),
+
+
                   SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -317,12 +311,12 @@ class _WebJoinState extends State<WebJoin> {
                             return;
                           }
 
-                          if (joinId.length > 12 || !joinId.contains(RegExp(r'\d'))) {
+                          if (joinId.length > 12 || !RegExp(r'^(?=.*[a-zA-Z])(?=.*\d)').hasMatch(joinId)) {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  content: Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
+                                  content: Text("아이디는 12자리 이하이고 문자와 숫자를 모두 포함해야 합니다."),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
@@ -488,6 +482,25 @@ class _WebJoinState extends State<WebJoin> {
                           String joinPw2 = pw2.text;
                           String joinEmail = email.text;
 
+                          if (joinName.isEmpty) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text("이름을 입력하세요."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('확인'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            return;
+                          }
 
                           if (joinName.length > 6) {
                             showDialog(
@@ -509,12 +522,12 @@ class _WebJoinState extends State<WebJoin> {
                             return;
                           }
 
-                          if (joinId.length > 12 || !joinId.contains(RegExp(r'\d'))) {
+                          if (joinId.length > 12 || !RegExp(r'^(?=.*[a-zA-Z])(?=.*\d)').hasMatch(joinId)) {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  content: Text("아이디는 12자리 이하이고 숫자를 포함해야 합니다."),
+                                  content: Text("아이디는 12자리 이하이고 문자와 숫자를 모두 포함해야 합니다."),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
