@@ -245,18 +245,6 @@ class _Page2State extends State<Page2> {
                   ),
                 ],
               ),
-              if (user.isNotEmpty)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "반가워요, ${user["id"]}님",
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                  ],
-                ),
               Row(
                 children: [
                   SmartControl(
@@ -278,7 +266,7 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Cctv(),
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2(),
                             ),);
                           } else {
                             showLoginAlert(context);
