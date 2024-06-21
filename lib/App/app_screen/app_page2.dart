@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:loginproject/App/Arduino/cctv.dart';
 import 'package:loginproject/main.dart';
+import 'package:web_socket_channel/io.dart';
 import '../../main.dart';
 import '../../main.dart';
 import 'app_join.dart';
@@ -35,10 +36,34 @@ class _Page2State extends State<Page2> {
   );
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
+  late IOWebSocketChannel _channel;
 
   @override
   void initState() {
     super.initState();
+    _channel = IOWebSocketChannel.connect('ws://192.168.0.231/flame_ws'); // 웹소켓 URL 수정 필요
+    _channel.stream.listen((message) {
+      // 서버로부터 메시지 수신
+      print('Received message: $message');
+      handleFlameStatus(message);
+    });
+  }
+
+  @override
+  void dispose() {
+    _channel.sink.close();
+    super.dispose();
+  }
+
+  void handleFlameStatus(String message) {
+    if (message == 'Danger') {
+      print('불꽃 감지 되었습니다.');
+      showDangerAlert();
+      sendEmergencyNotification();
+    } else {
+      print('안전 상태로 판단됨.');
+      showSafeAlert();
+    }
   }
 
   // 로그아웃 메서드 생성 부분
@@ -276,10 +301,6 @@ class _Page2State extends State<Page2> {
 
 
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     // 알림 설정 초기화
@@ -442,10 +463,10 @@ class _Page2State extends State<Page2> {
                         onPressed: () {
                           if (user.isNotEmpty) {
                             if (is90Degrees == false) {
-                              setAngle(180);
+                              setAngle(0);
                               is90Degrees = true;
                             } else {
-                              setAngle(0);
+                              setAngle(180);
                               is90Degrees = false;
                             }
                         } else {
