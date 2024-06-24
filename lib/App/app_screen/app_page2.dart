@@ -1,11 +1,24 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:dio/dio.dart';
 
-import 'package:loginproject/main.dart';
+import '../../main.dart';
 import 'app_join.dart';
 import 'app_login.dart';
-import 'package:dio/dio.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Page2(),
+    );
+  }
+}
 
 class Page2 extends StatefulWidget {
   const Page2({
@@ -28,9 +41,70 @@ class _Page2State extends State<Page2> {
     ),
   );
 
+  final String broker = '192.168.0.168'; // MQTT 브로커 IP 주소
+  final String topic = 'fire_detection';
+  late MqttServerClient client;
+  String fireStatus = 'No fire detected';
+
   @override
   void initState() {
     super.initState();
+    setupMqttClient();
+  }
+
+  Future<void> setupMqttClient() async {
+    client = MqttServerClient(broker, '');
+    client.logging(on: true);
+    client.onConnected = onConnected;
+    client.onDisconnected = onDisconnected;
+    client.onSubscribed = onSubscribed;
+    client.onSubscribeFail = onSubscribeFail;
+
+    final connMessage = MqttConnectMessage()
+        .withClientIdentifier('flutter_client')
+        .startClean();
+    client.connectionMessage = connMessage;
+
+    try {
+      await client.connect();
+      client.subscribe(topic, MqttQos.atMostOnce);
+      client.updates!.listen((List<MqttReceivedMessage<MqttMessage>>? c) {
+        if (c != null && c.isNotEmpty) {
+          final MqttPublishMessage recMess = c[0].payload as MqttPublishMessage;
+          final String message =
+          MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+
+          setState(() {
+            fireStatus = message;
+          });
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Fire Status: $fireStatus'),
+            ),
+          );
+        }
+      });
+    } catch (e) {
+      print('Exception: $e');
+      client.disconnect();
+    }
+  }
+
+  void onConnected() {
+    print('Connected');
+  }
+
+  void onDisconnected() {
+    print('Disconnected');
+  }
+
+  void onSubscribed(String topic) {
+    print('Subscribed to $topic');
+  }
+
+  void onSubscribeFail(String topic) {
+    print('Failed to subscribe $topic');
   }
 
   // 로그아웃 메서드 생성 부분
@@ -327,6 +401,11 @@ class _Page2State extends State<Page2> {
                     iconButton: IconButton(
                       onPressed: () {
                         if (user.isNotEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Fire Status: $fireStatus'),
+                            ),
+                          );
                         } else {
                           showLoginAlert(context);
                         }
@@ -353,9 +432,9 @@ class SmartControl extends StatelessWidget {
 
   const SmartControl(
       {required this.iconButton,
-      required this.image,
-      required this.text,
-      super.key});
+        required this.image,
+        required this.text,
+        super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -425,16 +504,16 @@ class _AppMainViewState extends State<AppMainView> {
             items: imgList
                 .map(
                   (e) => Container(
-                    child: Image.asset(
-                      e,
-                      fit: BoxFit.cover,
-                      width: 1000,
-                    ),
-                  ),
-                )
+                child: Image.asset(
+                  e,
+                  fit: BoxFit.cover,
+                  width: 1000,
+                ),
+              ),
+            )
                 .toList(),
             options: CarouselOptions(
-                // 화면 전환을 자동으로 할건지 설정
+              // 화면 전환을 자동으로 할건지 설정
                 autoPlay: true,
                 //슬라이더가 화면의 비율에 맞춰지도록 합니다.
                 aspectRatio: 1.6,
