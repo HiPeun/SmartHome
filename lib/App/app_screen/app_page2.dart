@@ -38,18 +38,14 @@ class _Page2State extends State<Page2> {
 
   final String broker = '192.168.0.168'; // MQTT 브로커 IP 주소
   final String topic = 'fire_detection';
-  late MqttServerClient client;
   String fireStatus = 'No fire detected';
+
+  bool is90Degrees2 = false;
+  bool is90Degrees = false;
 
   @override
   void initState() {
     super.initState();
-    _channel = IOWebSocketChannel.connect('ws://192.168.0.231/flame_ws'); // 웹소켓 URL 수정 필요
-    _channel.stream.listen((message) {
-      // 서버로부터 메시지 수신
-      print('Received message: $message');
-      handleFlameStatus(message);
-    });
   }
 
   @override
@@ -448,7 +444,7 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Cctv(),
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => VideoPlayerExample(),
                             ),);
                           } else {
                             showLoginAlert(context);
