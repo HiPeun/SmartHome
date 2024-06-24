@@ -34,7 +34,7 @@ class _VideoPlayerExampleState extends State<VideoPlayerExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Live Stream Example'),
+        title: Text('CCTV 화면 '),
       ),
       body: FutureBuilder(
         future: _initializeVideoPlayerFuture,

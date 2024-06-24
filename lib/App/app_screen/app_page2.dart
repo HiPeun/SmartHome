@@ -1,12 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:loginproject/App/Arduino/cctv.dart';
 import 'package:loginproject/main.dart';
-import '../Arduino/cctv.dart';
+import 'package:web_socket_channel/io.dart';
 import 'app_join.dart';
 import 'app_login.dart';
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 class Page2 extends StatefulWidget {
   const Page2({
@@ -18,13 +20,13 @@ class Page2 extends StatefulWidget {
 }
 
 class _Page2State extends State<Page2> {
-  bool isLedOn = false;     // led true false
+  bool isLedOn = false; // led true false
   String temperatureData = '';
   String humidityData = '';
   Dio dio = Dio(
     BaseOptions(
       connectTimeout: Duration(seconds: 10),
-      receiveTimeout: Duration(seconds: 60),
+      receiveTimeout: Duration(seconds: 200),
       sendTimeout: Duration(seconds: 10),
     ),
   );
@@ -34,16 +36,17 @@ class _Page2State extends State<Page2> {
 
   final String broker = '192.168.0.168'; // MQTT 브로커 IP 주소
   final String topic = 'fire_detection';
-  late MqttServerClient client;
+
   String fireStatus = 'No fire detected';
 
-  bool is90Degrees2 = false;
   bool is90Degrees = false;
+  bool is90Degrees2 = false;
 
   @override
   void initState() {
     super.initState();
-    _channel = IOWebSocketChannel.connect('ws://192.168.0.231/flame_ws'); // 웹소켓 URL 수정 필요
+    _channel =
+        IOWebSocketChannel.connect('ws://192.168.0.231/flame_ws'); // 웹소켓 URL 수정 필요
     _channel.stream.listen((message) {
       // 서버로부터 메시지 수신
       print('Received message: $message');
@@ -96,6 +99,7 @@ class _Page2State extends State<Page2> {
       },
     );
   }
+
   // led on off 메서드!
   void sendCommand(String command) async {
     String url = 'http://192.168.0.223/?cmd=$command';
@@ -154,9 +158,129 @@ class _Page2State extends State<Page2> {
     }
   }
 
+  // 현관문 개폐 메서드
+  Future<void> setAngle(int angle) async {
+    String url = 'http://192.168.0.229/setAngle1?angle=$angle';
+    try {
+      final res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        print('Angle1 set successfully $angle degrees successfully');
+      } else {
+        print('Failed to set Sorvo 1 angle. Error: ${res.statusCode}');
+      }
+    } catch (e) {
+      print('Failed to set Sorvo 1 angle. Exception: $e');
+    }
+  }
 
+  // 창문 개폐 메서드
+  Future<void> setAngle2(int angle) async {
+    String url = 'http://192.168.0.229/setAngle2?angle=$angle';
+    try {
+      final res = await http.get(Uri.parse(url));
+      if (res.statusCode == 200) {
+        print('Servo 2 Angle set to $angle degrees successfully');
+      } else {
+        print('Failed to set Servo 2 angle. Error: ${res.statusCode}');
+      }
+    } catch (e) {
+      print('Failed to set Servo 2 angle. Exception: $e');
+    }
+  }
 
+  // 불꽃 감지 센서
+  Future<void> checkFlameStatus() async {
+    String url = 'http://192.168.0.231/checkFlame';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        print('HTTP Response Status Code: ${response.statusCode}');
+        String status = response.body.trim();
+        print('HTTP Response Body: "$status"'); // 응답 본문 출력
+        if (status == 'Danger') {
+          print('불꽃 감지 되었습니다.');
+          showDangerAlert();
+          sendEmergencyNotification();
+        } else {
+          print('안전 상태로 판단됨.');
+          showSafeAlert();
+        }
+      } else {
+        print('Failed to check flame status. Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Failed to check flame status. Exception: $e');
+    }
+  }
 
+  void showDangerAlert() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('위험 감지!'),
+          content: Text('불이 감지되었습니다. 필요한 조치를 취하세요!'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('닫기'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showSafeAlert() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('안전 상태'),
+          content: Text('불이 감지되지 않았습니다. 현재 상황은 안전합니다.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('닫기'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> sendEmergencyNotification() async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'emergency_channel_id',
+      '비상 알림',
+      channelDescription: '비상 상황을 위한 알림',
+      importance: Importance.max,
+      priority: Priority.high,
+      enableLights: true,
+      enableVibration: true,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound('emergency_sound'),
+      fullScreenIntent: true,
+    );
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      '비상!',
+      '불이 감지되었습니다. 긴급 상황입니다. 비상 서비스에 연락하세요.',
+      platformChannelSpecifics,
+      payload: 'emergency',
+    );
+  }
+
+  // 로그인 후
   void showLoginAlert(BuildContext context) {
     showDialog(
       context: context,
@@ -177,8 +301,6 @@ class _Page2State extends State<Page2> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     // 알림 설정 초기화
@@ -188,7 +310,6 @@ class _Page2State extends State<Page2> {
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
-
 
     return Material(
       child: SafeArea(
@@ -272,7 +393,6 @@ class _Page2State extends State<Page2> {
                         style: TextStyle(fontSize: 20)),
                   ],
                 ),
-
               AppMainView(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -289,18 +409,7 @@ class _Page2State extends State<Page2> {
                   ),
                 ],
               ),
-              if (user.isNotEmpty)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "반가워요, ${user["id"]}님",
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                  ],
-                ),
+
               Row(
                 children: [
                   SmartControl(
@@ -322,8 +431,12 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => VideoPlayerExample(),
-                            ),);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VideoPlayerExample(),
+                              ),
+                            );
                           } else {
                             showLoginAlert(context);
                           }
@@ -340,7 +453,14 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
-                        } else {
+                            if (is90Degrees == false) {
+                              setAngle(0);
+                              is90Degrees = true;
+                            } else {
+                              setAngle(180);
+                              is90Degrees = false;
+                            }
+                          } else {
                             showLoginAlert(context);
                           }
                         },
@@ -352,7 +472,14 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
-                        } else {
+                            if (is90Degrees2 == false) {
+                              setAngle2(0);
+                              is90Degrees2 = true;
+                            } else {
+                              setAngle2(180);
+                              is90Degrees2 = false;
+                            }
+                          } else {
                             showLoginAlert(context);
                           }
                         },
@@ -381,6 +508,7 @@ class _Page2State extends State<Page2> {
                     iconButton: IconButton(
                       onPressed: () {
                         if (user.isNotEmpty) {
+                          checkFlameStatus();
                         } else {
                           showLoginAlert(context);
                         }
@@ -423,7 +551,7 @@ class SmartControl extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.42,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: Color(
+              color: const Color(
                 0xFFE5E5E1,
               ),
             ),
@@ -471,66 +599,64 @@ class _AppMainViewState extends State<AppMainView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Stack(
-        children: [
-          Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-          CarouselSlider(
-            items: imgList
-                .map(
-                  (e) => Container(
-                child: Image.asset(
-                  e,
-                  fit: BoxFit.cover,
-                  width: 1000,
+    return Stack(
+      children: [
+        const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+        CarouselSlider(
+          items: imgList
+              .map(
+                (e) => Container(
+              child: Image.asset(
+                e,
+                fit: BoxFit.cover,
+                width: 1000,
+              ),
+            ),
+          )
+              .toList(),
+          options: CarouselOptions(
+            // 화면 전환을 자동으로 할건지 설정
+            autoPlay: true,
+            //슬라이더가 화면의 비율에 맞춰지도록 합니다.
+            aspectRatio: 1.6,
+            enlargeCenterPage: true,
+            viewportFraction: 1,
+            //화면 전환을 몇초마다 할건지 설정함
+            autoPlayInterval: const Duration(seconds: 5),
+          ),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 60),
+                child: const Text(
+                  "Smart Home",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 40,
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 0),
+                child: const Text(
+                  "일상의 행복한 변화",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
                 ),
               ),
             )
-                .toList(),
-            options: CarouselOptions(
-              // 화면 전환을 자동으로 할건지 설정
-                autoPlay: true,
-                //슬라이더가 화면의 비율에 맞춰지도록 합니다.
-                aspectRatio: 1.6,
-                enlargeCenterPage: true,
-                viewportFraction: 1,
-                //화면 전환을 몇초마다 할건지 설정함
-                autoPlayInterval: Duration(seconds: 5)),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 60),
-                  child: Text(
-                    "Smart Home",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 40,
-                    ),
-                  ),
-                ),
-              ),
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 0),
-                  child: Text(
-                    "일상의 행복한 변화",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
+          ],
+        ),
+      ],
     );
   }
 }
-
