@@ -246,19 +246,6 @@ class _AppWritingState extends State<AppWriting> {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: Text("첨부파일"),
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: Size(150, 50),
-                                backgroundColor: Color(0xFFD3CDC8),
-                                textStyle: TextStyle(fontSize: 18),
-                                foregroundColor: Colors.black,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero,
-                                ),
-                              ),
-                            ),
                             SizedBox(
                               width: 20,
                               height: 50,
