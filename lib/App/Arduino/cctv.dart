@@ -1,73 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-class Cctv extends StatelessWidget {
+class VideoPlayerExample extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ESP32-CAM 스트리밍 보기',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: StreamScreen(),
-    );
-  }
+  _VideoPlayerExampleState createState() => _VideoPlayerExampleState();
 }
 
-class StreamScreen extends StatefulWidget {
-  @override
-  _StreamScreenState createState() => _StreamScreenState();
-}
-
-class _StreamScreenState extends State<StreamScreen> {
+class _VideoPlayerExampleState extends State<VideoPlayerExample> {
   late VideoPlayerController _controller;
-  final String streamUrl = 'https://192.168.0.194:93/stream';
+  late Future<void> _initializeVideoPlayerFuture;
 
   @override
   void initState() {
     super.initState();
-    _initializeStream();
-  }
+    // VideoPlayerController 생성 및 초기화
+    _controller = VideoPlayerController.network(
+      'http://192.168.0.101:80/data', // 라이브 스트리밍 URL
+    );
 
-  void _initializeStream() async {
-    _controller = VideoPlayerController.networkUrl(Uri.parse(streamUrl));
-
-    try {
-      await _controller.initialize();
-      _controller.play();
-    } catch (e) {
-      print('Error initializing video player: $e');
-    }
-
-    _controller.addListener(() {
-      if (_controller.value.hasError) {
-        print('VideoPlayer error: ${_controller.value.errorDescription}');
-        // Handle error during playback here
-      }
-    });
-
-    setState(() {});
+    _initializeVideoPlayerFuture = _controller.initialize();
+    _controller.setLooping(true);
+    _controller.play();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
+    // 컨트롤러 해제
+    _controller.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ESP32-CAM 스트리밍'),
+        title: Text('Live Stream Example'),
       ),
-      body: Center(
-        child: _controller.value.isInitialized
-            ? AspectRatio(
-          aspectRatio: _controller.value.aspectRatio,
-          child: VideoPlayer(_controller),
-        )
-            : CircularProgressIndicator(),
+      body: FutureBuilder(
+        future: _initializeVideoPlayerFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return AspectRatio(
+              aspectRatio: _controller.value.aspectRatio,
+              child: VideoPlayer(_controller),
+            );
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            if (_controller.value.isPlaying) {
+              _controller.pause();
+            } else {
+              _controller.play();
+            }
+          });
+        },
+        child: Icon(
+          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+        ),
       ),
     );
   }

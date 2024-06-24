@@ -40,7 +40,6 @@
         <string>kakaokompassauth</string>
         <string>kakaolink</string>
         <string>kakaoplus</string>
-        <string></string>
     </array>
     <key>LSRequiresIPhoneOS</key>
     <true/>
@@ -67,6 +66,18 @@
     <dict>
         <key>NSAllowsArbitraryLoads</key>
         <true/>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>192.168.0.194</key>
+            <dict>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSExceptionRequiresForwardSecrecy</key>
+                <false/>
+            </dict>
+        </dict>
     </dict>
 
     <!-- 백그라운드 모드 설정 -->

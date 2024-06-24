@@ -23,8 +23,6 @@ class Page2 extends StatefulWidget {
 
 class _Page2State extends State<Page2> {
   bool isLedOn = false;     // led true false
-  bool is90Degrees = false; // 현관문 개폐
-  bool is90Degrees2 = false; // 창문 개폐
   String temperatureData = '';
   String humidityData = '';
   Dio dio = Dio(
@@ -37,6 +35,11 @@ class _Page2State extends State<Page2> {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
   late IOWebSocketChannel _channel;
+
+  final String broker = '192.168.0.168'; // MQTT 브로커 IP 주소
+  final String topic = 'fire_detection';
+  late MqttServerClient client;
+  String fireStatus = 'No fire detected';
 
   @override
   void initState() {
@@ -118,6 +121,7 @@ class _Page2State extends State<Page2> {
     String urlHumi = 'http://192.168.0.221/humi'; // 습도 정보 요청 URL
 
     try {
+      Dio dio = Dio(); // Dio 객체 생성
       // 온도 데이터 요청
       Response responseTemp = await dio.get(urlTemp);
       if (responseTemp.statusCode == 200) {

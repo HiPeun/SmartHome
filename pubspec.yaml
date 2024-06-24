@@ -35,11 +35,15 @@ dependencies:
   cloud_firestore: ^4.16.0
   kakao_flutter_sdk_user: ^1.9.2 # 카카오 로그인 API 패키지
   file_picker: ^4.0.0
+  connectivity_plus: ^6.0.3
 
   flutter_serial: ^0.0.3  # 시리얼 통신(불꽃 감지)
   video_player: ^2.3.2  # 실시간 비디오 플레이
   flutter_local_notifications: ^9.1.1 # 알림
   web_socket_channel: ^2.2.0 # 실시간 알림
+
+
+
 
 
 
@@ -63,6 +67,10 @@ dependencies:
 
   shared_preferences: ^2.2.3
   flutter_secure_storage: ^4.2.1
+  url_launcher: ^6.3.0
+  flutter_mjpeg: ^2.0.4
+  flutter_webrtc: ^0.11.1
+  web_socket_channel: ^3.0.0
 
 
 
@@ -73,6 +81,10 @@ dev_dependencies:
   slang_build_runner: ^2.4.9
   file_picker: ^4.6.1
   image_picker: ^1.1.2
+  webview_flutter: ^4.8.0
+  flutter_inappwebview: ^6.0.0
+  mqtt_client: ^10.2.1
+
 
 
 
