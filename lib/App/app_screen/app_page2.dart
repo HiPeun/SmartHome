@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loginproject/App/Arduino/cctv.dart';
+
 import 'package:loginproject/main.dart';
 import 'app_join.dart';
 import 'app_login.dart';
@@ -17,7 +17,7 @@ class Page2 extends StatefulWidget {
 }
 
 class _Page2State extends State<Page2> {
-  bool isLedOn = false;     // led true false
+  bool isLedOn = false; // led true false
   String temperatureData = '';
   String humidityData = '';
   Dio dio = Dio(
@@ -61,6 +61,7 @@ class _Page2State extends State<Page2> {
       },
     );
   }
+
   // led on off 메서드!
   void sendCommand(String command) async {
     String url = 'http://192.168.0.223/?cmd=$command';
@@ -75,7 +76,8 @@ class _Page2State extends State<Page2> {
         print('Failed to send command. Error code: ${response.statusCode}');
       }
     } on DioError catch (e) {
-      print('Error sending command: ${e.response?.statusCode} - ${e.message} ${e}');
+      print(
+          'Error sending command: ${e.response?.statusCode} - ${e.message} ${e}');
     }
   }
 
@@ -91,7 +93,8 @@ class _Page2State extends State<Page2> {
       if (responseTemp.statusCode == 200) {
         temperatureData = responseTemp.data.toString(); // 온도 데이터 저장
       } else {
-        throw Exception('Failed to fetch temperature data. Error code: ${responseTemp.statusCode}');
+        throw Exception(
+            'Failed to fetch temperature data. Error code: ${responseTemp.statusCode}');
       }
 
       // 습도 데이터 요청
@@ -99,7 +102,8 @@ class _Page2State extends State<Page2> {
       if (responseHumi.statusCode == 200) {
         humidityData = responseHumi.data.toString(); // 습도 데이터 저장
       } else {
-        throw Exception('Failed to fetch humidity data. Error code: ${responseHumi.statusCode}');
+        throw Exception(
+            'Failed to fetch humidity data. Error code: ${responseHumi.statusCode}');
       }
 
       // 데이터를 성공적으로 받아왔을 때 스낵바로 메시지 표시
@@ -118,9 +122,6 @@ class _Page2State extends State<Page2> {
       );
     }
   }
-
-
-
 
   void showLoginAlert(BuildContext context) {
     showDialog(
@@ -141,8 +142,6 @@ class _Page2State extends State<Page2> {
       },
     );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -228,7 +227,6 @@ class _Page2State extends State<Page2> {
                         style: TextStyle(fontSize: 20)),
                   ],
                 ),
-
               AppMainView(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -266,8 +264,12 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp2(),
-                            ),);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MyApp(),
+                              ),
+                            );
                           } else {
                             showLoginAlert(context);
                           }
@@ -284,7 +286,7 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
-                        } else {
+                          } else {
                             showLoginAlert(context);
                           }
                         },
@@ -296,7 +298,7 @@ class _Page2State extends State<Page2> {
                       iconButton: IconButton(
                         onPressed: () {
                           if (user.isNotEmpty) {
-                        } else {
+                          } else {
                             showLoginAlert(context);
                           }
                         },
@@ -351,9 +353,9 @@ class SmartControl extends StatelessWidget {
 
   const SmartControl(
       {required this.iconButton,
-        required this.image,
-        required this.text,
-        super.key});
+      required this.image,
+      required this.text,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -423,16 +425,16 @@ class _AppMainViewState extends State<AppMainView> {
             items: imgList
                 .map(
                   (e) => Container(
-                child: Image.asset(
-                  e,
-                  fit: BoxFit.cover,
-                  width: 1000,
-                ),
-              ),
-            )
+                    child: Image.asset(
+                      e,
+                      fit: BoxFit.cover,
+                      width: 1000,
+                    ),
+                  ),
+                )
                 .toList(),
             options: CarouselOptions(
-              // 화면 전환을 자동으로 할건지 설정
+                // 화면 전환을 자동으로 할건지 설정
                 autoPlay: true,
                 //슬라이더가 화면의 비율에 맞춰지도록 합니다.
                 aspectRatio: 1.6,
@@ -477,4 +479,3 @@ class _AppMainViewState extends State<AppMainView> {
     );
   }
 }
-
