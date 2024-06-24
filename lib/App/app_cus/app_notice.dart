@@ -18,7 +18,6 @@ class AppNotice extends StatefulWidget {
 class _AppNoticeState extends State<AppNotice> {
   bool showNotices = true;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,7 +100,6 @@ class _AppNoticeState extends State<AppNotice> {
                       ),
                     ),
                   ),
-
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -157,7 +155,8 @@ class _AppNoticeState extends State<AppNotice> {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: Text('로그인 필요'),
-                          content: Text('글쓰기를 하려면 로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?'),
+                          content:
+                              Text('글쓰기를 하려면 로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?'),
                           actions: [
                             TextButton(
                               onPressed: () {
@@ -246,21 +245,25 @@ class _NoticeListState extends State<NoticeList> {
         final String date = DateFormat('yyyy-MM-dd').format(
             DateTime.fromMillisecondsSinceEpoch(list[index].regdate ?? 0));
         return ExpansionTile(
-          title: Row(
+          title: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 list[index].title ?? "",
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 17,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Container(
                 height: 10,
               ),
-              Text(
-                date,
+              Row(
+                children: [
+                  Text(
+                    date,
+                  ),
+                ],
               ),
             ],
           ),
@@ -386,17 +389,24 @@ class _QnaListState extends State<QnaList> {
       itemBuilder: (context, index) {
         final String date = DateFormat('yyyy-MM-dd').format(
             DateTime.fromMillisecondsSinceEpoch(list[index].regdate ?? 0));
+
         return ExpansionTile(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          title: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: Text(
-                  list[index].title ?? "",
-                  overflow: TextOverflow.ellipsis,
-                ),
+              Row(
+                children: [
+                  Text(
+                    list[index].title ?? "",
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
-              Text(date),
+              Row(
+                children: [
+                  Text(date),
+                ],
+              ),
             ],
           ),
           children: <Widget>[
@@ -411,10 +421,11 @@ class _QnaListState extends State<QnaList> {
                       onPressed: () {
                         Navigator.of(context)
                             .push(
-                          MaterialPageRoute(
-                            builder: (context) => AppWriting(qna: list[index]),
-                          ),
-                        )
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    AppWriting(qna: list[index]),
+                              ),
+                            )
                             .then((value) => getQnaList());
                       },
                     ),
