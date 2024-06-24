@@ -332,47 +332,7 @@ class _QnaListState extends State<QnaList> {
     }
   }
 
-  void qnainsert(int pno, int mbno, String content, int regdate) async {
-    final dio = Dio();
-    try {
-      final response = await dio.get(
-        "http://192.168.0.177:9090/comm/insert",
-        data: {
-          'pno': pno,
-          'mbno': mbno,
-          'content': content,
-          'regdate': regdate,
-        },
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        ),
-      );
-      if (response.statusCode == 200) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              content: Text("댓글 작성이 완료되었습니다."),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('확인'),
-                ),
-              ],
-            );
-          },
-        );
-      } else {
-        print("글 등록 실패: ${response.data}");
-      }
-    } catch (e) {
-      print("글 등록 실패: $e");
-    }
-  }
+
 
   Widget build(BuildContext context) {
     return ListView.builder(

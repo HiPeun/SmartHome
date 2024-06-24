@@ -28,10 +28,44 @@ class _Page2State extends State<Page2> {
       sendTimeout: Duration(seconds: 10),
     ),
   );
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+  late IOWebSocketChannel _channel;
+
+  final String broker = '192.168.0.168'; // MQTT 브로커 IP 주소
+  final String topic = 'fire_detection';
+  late MqttServerClient client;
+  String fireStatus = 'No fire detected';
+
+  bool is90Degrees2 = false;
+  bool is90Degrees = false;
 
   @override
   void initState() {
     super.initState();
+    _channel = IOWebSocketChannel.connect('ws://192.168.0.231/flame_ws'); // 웹소켓 URL 수정 필요
+    _channel.stream.listen((message) {
+      // 서버로부터 메시지 수신
+      print('Received message: $message');
+      handleFlameStatus(message);
+    });
+  }
+
+  @override
+  void dispose() {
+    _channel.sink.close();
+    super.dispose();
+  }
+
+  void handleFlameStatus(String message) {
+    if (message == 'Danger') {
+      print('불꽃 감지 되었습니다.');
+      showDangerAlert();
+      sendEmergencyNotification();
+    } else {
+      print('안전 상태로 판단됨.');
+      showSafeAlert();
+    }
   }
 
   // 로그아웃 메서드 생성 부분
@@ -147,6 +181,15 @@ class _Page2State extends State<Page2> {
 
   @override
   Widget build(BuildContext context) {
+    // 알림 설정 초기화
+    var initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsIOS = IOSInitializationSettings();
+    var initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+
     return Material(
       child: SafeArea(
         child: SingleChildScrollView(
