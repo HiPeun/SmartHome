@@ -320,27 +320,34 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                 padding: const EdgeInsets.only(top: 30, left: 50, bottom: 20),
                 child: Row(
                   children: [
-                    const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => MyHomePage(),
+                              ),
+                          );},
+                          child: Text(
                             "Conven",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 50,
                             ),
                           ),
-                          Text(
-                            "내 정보를 수정합니다",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black54,
-                            ),
+                        ),
+                        Text(
+                          "내 정보를 수정합니다",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black54,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                    Spacer(),
                     Padding(
                       padding: const EdgeInsets.only(right: 40),
                       child: InkWell(

@@ -265,48 +265,49 @@ class _WebLoginState extends State<WebLogin> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 90),
-              child: InkWell(
-                onTap: () async {
-                  print(await KakaoSdk.origin);
-                  KakaoLogin(context);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(0xffF9E000),
-                  ),
-                  width: 400,
-                  height: 55,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        child: Image.asset(
-                          "assets/images/kakao.png",
-                          width: 30,
-                          height: 30,
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          "카카오톡으로 시작하기",
-                          style: TextStyle(
-                            fontSize: 19,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                        height: 10,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
+            SizedBox(height: 120),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 90),
+            //   child: InkWell(
+            //     onTap: () async {
+            //       print(await KakaoSdk.origin);
+            //       KakaoLogin(context);
+            //     },
+            //     child: Container(
+            //       decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.circular(10),
+            //         color: Color(0xffF9E000),
+            //       ),
+            //       width: 400,
+            //       height: 55,                  // child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //         children: [
+            //           Container(
+            //             child: Image.asset(
+            //               "assets/images/kakao.png",
+            //               width: 30,
+            //               height: 30,
+            //             ),
+            //           ),
+            //           Container(
+            //             child: Text(
+            //               "카카오톡으로 시작하기",
+            //               style: TextStyle(
+            //                 fontSize: 19,
+            //               ),
+            //             ),
+            //           ),
+            //           SizedBox(
+            //             width: 10,
+            //             height: 10,
+            //           )
+            //         ],
+            //       ),
+            //
+            //     ),
+            //   ),
+            // ),
+            //
             Container(
               margin: EdgeInsets.only(top: 15),
               width: 400,

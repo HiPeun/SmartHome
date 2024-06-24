@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
+import 'package:loginproject/Web/webmain.dart';
 import 'package:loginproject/main.dart';
 import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 import '../../model/qna_model.dart';
@@ -191,11 +192,20 @@ class _WebWritingState extends State<WebWriting> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Conven",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 50,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => MyHomePage(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              "Conven",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 50,
+                              ),
                             ),
                           ),
                           Text(

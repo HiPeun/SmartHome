@@ -45,7 +45,7 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          InkWell(
+                          GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => MyHomePage(),
