@@ -3,12 +3,13 @@
 
     <!-- 인터넷 사용 권한 -->
     <uses-permission android:name="android.permission.INTERNET" />
-
     <application
             android:label="loginproject"
             android:name="${applicationName}"
             android:icon="@mipmap/ic_launcher"
             android:usesCleartextTraffic="true">
+
+
 
         <!-- 카카오 로그인 커스텀 URL 스킴 설정 -->
         <activity
@@ -19,6 +20,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
+                <!-- "kakao${YOUR_NATIVE_APP_KEY}://oauth" 형식의 앱 실행 스킴 설정 -->
                 <!-- 카카오 로그인 Redirect URI -->
                 <data android:scheme="kakaod664273b8aeac06793c0c6f6f1ed0348" android:host="oauth"/>
             </intent-filter>
@@ -48,6 +50,9 @@
                 android:name="flutterEmbedding"
                 android:value="2" />
     </application>
+    <!-- Required to query activities that can process text, see:
+         https://developer.android.com/training/package-visibility?hl=en and
+         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
 
     <!-- 텍스트를 처리할 수 있는 액티비티를 쿼리하기 위한 설정 -->
     <queries>
