@@ -323,7 +323,7 @@ class _Page2State extends State<Page2> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 10),
+                      padding: const EdgeInsets.only(left: 30),
                       child: Text(
                         "Conven",
                         style: TextStyle(
