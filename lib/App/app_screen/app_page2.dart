@@ -37,6 +37,8 @@ class _Page2State extends State<Page2> {
   late WebSocketChannel channel; // 웹소켓
   bool WebSocketbutton = false; // 웹소켓 버튼
 
+  String fireStatus = 'No fire detected';
+
   bool is90Degrees = false;
   bool is90Degrees2 = false;
 
@@ -155,14 +157,6 @@ class _Page2State extends State<Page2> {
     try {
       final res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
-        // 스낵바로 상태 알림
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(is90Degrees ? '현관문이 열렸습니다.' : '현관문이 닫혔습니다.'),
-            duration: Duration(seconds: 2),
-          ),
-        );
-
         print('Angle1 set successfully $angle degrees successfully');
       } else {
         print('Failed to set Sorvo 1 angle. Error: ${res.statusCode}');
@@ -178,13 +172,6 @@ class _Page2State extends State<Page2> {
     try {
       final res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
-        // 스낵바로 상태 알림
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(is90Degrees2 ? '창문이 열렸습니다.' : '창문이 닫혔습니다.'),
-            duration: Duration(seconds: 2),
-          ),
-        );
         print('Servo 2 Angle set to $angle degrees successfully');
       } else {
         print('Failed to set Servo 2 angle. Error: ${res.statusCode}');
@@ -337,23 +324,17 @@ class _Page2State extends State<Page2> {
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(
-                    "Conven",
-                    style: TextStyle(
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Text(
+                      "Conven",
+                      style: TextStyle(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  if (user.isNotEmpty)
-                    Row(
-                      children: [
 
-                        Text("반가워요, ${user["name"]}님!",
-                            style: TextStyle(fontSize: 18)),
-                      ],
-                    ),
                   InkWell(
                     onTap: () async {
                       if (user.isNotEmpty) {
@@ -406,6 +387,14 @@ class _Page2State extends State<Page2> {
                     ),
                 ],
               ),
+              if (user.isNotEmpty)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("반가워요, ${user["name"]}님!",
+                        style: TextStyle(fontSize: 18)),
+                  ],
+                ),
               AppMainView(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
