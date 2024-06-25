@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:loginproject/App/Arduino/cctv.dart';
 import 'package:loginproject/main.dart';
 import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import 'app_join.dart';
 import 'app_login.dart';
 import 'package:dio/dio.dart';
@@ -32,10 +35,8 @@ class _Page2State extends State<Page2> {
   );
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
-  late IOWebSocketChannel _channel;
-
-  final String broker = '192.168.0.168'; // MQTT 브로커 IP 주소
-  final String topic = 'fire_detection';
+  late WebSocketChannel channel; // 웹소켓
+  bool WebSocketbutton = false; // 웹소켓 버튼
 
   String fireStatus = 'No fire detected';
 
@@ -45,31 +46,16 @@ class _Page2State extends State<Page2> {
   @override
   void initState() {
     super.initState();
-    _channel =
-        IOWebSocketChannel.connect('ws://192.168.0.231/flame_ws'); // 웹소켓 URL 수정 필요
-    _channel.stream.listen((message) {
-      // 서버로부터 메시지 수신
-      print('Received message: $message');
-      handleFlameStatus(message);
-    });
+    _initializeNotifications();
+    _connectWebSocket();
   }
 
   @override
   void dispose() {
-    _channel.sink.close();
     super.dispose();
+    channel.sink.close();
   }
 
-  void handleFlameStatus(String message) {
-    if (message == 'Danger') {
-      print('불꽃 감지 되었습니다.');
-      showDangerAlert();
-      sendEmergencyNotification();
-    } else {
-      print('안전 상태로 판단됨.');
-      showSafeAlert();
-    }
-  }
 
   // 로그아웃 메서드 생성 부분
   void _logout() {
@@ -102,7 +88,7 @@ class _Page2State extends State<Page2> {
 
   // led on off 메서드!
   void sendCommand(String command) async {
-    String url = 'http://192.168.0.223/?cmd=$command';
+    String url = 'http://192.168.0.196/?cmd=$command';
     try {
       final response = await dio.get(url);
       if (response.statusCode == 200) {
@@ -120,8 +106,8 @@ class _Page2State extends State<Page2> {
 
   // 온습도 받아오는 메서드
   Future<void> fetchData() async {
-    String urlTemp = 'http://192.168.0.221/temp'; // 온도 정보 요청 URL
-    String urlHumi = 'http://192.168.0.221/humi'; // 습도 정보 요청 URL
+    String urlTemp = 'http://192.168.0.197/temp'; // 온도 정보 요청 URL
+    String urlHumi = 'http://192.168.0.197/humi'; // 습도 정보 요청 URL
 
     try {
       Dio dio = Dio(); // Dio 객체 생성
@@ -160,7 +146,7 @@ class _Page2State extends State<Page2> {
 
   // 현관문 개폐 메서드
   Future<void> setAngle(int angle) async {
-    String url = 'http://192.168.0.229/setAngle1?angle=$angle';
+    String url = 'http://192.168.0.198/setAngle1?angle=$angle';
     try {
       final res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
@@ -175,7 +161,7 @@ class _Page2State extends State<Page2> {
 
   // 창문 개폐 메서드
   Future<void> setAngle2(int angle) async {
-    String url = 'http://192.168.0.229/setAngle2?angle=$angle';
+    String url = 'http://192.168.0.198/setAngle2?angle=$angle';
     try {
       final res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
@@ -188,29 +174,77 @@ class _Page2State extends State<Page2> {
     }
   }
 
-  // 불꽃 감지 센서
-  Future<void> checkFlameStatus() async {
-    String url = 'http://192.168.0.231/checkFlame';
-    try {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        print('HTTP Response Status Code: ${response.statusCode}');
-        String status = response.body.trim();
-        print('HTTP Response Body: "$status"'); // 응답 본문 출력
-        if (status == 'Danger') {
-          print('불꽃 감지 되었습니다.');
-          showDangerAlert();
-          sendEmergencyNotification();
-        } else {
-          print('안전 상태로 판단됨.');
-          showSafeAlert();
-        }
+  // 웹소켓
+  void _initializeNotifications() {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    final IOSInitializationSettings initializationSettingsIOS =
+    IOSInitializationSettings();
+
+    final InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  // 웹소켓 불꽃감지센서
+  void _connectWebSocket() {
+    channel = IOWebSocketChannel.connect('ws://192.168.0.189:8765');
+    channel.stream.listen((message) {
+      print('Received: $message');
+      if (message == 'Danger' && user.isNotEmpty == true) {
+        setState(() {
+          WebSocketbutton = true; // 상태 업데이트
+        });
+        sendEmergencyNotification();
+        showDangerAlert();
       } else {
-        print('Failed to check flame status. Error: ${response.statusCode}');
+        setState(() {
+          WebSocketbutton = false; // 상태 업데이트
+        });
       }
-    } catch (e) {
-      print('Failed to check flame status. Exception: $e');
+    });
+  }
+  // 웹 소켓 버튼
+  void _WebSocketbutton() {
+    if (WebSocketbutton == false) {
+      showSafeAlert();
+    } else {
+      showDangerAlert();
     }
+  }
+
+
+  // 불꽃 감지 센서 상태 확인 메서드
+  Future<void> sendEmergencyNotification() async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+      'emergency_channel_id',
+      '비상 알림',
+      channelDescription: '비상 상황을 위한 알림',
+      importance: Importance.max,
+      priority: Priority.high,
+      enableLights: true,
+      enableVibration: true,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound('emergency_sound'),
+      fullScreenIntent: true,
+    );
+
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      '비상!',
+      '불이 감지되었습니다. 긴급 상황입니다. 비상 서비스에 연락하세요.',
+      platformChannelSpecifics,
+      payload: 'emergency',
+    );
   }
 
   void showDangerAlert() {
@@ -253,32 +287,6 @@ class _Page2State extends State<Page2> {
     );
   }
 
-  Future<void> sendEmergencyNotification() async {
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'emergency_channel_id',
-      '비상 알림',
-      channelDescription: '비상 상황을 위한 알림',
-      importance: Importance.max,
-      priority: Priority.high,
-      enableLights: true,
-      enableVibration: true,
-      playSound: true,
-      sound: RawResourceAndroidNotificationSound('emergency_sound'),
-      fullScreenIntent: true,
-    );
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
-    var platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics,
-    );
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      '비상!',
-      '불이 감지되었습니다. 긴급 상황입니다. 비상 서비스에 연락하세요.',
-      platformChannelSpecifics,
-      payload: 'emergency',
-    );
-  }
 
   // 로그인 후
   void showLoginAlert(BuildContext context) {
@@ -303,14 +311,6 @@ class _Page2State extends State<Page2> {
 
   @override
   Widget build(BuildContext context) {
-    // 알림 설정 초기화
-    var initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
-    var initializationSettingsIOS = IOSInitializationSettings();
-    var initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
-
     return Material(
       child: SafeArea(
         child: SingleChildScrollView(
@@ -508,7 +508,7 @@ class _Page2State extends State<Page2> {
                     iconButton: IconButton(
                       onPressed: () {
                         if (user.isNotEmpty) {
-                          checkFlameStatus();
+                          _WebSocketbutton();
                         } else {
                           showLoginAlert(context);
                         }
