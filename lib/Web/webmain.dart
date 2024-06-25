@@ -8,7 +8,6 @@ import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 
 import '../main.dart';
 
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -36,17 +35,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: const EdgeInsets.only(top: 30, left: 30),
                 child: Row(
                   children: [
-                    Expanded(
-                      child:  Text(
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => MyHomePage(),
+                          ),
+                        );
+                      },
+                      child: Text(
                         "Conven",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 50,
-                          color: Color(0xFF2C2B28), // 추가: 글자 색상
+                          color: Color(0xFF2C2B28),
                         ),
                       ),
                     ),
-
+                    Spacer(),
                     Padding(
                       padding: const EdgeInsets.only(right: 40),
                       child: Container(
@@ -64,7 +70,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             setState(() {});
                           },
                           child: Text(
-                            // isEmpty 빈값이면
                             user.isEmpty ? '로그인' : '로그아웃',
                             style: TextStyle(
                               fontSize: 20,
@@ -132,11 +137,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: CarouselSlider.builder(
                       itemCount: imgList.length,
                       itemBuilder: (BuildContext context, int itemIndex,
-                              int pageViewIndex) =>
+                          int pageViewIndex) =>
                           Container(
-                        child: Image.network(imgList[itemIndex],
-                            fit: BoxFit.cover),
-                      ),
+                            child: Image.asset(imgList[itemIndex], fit: BoxFit.cover),
+                          ),
                       options: CarouselOptions(
                         height: 500,
                         viewportFraction: 1.0,
@@ -167,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Text(
                               "일상의 행복한 변화",
                               style:
-                                  TextStyle(fontSize: 40, color: Colors.white),
+                              TextStyle(fontSize: 40, color: Colors.white),
                             ),
                           ),
                         ],
@@ -246,8 +250,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-
-
               Stack(
                 children: [
                   Center(
@@ -291,7 +293,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-
               Stack(
                 children: [
                   Center(
@@ -335,7 +336,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-
               Stack(
                 children: [
                   Center(
@@ -390,7 +390,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Text(
                           "이용약관",
                           style:
-                              TextStyle(fontSize: 20, color: Color(0xFFE5E5E1)),
+                          TextStyle(fontSize: 20, color: Color(0xFFE5E5E1)),
                         ),
                       ),
                     ),
@@ -403,7 +403,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Text(
                           "개인정보 처리방침",
                           style:
-                              TextStyle(fontSize: 20, color: Color(0xFFE5E5E1)),
+                          TextStyle(fontSize: 20, color: Color(0xFFE5E5E1)),
                         ),
                       ),
                     ),
