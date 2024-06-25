@@ -90,17 +90,25 @@ class _Page2State extends State<Page2> {
   void sendCommand(String command) async {
     String url = 'http://192.168.0.196/?cmd=$command';
     try {
-      final response = await dio.get(url);
+      final response = await Dio().get(url);
       if (response.statusCode == 200) {
         print('Command sent: $command');
         setState(() {
           isLedOn = command == '1';
         });
+
+        // 스낵바 표시
+        final snackBar = SnackBar(
+          content: Text(isLedOn ? '불이 켜졌습니다.' : '불이 꺼졌습니다.'),
+          duration: Duration(seconds: 2),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
       } else {
         print('Failed to send command. Error code: ${response.statusCode}');
       }
     } on DioError catch (e) {
-      print('Error sending command: ${e.response?.statusCode} - ${e.message} ${e}');
+      print('Error sending command: ${e.response?.statusCode} - ${e.message}');
     }
   }
 
