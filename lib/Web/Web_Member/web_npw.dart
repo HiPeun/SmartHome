@@ -85,6 +85,7 @@ class _WebNpwState extends State<WebNpw> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
+                    Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => WebLogin(),
                     ));
