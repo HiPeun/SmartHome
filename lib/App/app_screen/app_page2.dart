@@ -31,7 +31,7 @@ class _Page2State extends State<Page2> {
     ),
   );
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
   late IOWebSocketChannel _channel;
 
   final String broker = '192.168.0.168'; // MQTT 브로커 IP 주소
@@ -45,8 +45,8 @@ class _Page2State extends State<Page2> {
   @override
   void initState() {
     super.initState();
-    _channel =
-        IOWebSocketChannel.connect('ws://192.168.0.231/flame_ws'); // 웹소켓 URL 수정 필요
+    _channel = IOWebSocketChannel.connect(
+        'ws://192.168.0.231/flame_ws'); // 웹소켓 URL 수정 필요
     _channel.stream.listen((message) {
       // 서버로부터 메시지 수신
       print('Received message: $message');
@@ -114,7 +114,8 @@ class _Page2State extends State<Page2> {
         print('Failed to send command. Error code: ${response.statusCode}');
       }
     } on DioError catch (e) {
-      print('Error sending command: ${e.response?.statusCode} - ${e.message} ${e}');
+      print(
+          'Error sending command: ${e.response?.statusCode} - ${e.message} ${e}');
     }
   }
 
@@ -130,7 +131,8 @@ class _Page2State extends State<Page2> {
       if (responseTemp.statusCode == 200) {
         temperatureData = responseTemp.data.toString(); // 온도 데이터 저장
       } else {
-        throw Exception('Failed to fetch temperature data. Error code: ${responseTemp.statusCode}');
+        throw Exception(
+            'Failed to fetch temperature data. Error code: ${responseTemp.statusCode}');
       }
 
       // 습도 데이터 요청
@@ -138,7 +140,8 @@ class _Page2State extends State<Page2> {
       if (responseHumi.statusCode == 200) {
         humidityData = responseHumi.data.toString(); // 습도 데이터 저장
       } else {
-        throw Exception('Failed to fetch humidity data. Error code: ${responseHumi.statusCode}');
+        throw Exception(
+            'Failed to fetch humidity data. Error code: ${responseHumi.statusCode}');
       }
 
       // 데이터를 성공적으로 받아왔을 때 스낵바로 메시지 표시
@@ -305,7 +308,7 @@ class _Page2State extends State<Page2> {
   Widget build(BuildContext context) {
     // 알림 설정 초기화
     var initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSettingsIOS = IOSInitializationSettings();
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
@@ -319,19 +322,27 @@ class _Page2State extends State<Page2> {
               Row(
                 children: [
                   Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10, bottom: 10),
-                      child: Text(
-                        "Conven",
-                        style: TextStyle(
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    child: Text(
+                      "Conven",
+                      style: TextStyle(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
+                  if (user.isNotEmpty)
+                    Padding(
+                      padding: EdgeInsets.only(right: 50,top:3),
+                      child: Row(
+                        children: [
+                          Icon(Icons.home_sharp,color: Colors.black87,),
+                          Text("[반가워요, ${user["name"]}님!]",
+                              style: TextStyle(fontSize: 18)),
+                        ],
+                      ),
+                    ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 3),
+                    padding: const EdgeInsets.all(3.0),
                     child: InkWell(
                       onTap: () async {
                         if (user.isNotEmpty) {
@@ -385,14 +396,7 @@ class _Page2State extends State<Page2> {
                     ),
                 ],
               ),
-              if (user.isNotEmpty)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("반가워요, ${user["id"]}님!",
-                        style: TextStyle(fontSize: 20)),
-                  ],
-                ),
+
               AppMainView(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -409,7 +413,6 @@ class _Page2State extends State<Page2> {
                   ),
                 ],
               ),
-
               Row(
                 children: [
                   SmartControl(
@@ -535,9 +538,9 @@ class SmartControl extends StatelessWidget {
 
   const SmartControl(
       {required this.iconButton,
-        required this.image,
-        required this.text,
-        super.key});
+      required this.image,
+      required this.text,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -606,13 +609,13 @@ class _AppMainViewState extends State<AppMainView> {
           items: imgList
               .map(
                 (e) => Container(
-              child: Image.asset(
-                e,
-                fit: BoxFit.cover,
-                width: 1000,
-              ),
-            ),
-          )
+                  child: Image.asset(
+                    e,
+                    fit: BoxFit.cover,
+                    width: 1000,
+                  ),
+                ),
+              )
               .toList(),
           options: CarouselOptions(
             // 화면 전환을 자동으로 할건지 설정

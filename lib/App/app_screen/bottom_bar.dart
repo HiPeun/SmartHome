@@ -26,11 +26,13 @@ class _BottomBarState extends State<BottomBar> {
   void initState() {
     super.initState();
     _widgetOptions = <Widget>[
+
       AppNotice(),
       Page2(),
       AppModifyProfile(),
     ];
   }
+
 
   void _onItemTapped(int index) async {
     if (index == 2) {

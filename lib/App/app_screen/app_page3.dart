@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:loginproject/main.dart';
 
 import '../app_screen/bottom_bar.dart';
@@ -18,7 +19,6 @@ class _AppModifyProfile extends State<AppModifyProfile> {
   TextEditingController pw2Controller = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-
 
   @override
   void initState() {
@@ -83,11 +83,14 @@ class _AppModifyProfile extends State<AppModifyProfile> {
               actions: [
                 TextButton(
                   onPressed: () {
+                    setState(() {});
                     user = {};
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const BottomBar()),
+                        builder: (context) => const BottomBar(),
+                      ),
+                      (Route<dynamic> route) => false,
                     );
                   },
                   child: const Text('확인'),
@@ -184,18 +187,22 @@ class _AppModifyProfile extends State<AppModifyProfile> {
 
       // 사용자가 탈퇴를 확인한 경우에만 실제 삭제 작업 실행
       if (confirmed == true) {
-        final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.177:9090"));
-        final dio.Response res = await dioClient.post("/user/remove", data: data);
+        final dio.Dio dioClient =
+            dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.177:9090"));
+        final dio.Response res =
+            await dioClient.post("/user/remove", data: data);
 
         if (res.statusCode == 200 && res.data == true) {
           print(res.data);
           print(res.statusCode);
-
-          user = {}; // 사용자 데이터 초기화
+          setState(() {
+            user = {};
+          });
+          // 사용자 데이터 초기화
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const BottomBar()),
-                (Route<dynamic> route) => false,
+            (Route<dynamic> route) => false,
           );
         } else {
           showDialog(
@@ -294,7 +301,7 @@ class _AppModifyProfile extends State<AppModifyProfile> {
                 ),
               ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
               child: Container(
@@ -323,7 +330,7 @@ class _AppModifyProfile extends State<AppModifyProfile> {
                     const SizedBox(height: 16),
                     SizedBox(
                       width: 300,
-                      child: TextField(
+                      child: TextFormField(
                         controller: pwController,
                         decoration: const InputDecoration(
                           labelText: "비밀번호",
@@ -345,7 +352,7 @@ class _AppModifyProfile extends State<AppModifyProfile> {
                     const SizedBox(height: 16),
                     SizedBox(
                       width: 300,
-                      child: TextField(
+                      child: TextFormField(
                         readOnly: true,
                         controller: emailController,
                         decoration: const InputDecoration(

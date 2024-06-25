@@ -36,8 +36,10 @@ class _AppFpwState extends State<AppFpw> {
       if (response.statusCode == 200) {
         if (response.data == true) {
           print('ID: $id');
+          Navigator.of(context).pop();
           Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => AppNpw(id: id),
+
           ));
         } else {
           showDialog(
@@ -203,6 +205,7 @@ class _AppFpwState extends State<AppFpw> {
                     children: [
                       TextButton(
                         onPressed: () {
+
                           Navigator.of(context)
                               .pushReplacement(MaterialPageRoute(
                             builder: (context) => AppFid(),

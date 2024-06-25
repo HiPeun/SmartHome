@@ -44,6 +44,8 @@ class _AppFidState extends State<AppFid> {
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => AppLogin(),
                       ));
@@ -218,6 +220,7 @@ class _AppFidState extends State<AppFid> {
                     children: [
                       TextButton(
                         onPressed: () {
+
                           Navigator.of(context)
                               .pushReplacement(MaterialPageRoute(
                             builder: (context) => AppFpw(),

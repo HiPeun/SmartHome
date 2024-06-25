@@ -84,9 +84,9 @@ class _AppNpwState extends State<AppNpw> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => AppLogin(),
-                    ));
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => AppLogin()));
                   },
                   child: Text('확인'),
                 ),
