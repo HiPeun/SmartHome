@@ -80,6 +80,7 @@ dev_dependencies:
   slang_build_runner: ^2.4.9
   file_picker: ^4.6.1
   image_picker: ^1.1.2
+  flutter_vlc_player: ^7.4.2
 
 
 

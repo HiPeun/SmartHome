@@ -11,6 +11,7 @@ import 'app_login.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
+//메인 페이지
 class Page2 extends StatefulWidget {
   const Page2({
     Key? key,
@@ -32,7 +33,7 @@ class _Page2State extends State<Page2> {
     ),
   );
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
   late WebSocketChannel channel; // 웹소켓
   bool WebSocketbutton = false; // 웹소켓 버튼
 
@@ -53,7 +54,6 @@ class _Page2State extends State<Page2> {
     super.dispose();
     channel.sink.close();
   }
-
 
   // 로그아웃 메서드 생성 부분
   void _logout() {
@@ -101,7 +101,6 @@ class _Page2State extends State<Page2> {
           duration: Duration(seconds: 2),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
       } else {
         print('Failed to send command. Error code: ${response.statusCode}');
       }
@@ -122,7 +121,8 @@ class _Page2State extends State<Page2> {
       if (responseTemp.statusCode == 200) {
         temperatureData = responseTemp.data.toString(); // 온도 데이터 저장
       } else {
-        throw Exception('Failed to fetch temperature data. Error code: ${responseTemp.statusCode}');
+        throw Exception(
+            'Failed to fetch temperature data. Error code: ${responseTemp.statusCode}');
       }
 
       // 습도 데이터 요청
@@ -130,7 +130,8 @@ class _Page2State extends State<Page2> {
       if (responseHumi.statusCode == 200) {
         humidityData = responseHumi.data.toString(); // 습도 데이터 저장
       } else {
-        throw Exception('Failed to fetch humidity data. Error code: ${responseHumi.statusCode}');
+        throw Exception(
+            'Failed to fetch humidity data. Error code: ${responseHumi.statusCode}');
       }
 
       // 데이터를 성공적으로 받아왔을 때 스낵바로 메시지 표시
@@ -183,12 +184,13 @@ class _Page2State extends State<Page2> {
   // 웹소켓
   void _initializeNotifications() {
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/ic_launcher');
 
     final IOSInitializationSettings initializationSettingsIOS =
-    IOSInitializationSettings();
+        IOSInitializationSettings();
 
-    final InitializationSettings initializationSettings = InitializationSettings(
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
     );
@@ -214,6 +216,7 @@ class _Page2State extends State<Page2> {
       }
     });
   }
+
   // 웹 소켓 버튼
   void _WebSocketbutton() {
     if (WebSocketbutton == false) {
@@ -223,11 +226,10 @@ class _Page2State extends State<Page2> {
     }
   }
 
-
   // 불꽃 감지 센서 상태 확인 메서드
   Future<void> sendEmergencyNotification() async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
+        AndroidNotificationDetails(
       'emergency_channel_id',
       '비상 알림',
       channelDescription: '비상 상황을 위한 알림',
@@ -293,7 +295,6 @@ class _Page2State extends State<Page2> {
     );
   }
 
-
   // 로그인 후
   void showLoginAlert(BuildContext context) {
     showDialog(
@@ -323,55 +324,48 @@ class _Page2State extends State<Page2> {
           child: Column(
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Expanded(
-                    child: Text(
-                      "Conven",
-                      style: TextStyle(
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  Text(
+                    "Conven",
+                    style: TextStyle(
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   if (user.isNotEmpty)
-                    Padding(
-                      padding: EdgeInsets.only(right: 50,top:3),
-                      child: Row(
-                        children: [
-                          Icon(Icons.home_sharp,color: Colors.black87,),
-                          Text("[반가워요, ${user["name"]}님!]",
-                              style: TextStyle(fontSize: 18)),
-                        ],
-                      ),
-                    ),
-                  Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: InkWell(
-                      onTap: () async {
-                        if (user.isNotEmpty) {
-                          _logout(); // 로그아웃 확인 다이얼로그 표시
-                        } else {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AppLogin(),
-                            ),
-                          );
+                    Row(
+                      children: [
 
-                          setState(() {});
-                        }
-                      },
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            "assets/images/backbutton.png",
-                            width: 26,
-                            height: 26,
-                            fit: BoxFit.cover,
+                        Text("반가워요, ${user["name"]}님!",
+                            style: TextStyle(fontSize: 18)),
+                      ],
+                    ),
+                  InkWell(
+                    onTap: () async {
+                      if (user.isNotEmpty) {
+                        _logout(); // 로그아웃 확인 다이얼로그 표시
+                      } else {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AppLogin(),
                           ),
-                          Text(user.isEmpty ? "로그인 " : "로그아웃"),
-                        ],
-                      ),
+                        );
+
+                        setState(() {});
+                      }
+                    },
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          "assets/images/backbutton.png",
+                          width: 26,
+                          height: 26,
+                          fit: BoxFit.cover,
+                        ),
+                        Text(user.isEmpty ? "로그인 " : "로그아웃"),
+                      ],
                     ),
                   ),
                   if (user.isEmpty)
@@ -399,7 +393,6 @@ class _Page2State extends State<Page2> {
                     ),
                 ],
               ),
-
               AppMainView(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -532,8 +525,7 @@ class _Page2State extends State<Page2> {
   }
 }
 
-// 바텀바 부분
-
+// 스마트 컨트롤러
 class SmartControl extends StatelessWidget {
   final String text;
   final String image;
@@ -587,6 +579,7 @@ class SmartControl extends StatelessWidget {
   }
 }
 
+//메인 뷰
 class AppMainView extends StatefulWidget {
   const AppMainView({super.key});
 
