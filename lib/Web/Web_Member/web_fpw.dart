@@ -83,12 +83,11 @@ class _WebFpwState extends State<WebFpw> {
           );
         }
       } else {
-        String errorMessage = response.data['message'] ?? "알 수 없는 오류가 발생했습니다.";
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Text("비밀번호 찾기 실패: $errorMessage"),
+              content: Text("비밀번호 찾기 실패"),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -106,7 +105,7 @@ class _WebFpwState extends State<WebFpw> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: Text("비밀번호 찾기 실패: ${e.toString()}"),
+            content: Text("아이디 및 이메일을 다시 한번 확인해주세요"),
             actions: [
               TextButton(
                 onPressed: () {
