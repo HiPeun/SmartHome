@@ -204,15 +204,11 @@ class _Page2State extends State<Page2> {
     channel.stream.listen((message) {
       print('Received: $message');
       if (message == 'Danger' && user.isNotEmpty == true) {
-        setState(() {
           WebSocketbutton = true; // 상태 업데이트
-        });
         sendEmergencyNotification();
         showDangerAlert();
       } else {
-        setState(() {
           WebSocketbutton = false; // 상태 업데이트
-        });
       }
     });
   }
@@ -326,11 +322,14 @@ class _Page2State extends State<Page2> {
               Row(
                 children: [
                   Expanded(
-                    child: Text(
-                      "Conven",
-                      style: TextStyle(
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.bold,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        "Conven",
+                        style: TextStyle(
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
