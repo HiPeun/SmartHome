@@ -435,7 +435,7 @@ class _Page2State extends State<Page2> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => VideoPlayerExample(),
+                                builder: (context) => CcTv(),
                               ),
                             );
                           } else {

@@ -1,43 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:flutter_mjpeg/flutter_mjpeg.dart';
 
-class VideoPlayerExample extends StatefulWidget {
+class CcTv extends StatefulWidget {
   @override
-  _VideoPlayerExampleState createState() => _VideoPlayerExampleState();
+  _CcTvState createState() => _CcTvState();
 }
 
-class _VideoPlayerExampleState extends State<VideoPlayerExample> {
-  late VlcPlayerController _vlcViewController;
-
-  @override
-  void initState() {
-    super.initState();
-    _vlcViewController = VlcPlayerController.network(
-      'http://192.168.0.192:91/stream',
-      hwAcc: HwAcc.full,
-      autoPlay: true,
-      options: VlcPlayerOptions(),
-    );
-  }
-
-  @override
-  void dispose() {
-    _vlcViewController.dispose();
-    super.dispose();
-  }
+class _CcTvState extends State<CcTv> {
+  bool _isStreaming = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('CCTV Stream'),
+        title: Text("CCTV"),
       ),
-      body: Center(
-        child: VlcPlayer(
-          controller: _vlcViewController,
-          aspectRatio: 16 / 9,
-          placeholder: Center(child: CircularProgressIndicator()),
-        ),
+      body: Stack(
+        alignment: Alignment.center,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(bottom: 400),
+            child: Mjpeg(
+              stream: 'http://192.168.0.192:91/stream',
+              isLive: _isStreaming,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+            ),
+          ),
+          Positioned(
+            bottom: 50,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FloatingActionButton(
+                  backgroundColor: Colors.white,
+                  onPressed: () {
+                    setState(() {
+                      _isStreaming = true;
+                    });
+                  },
+                  child: Icon(Icons.play_arrow),
+                ),
+                SizedBox(width: 20),
+                FloatingActionButton(
+                  backgroundColor: Colors.white,
+                  onPressed: () {
+                    setState(() {
+                      _isStreaming = false;
+                    });
+                  },
+                  child: Icon(Icons.pause),
+                ),
+
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

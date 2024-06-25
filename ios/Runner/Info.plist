@@ -76,6 +76,9 @@
                 <true/>
                 <key>NSExceptionRequiresForwardSecrecy</key>
                 <false/>
+                <key>io.flutter.embedded_views_preview</key>
+                <true/>
+
             </dict>
         </dict>
     </dict>
