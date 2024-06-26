@@ -185,7 +185,7 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.fromLTRB(50, 0 , 0, 0),
                       child: ElevatedButton(
                         onPressed: () async {
                           await Navigator.of(context).push(MaterialPageRoute(
