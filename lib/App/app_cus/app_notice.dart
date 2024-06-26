@@ -84,21 +84,28 @@ class _AppNoticeState extends State<AppNotice> {
                         showNotices = true;
                       });
                     },
-                    child: Text(
-                      "공지사항",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+                    child: Row(
+                      children: [
+                        Text(
+                          "공지사항",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
                     ),
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(70, 50),
-                      backgroundColor: showNotices ? Colors.grey : null,
+                      backgroundColor: showNotices ? Color(0x66Bde0) : null,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    width: 80,
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -116,9 +123,9 @@ class _AppNoticeState extends State<AppNotice> {
                     ),
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(70, 50),
-                      backgroundColor: !showNotices ? Colors.grey : null,
+                      backgroundColor: !showNotices ? Color(0x66Bde0) : null,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),
@@ -186,7 +193,7 @@ class _AppNoticeState extends State<AppNotice> {
                   textStyle: TextStyle(fontSize: 20),
                   foregroundColor: Colors.black,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               ),

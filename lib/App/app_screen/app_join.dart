@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:loginproject/App/app_screen/app_login.dart';
 import 'package:loginproject/App/app_screen/bottom_bar.dart';
 
-
 class AppJoin extends StatefulWidget {
   AppJoin({super.key});
 
@@ -31,7 +30,7 @@ class _AppJoinState extends State<AppJoin> {
     });
   }
 
-  void initState(){
+  void initState() {
     super.initState();
     id = TextEditingController(text: "");
     pw = TextEditingController(text: "");
@@ -41,7 +40,7 @@ class _AppJoinState extends State<AppJoin> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     id.dispose();
     pw.dispose();
     pw2.dispose();
@@ -170,14 +169,16 @@ class _AppJoinState extends State<AppJoin> {
         print("아이디 중복 확인 실패: ${response.data}");
       }
     } catch (e) {
-      showDialog(context: context,
+      showDialog(
+        context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             content: Text("사용 가능한 아이디입니다."),
             actions: [
-              TextButton(onPressed: () {
-                Navigator.of(context).pop();
-              },
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
                 child: Text("확인"),
               ),
             ],
@@ -238,14 +239,24 @@ class _AppJoinState extends State<AppJoin> {
                         ],
                       ),
                     ),
-
                   ],
                 ),
               ),
               SizedBox(
-                height: 50,
+                height: 20,
               ),
-          
+              Column(
+                children: [
+                  Text(
+                    "회원가입",
+                    style: TextStyle(fontWeight: FontWeight.bold
+                        ,fontSize:30),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
               Center(
                 child: Column(
                   children: [
@@ -262,8 +273,6 @@ class _AppJoinState extends State<AppJoin> {
                         ),
                       ),
                     ),
-          
-          
                     SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -304,13 +313,16 @@ class _AppJoinState extends State<AppJoin> {
                               );
                               return;
                             }
-          
-                            if (joinId.length > 12 || !RegExp(r'^(?=.*[a-zA-Z])(?=.*\d)').hasMatch(joinId)) {
+
+                            if (joinId.length > 12 ||
+                                !RegExp(r'^(?=.*[a-zA-Z])(?=.*\d)')
+                                    .hasMatch(joinId)) {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    content: Text("아이디는 12자리 이하이고 문자와 숫자를 모두 포함해야 합니다."),
+                                    content: Text(
+                                        "아이디는 12자리 이하이고 문자와 숫자를 모두 포함해야 합니다."),
                                     actions: [
                                       TextButton(
                                         onPressed: () {
@@ -324,17 +336,23 @@ class _AppJoinState extends State<AppJoin> {
                               );
                               return;
                             }
-          
+
                             check(joinId);
                           },
-                          child: Text('중복확인', style: TextStyle(color: Colors.black)),
+                          child: Text(
+                            '중복확인',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
                           style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)
+                            ),
                             backgroundColor: Color(0xFFD3CDC8),
-                            minimumSize: Size(60, 50),
+                            minimumSize: Size(60, 55),
                           ),
                         ),
-          
-          
                       ],
                     ),
                     SizedBox(height: 20),
@@ -381,7 +399,6 @@ class _AppJoinState extends State<AppJoin> {
                         ),
                       ),
                     ),
-          
                     SizedBox(height: 16),
                     Container(
                       width: 300,
@@ -423,7 +440,6 @@ class _AppJoinState extends State<AppJoin> {
                               });
                             },
                           ),
-          
                           Text(
                             "[필수] 개인 정보 수집",
                             style: TextStyle(
@@ -475,7 +491,7 @@ class _AppJoinState extends State<AppJoin> {
                             String joinPw = pw.text;
                             String joinPw2 = pw2.text;
                             String joinEmail = email.text;
-          
+
                             if (joinName.isEmpty) {
                               showDialog(
                                 context: context,
@@ -495,7 +511,7 @@ class _AppJoinState extends State<AppJoin> {
                               );
                               return;
                             }
-          
+
                             if (joinName.length > 6) {
                               showDialog(
                                 context: context,
@@ -515,13 +531,16 @@ class _AppJoinState extends State<AppJoin> {
                               );
                               return;
                             }
-          
-                            if (joinId.length > 12 || !RegExp(r'^(?=.*[a-zA-Z])(?=.*\d)').hasMatch(joinId)) {
+
+                            if (joinId.length > 12 ||
+                                !RegExp(r'^(?=.*[a-zA-Z])(?=.*\d)')
+                                    .hasMatch(joinId)) {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    content: Text("아이디는 12자리 이하이고 문자와 숫자를 모두 포함해야 합니다."),
+                                    content: Text(
+                                        "아이디는 12자리 이하이고 문자와 숫자를 모두 포함해야 합니다."),
                                     actions: [
                                       TextButton(
                                         onPressed: () {
@@ -535,14 +554,17 @@ class _AppJoinState extends State<AppJoin> {
                               );
                               return;
                             }
-          
-                            RegExp passwordRegex = RegExp(r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*(),.?":{}|<>]).{5,12}$');
-                            if (joinPw.length > 12 || !passwordRegex.hasMatch(joinPw)) {
+
+                            RegExp passwordRegex = RegExp(
+                                r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*(),.?":{}|<>]).{5,12}$');
+                            if (joinPw.length > 12 ||
+                                !passwordRegex.hasMatch(joinPw)) {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    content: Text("비밀번호는 5자에서 12자 사이이며, 문자와 숫자를 모두 포함해야 합니다."),
+                                    content: Text(
+                                        "비밀번호는 5자에서 12자 사이이며, 문자와 숫자를 모두 포함해야 합니다."),
                                     actions: [
                                       TextButton(
                                         onPressed: () {
@@ -556,7 +578,7 @@ class _AppJoinState extends State<AppJoin> {
                               );
                               return;
                             }
-          
+
                             if (joinPw != joinPw2) {
                               showDialog(
                                 context: context,
@@ -576,7 +598,7 @@ class _AppJoinState extends State<AppJoin> {
                               );
                               return;
                             }
-          
+
                             if (joinEmail.isEmpty || !isValidEmail(joinEmail)) {
                               showDialog(
                                 context: context,
@@ -596,7 +618,7 @@ class _AppJoinState extends State<AppJoin> {
                               );
                               return;
                             }
-          
+
                             if (!isAgreed) {
                               showDialog(
                                 context: context,
@@ -616,10 +638,9 @@ class _AppJoinState extends State<AppJoin> {
                               );
                               return;
                             }
-          
+
                             joins(joinId, joinPw, joinName, joinEmail);
                           },
-          
                           child: SizedBox(
                             width: 300,
                             height: 45,
