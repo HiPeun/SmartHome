@@ -91,18 +91,14 @@ class _AppNoticeState extends State<AppNotice> {
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),
-
                     ),
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(70, 50),
                       backgroundColor: showNotices ? Colors.grey : null,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.zero,
-
                       ),
-
                     ),
-
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -145,7 +141,6 @@ class _AppNoticeState extends State<AppNotice> {
                 child: showNotices ? NoticeList() : QnaList(),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
@@ -184,7 +179,6 @@ class _AppNoticeState extends State<AppNotice> {
                     );
                   }
                 },
-
                 child: Text("글쓰기"),
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(160, 45),

@@ -1,7 +1,14 @@
-import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
+import 'package:loginproject/App/app_screen/bottom_bar.dart';
+
+import 'package:loginproject/main.dart';
+
 import '../../model/qna_model.dart';
-import '../../main.dart';
+import '../App_Cus/App_notice.dart';
+import '../app_screen/app_page3.dart';
 
 class AppWriting extends StatefulWidget {
   final QnaModel? qna;
@@ -21,7 +28,6 @@ class _AppWritingState extends State<AppWriting> {
   @override
   void initState() {
     super.initState();
-    //String 값에 Null을 허용해주지 않아서 발생하는 오류이다.
     nameController.text = user["name"];
     if (widget.qna != null) {
       titleController.text = widget.qna!.title ?? '';
@@ -41,7 +47,7 @@ class _AppWritingState extends State<AppWriting> {
   void updatePost() async {
     try {
       final Map<String, dynamic> data = {
-        'pno': widget.qna?.pno, // 다시한번
+        'pno': widget.qna?.pno,     // 다시한번
         'name': nameController.text,
         'title': titleController.text,
         'content': contentController.text,
@@ -113,7 +119,7 @@ class _AppWritingState extends State<AppWriting> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('글쓰기 완료'),
+                title: Text('자주묻는질문'),
                 content: Text('글이 등록되었습니다.'),
                 actions: <Widget>[
                   TextButton(
@@ -137,6 +143,30 @@ class _AppWritingState extends State<AppWriting> {
       } else {
         print('글 등록에 실패했습니다: $e');
       }
+    }
+  }
+
+  void validateAndSubmit() {
+    if (titleController.text.isEmpty || contentController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('알림'),
+            content: Text('제목과 내용을 입력해주세요.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('확인'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      widget.qna != null ? updatePost() : submitPost();
     }
   }
 
@@ -164,11 +194,20 @@ class _AppWritingState extends State<AppWriting> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Conven",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 50,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => BottomBar(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              "Conven",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 50,
+                              ),
                             ),
                           ),
                           Text(
@@ -181,6 +220,8 @@ class _AppWritingState extends State<AppWriting> {
                         ],
                       ),
                     ),
+
+
                   ],
                 ),
               ),
@@ -219,6 +260,16 @@ class _AppWritingState extends State<AppWriting> {
                             labelText: "제목",
                             border: OutlineInputBorder(),
                           ),
+                          onChanged: (text) {
+                            if (text.length > 30) {
+                              setState(() {
+                                titleController.text = text.substring(0, 30);
+                                titleController.selection = TextSelection.fromPosition(
+                                  TextPosition(offset: titleController.text.length),
+                                );
+                              });
+                            }
+                          },
                         ),
                       ),
                       SizedBox(height: 16),
@@ -231,6 +282,7 @@ class _AppWritingState extends State<AppWriting> {
                             labelText: "작성자",
                             border: OutlineInputBorder(),
                           ),
+
                         ),
                       ),
                       SizedBox(height: 16),
@@ -241,33 +293,30 @@ class _AppWritingState extends State<AppWriting> {
                           labelText: "내용",
                           border: OutlineInputBorder(),
                         ),
+                        onChanged: (text) {
+                          if (text.length > 1000) {
+                            setState(() {
+                              contentController.text = text.substring(0, 1000);
+                              contentController.selection = TextSelection.fromPosition(
+                                TextPosition(offset: contentController.text.length),
+                              );
+                            });
+                          }
+                        },
                       ),
+
                       SizedBox(height: 16),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 20,
-                              height: 50,
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                widget.qna != null
-                                    ? updatePost()
-                                    : submitPost();
-                              },
-                              child: Text(widget.qna != null ? "글수정" : "글등록"),
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: Size(150, 50),
-                                backgroundColor: Color(0xFFD3CDC8),
-                                textStyle: TextStyle(fontSize: 18),
-                                foregroundColor: Colors.black,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero,
-                                ),
-                              ),
-                            ),
-                          ]),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: validateAndSubmit,
+                          child: Text(widget.qna != null ? "글수정" : "글등록"),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(150, 50),
+                            backgroundColor: Color(0xFFD3CDC8),
+                            textStyle: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

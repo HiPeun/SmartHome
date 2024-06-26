@@ -12,10 +12,7 @@ class WebModifyProfile extends StatefulWidget {
   State<StatefulWidget> createState() => _WebModifyProfile();
 }
 
-
-
 class _WebModifyProfile extends State<WebModifyProfile> {
-
   TextEditingController mbnoController = TextEditingController();
   TextEditingController idController = TextEditingController();
   TextEditingController pwController = TextEditingController();
@@ -50,9 +47,12 @@ class _WebModifyProfile extends State<WebModifyProfile> {
         "pw2": pw2Controller.text,
         "name": nameController.text,
       };
-      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.177:9090"));
-      RegExp passwordRegex = RegExp(r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*(),.?":{}|<>]).{5,12}$');
-      if (pwController.text.length > 12 || !passwordRegex.hasMatch(pwController.text)) {
+      final dio.Dio dioClient =
+          dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.177:9090"));
+      RegExp passwordRegex = RegExp(
+          r'^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*(),.?":{}|<>]).{5,12}$');
+      if (pwController.text.length > 12 ||
+          !passwordRegex.hasMatch(pwController.text)) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -71,7 +71,8 @@ class _WebModifyProfile extends State<WebModifyProfile> {
           },
         );
         return;
-      } if (pwController.text != pw2Controller.text) {
+      }
+      if (pwController.text != pw2Controller.text) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -91,7 +92,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
         );
         return;
       }
-      if (nameController.text.length >6 ) {
+      if (nameController.text.length > 6) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -124,7 +125,8 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                     user = {};
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const MyHomePage()),
+                      MaterialPageRoute(
+                          builder: (context) => const MyHomePage()),
                     );
                   },
                   child: const Text('확인'),
@@ -145,7 +147,8 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const MyHomePage()),
+                      MaterialPageRoute(
+                          builder: (context) => const MyHomePage()),
                     );
                   },
                   child: const Text('확인'),
@@ -214,7 +217,8 @@ class _WebModifyProfile extends State<WebModifyProfile> {
         "id": idController.text,
         "pw": pwController.text,
       };
-      final dio.Dio dioClient = dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.177:9090"));
+      final dio.Dio dioClient =
+          dio.Dio(dio.BaseOptions(baseUrl: "http://192.168.0.177:9090"));
 
       // 확인 대화 상자 표시
       bool confirmed = await showDialog(
@@ -251,7 +255,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const MyHomePage()),
-                (Route<dynamic> route) => false,
+            (Route<dynamic> route) => false,
           );
         } else {
           // 회원 삭제 실패
@@ -274,7 +278,6 @@ class _WebModifyProfile extends State<WebModifyProfile> {
           );
         }
       }
-
     } catch (e) {
       print(e);
       showDialog(
@@ -296,9 +299,6 @@ class _WebModifyProfile extends State<WebModifyProfile> {
       );
     }
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -329,7 +329,8 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                               MaterialPageRoute(
                                 builder: (context) => MyHomePage(),
                               ),
-                          );},
+                            );
+                          },
                           child: Text(
                             "Conven",
                             style: TextStyle(
@@ -522,4 +523,3 @@ class _WebModifyProfile extends State<WebModifyProfile> {
     );
   }
 }
-

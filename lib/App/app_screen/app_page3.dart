@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:loginproject/main.dart';
 
 import '../app_screen/bottom_bar.dart';

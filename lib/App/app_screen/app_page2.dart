@@ -86,7 +86,7 @@ class _Page2State extends State<Page2> {
 
   // led on off 메서드!
   void sendCommand(String command) async {
-    String url = 'http://192.168.0.196/?cmd=$command';
+    String url = 'http://192.168.0.221/?cmd=$command';
     try {
       final response = await Dio().get(url);
       if (response.statusCode == 200) {
@@ -183,8 +183,9 @@ class _Page2State extends State<Page2> {
         // 스낵바로 상태 알림
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(is90Degrees2 ? '현관문이 열렸습니다.' : '현관문이 닫혔습니다.'),
+            content: Text(is90Degrees2 ? '창문이 열렸습니다.' : '창문이 닫혔습니다.'),
             duration: Duration(seconds: 2),
+
           ),
         );
         print('Servo 2 Angle set to $angle degrees successfully');
@@ -278,6 +279,8 @@ class _Page2State extends State<Page2> {
               child: Text('닫기'),
               onPressed: () {
                 Navigator.of(context).pop();
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CcTv()));
               },
             ),
           ],
@@ -338,7 +341,7 @@ class _Page2State extends State<Page2> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 30),
+                      padding: const EdgeInsets.only(left: 20),
                       child: Text(
                         "Conven",
                         style: TextStyle(

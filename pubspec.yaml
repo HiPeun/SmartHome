@@ -69,7 +69,7 @@ dependencies:
   flutter_secure_storage: ^4.2.1
   url_launcher: ^6.3.0
   flutter_mjpeg: ^2.0.4
-  flutter_webrtc: ^0.11.1
+
 
 
 

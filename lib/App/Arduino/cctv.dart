@@ -9,6 +9,18 @@ class CcTv extends StatefulWidget {
 class _CcTvState extends State<CcTv> {
   bool _isStreaming = true;
 
+  void _rebuildStream() {
+    setState(() {
+      _isStreaming = false;
+    });
+    // 스트리밍을 다시 시작하기 전에 충분한 지연 시간을 줍니다.
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        _isStreaming = true;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +33,7 @@ class _CcTvState extends State<CcTv> {
           Padding(
             padding: EdgeInsets.only(bottom: 400),
             child: Mjpeg(
-              stream: 'http://192.168.0.192:91/stream',
+              stream: 'http://192.168.0.200:93/stream',
               isLive: _isStreaming,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
@@ -33,6 +45,7 @@ class _CcTvState extends State<CcTv> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FloatingActionButton(
+                  heroTag: 'play_button',
                   backgroundColor: Colors.white,
                   onPressed: () {
                     setState(() {
@@ -43,6 +56,7 @@ class _CcTvState extends State<CcTv> {
                 ),
                 SizedBox(width: 20),
                 FloatingActionButton(
+                  heroTag: 'pause_button',
                   backgroundColor: Colors.white,
                   onPressed: () {
                     setState(() {
@@ -51,7 +65,13 @@ class _CcTvState extends State<CcTv> {
                   },
                   child: Icon(Icons.pause),
                 ),
-
+                SizedBox(width: 20),
+                FloatingActionButton(
+                  heroTag: 'refresh_button',
+                  backgroundColor: Colors.white,
+                  onPressed: _rebuildStream,
+                  child: Icon(Icons.refresh),
+                ),
               ],
             ),
           ),
