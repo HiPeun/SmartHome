@@ -178,8 +178,8 @@ class _WebLoginState extends State<WebLogin> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('서버 오루'),
-            content: Text('다시 시도해ㅔ 주세요'),
+            title: Text('서버 오류'),
+            content: Text('다시 시도해 주세요'),
             actions: [
               TextButton(
                 onPressed: () {
