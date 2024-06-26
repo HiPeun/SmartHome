@@ -4,12 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:loginproject/Web/Web_Cus/web_notice.dart';
 import 'package:loginproject/Web/Web_Cus/web_notice_screen.dart';
-import 'package:loginproject/Web/Web_Member/web_join.dart';
-import 'package:loginproject/Web/Web_Member/web_login.dart';
+
 import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
 import 'package:loginproject/Web/webmain.dart';
-
-
 
 class WebLoginScreen extends StatefulWidget {
   const WebLoginScreen({super.key, required this.title});
@@ -19,7 +16,6 @@ class WebLoginScreen extends StatefulWidget {
   @override
   State<WebLoginScreen> createState() => _WebLoginScreenState();
 }
-
 
 class _WebLoginScreenState extends State<WebLoginScreen> {
   bool isLogin = false;
@@ -59,10 +55,10 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                       child: Container(
                         child: InkWell(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MyHomePage(),
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const MyHomePage(),
                             ));
                           },
-
                           child: const Text(
                             "로그아웃",
                             style: TextStyle(
@@ -119,11 +115,11 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                     child: CarouselSlider.builder(
                       itemCount: imgList.length,
                       itemBuilder: (BuildContext context, int itemIndex,
-                          int pageViewIndex) =>
+                              int pageViewIndex) =>
                           Container(
-                            child: Image.network(imgList[itemIndex],
-                                fit: BoxFit.cover),
-                          ),
+                        child: Image.network(imgList[itemIndex],
+                            fit: BoxFit.cover),
+                      ),
                       options: CarouselOptions(
                         height: 500,
                         // 슬라이더의 높이를 지정
@@ -160,7 +156,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                             child: const Text(
                               "일상의 행복한 변화",
                               style:
-                              TextStyle(fontSize: 40, color: Colors.white),
+                                  TextStyle(fontSize: 40, color: Colors.white),
                             ),
                           ),
                         ],

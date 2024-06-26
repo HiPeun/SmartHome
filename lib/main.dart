@@ -5,10 +5,7 @@ import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:loginproject/App/app_screen/bottom_bar.dart';
 import 'Web/webmain.dart';
 
-
-
 void main() async {
-
   // 웹 환경에서 카카오 로그인을 정상적으로 완료하려면 runApp() 호출 전 아래 메서드 호출 필요
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -18,14 +15,12 @@ void main() async {
     javaScriptAppKey: '38e21ce41bf7993c5366257c746421e3',
   );
 
-
-
   runApp(MyApp());
 }
-Map<String,dynamic> user = {};
+
+Map<String, dynamic> user = {};
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(

@@ -185,6 +185,7 @@ class _Page2State extends State<Page2> {
           SnackBar(
             content: Text(is90Degrees2 ? '현관문이 열렸습니다.' : '현관문이 닫혔습니다.'),
             duration: Duration(seconds: 2),
+
           ),
         );
         print('Servo 2 Angle set to $angle degrees successfully');
