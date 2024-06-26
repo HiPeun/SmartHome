@@ -185,6 +185,7 @@ class _Page2State extends State<Page2> {
           SnackBar(
             content: Text(is90Degrees2 ? '창문이 열렸습니다.' : '창문이 닫혔습니다.'),
             duration: Duration(seconds: 2),
+
           ),
         );
         print('Servo 2 Angle set to $angle degrees successfully');
@@ -340,7 +341,7 @@ class _Page2State extends State<Page2> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 10),
+                      padding: const EdgeInsets.only(left: 30),
                       child: Text(
                         "Conven",
                         style: TextStyle(

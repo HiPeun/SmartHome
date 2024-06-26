@@ -12,12 +12,10 @@ import 'package:loginproject/Web/Web_Member/web_login_screen.dart';
 import '../../main.dart';
 import '../webmain.dart';
 
-
 // 로그인 완료시 main페이지로 이동
 void navigateToMainPage(BuildContext context) {
-  Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => const MyHomePage()
-  ));
+  Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => const MyHomePage()));
 }
 
 // 카카오 로그인 구현 예제
@@ -51,7 +49,8 @@ Future<void> KakaoLogin(BuildContext context) async {
           navigateToMainPage(context);
         });
         print('카카오계정으로 로그인 성공');
-        Navigator.pushReplacementNamed(context as BuildContext, '/webmain'); // 로그인 성공 시 메인 페이지로 이동
+        Navigator.pushReplacementNamed(
+            context as BuildContext, '/webmain'); // 로그인 성공 시 메인 페이지로 이동
       } catch (error) {
         print('카카오계정으로 로그인 실패 $error');
       }
@@ -83,7 +82,6 @@ Future<void> KakaoLogout() async {
     print('로그아웃 실패, SDK에서 토큰 삭제 $error');
   }
 }
-
 
 class WebLogin extends StatefulWidget {
   WebLogin({super.key});
@@ -193,8 +191,6 @@ class _WebLoginState extends State<WebLogin> {
       );
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -312,7 +308,8 @@ class _WebLoginState extends State<WebLogin> {
               margin: EdgeInsets.only(top: 15),
               width: 400,
               child: TextField(
-                maxLength: 12, // 최대 12자리까지 입력 가능하도록 설정
+                maxLength: 12,
+                // 최대 12자리까지 입력 가능하도록 설정
                 decoration: InputDecoration(labelText: 'ID'),
                 keyboardType: TextInputType.emailAddress,
                 controller: _id,
@@ -322,7 +319,8 @@ class _WebLoginState extends State<WebLogin> {
             Container(
               width: 400,
               child: TextField(
-                maxLength: 12, // 최대 12자리까지 입력 가능하도록 설정
+                maxLength: 12,
+                // 최대 12자리까지 입력 가능하도록 설정
                 decoration: InputDecoration(
                   labelText: 'Password',
                 ),
@@ -406,7 +404,6 @@ class _WebLoginState extends State<WebLogin> {
                     },
                   ),
                 ),
-
               ],
             )
           ],
@@ -415,4 +412,3 @@ class _WebLoginState extends State<WebLogin> {
     );
   }
 }
-
