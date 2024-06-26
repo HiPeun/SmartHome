@@ -160,7 +160,7 @@ class _Page2State extends State<Page2> {
         // 스낵바로 상태 알림
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(is90Degrees ? '현관문이 열렸습니다.' : '현관문이 닫혔습니다.'),
+            content: Text(is90Degrees ? '현관문이 닫혔습니다.' : '현관문이 열렸습니다.'),
             duration: Duration(seconds: 2),
           ),
         );
@@ -408,7 +408,7 @@ class _Page2State extends State<Page2> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("반가워요, ${user["name"]}님!",
+                    Text("반가워요 ${user["name"]}님!",
                         style: TextStyle(fontSize: 18)),
                   ],
                 ),

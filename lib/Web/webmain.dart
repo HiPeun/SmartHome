@@ -138,9 +138,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       itemCount: imgList.length,
                       itemBuilder: (BuildContext context, int itemIndex,
                               int pageViewIndex) =>
-                          Container(
-                        child:
-                            Image.asset(imgList[itemIndex], fit: BoxFit.cover),
+                          Image.asset(
+                        imgList[itemIndex],
+                        width: double.infinity,
+                        fit: BoxFit.fitWidth,
                       ),
                       options: CarouselOptions(
                         height: 500,
