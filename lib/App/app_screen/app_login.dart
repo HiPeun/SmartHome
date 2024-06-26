@@ -29,8 +29,6 @@ class _AppLoginState extends State<AppLogin> {
     _loadAutoLoginStatus();
   }
 
-
-
   Future<void> _loadUserId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? savedId = prefs.getString('user_id');
@@ -194,57 +192,79 @@ class _AppLoginState extends State<AppLogin> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 20),
-                    child: Text(
-                      "로그인",
-                      style: TextStyle(
-                        fontSize: 40,
-                        color: Colors.black,
-                      ),
+                    padding: EdgeInsets.only(top: 10, left: 20),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Conven",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 50,
+                            color: Color(0xFF2C2B28), // 추가: 글자 색상
+                          ),
+                        ),
+                        Text(
+                          "계정을 로그인 합니다.",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(top: 90),
-              //   child: Material(
-              //     color: Colors.transparent,
-              //     child: InkWell(
-              //       onTap: () {
-              //         kakaoLogin(context);
-              //       },
-              //       child: Container(
-              //         decoration: BoxDecoration(
-              //           borderRadius: BorderRadius.circular(10),
-              //           color: Color(0xffF9E000),
-              //         ),
-              //         width: 300,
-              //         height: 55,
-              //         child: Row(
-              //           mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //           children: [
-              //             Image.asset(
-              //               "assets/images/kakao.png",
-              //               width: 30,
-              //               height: 30,
-              //             ),
-              //             Text(
-              //               "카카오톡으로 시작하기",
-              //               style: TextStyle(
-              //                 fontSize: 19,
-              //               ),
-              //             ),
-              //             SizedBox(
-              //               width: 10,
-              //               height: 10,
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              SizedBox(height: 90),
+              SizedBox(
+                height: 30,
+              ),
+              Column(
+                children: [
+                  Text(
+                    "로그인",
+                    style: TextStyle(fontWeight: FontWeight.bold
+                    ,fontSize:30),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20,),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    kakaoLogin(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xffF9E000),
+                    ),
+                    width: 300,
+                    height: 55,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Image.asset(
+                          "assets/images/kakao.png",
+                          width: 30,
+                          height: 30,
+                        ),
+                        Text(
+                          "카카오톡으로 시작하기",
+                          style: TextStyle(
+                            fontSize: 19,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                          height: 10,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
               Container(
                 margin: EdgeInsets.only(top: 15),
                 width: 300,
@@ -255,7 +275,6 @@ class _AppLoginState extends State<AppLogin> {
                   ),
                   keyboardType: TextInputType.emailAddress,
                   controller: _id,
-
                 ),
               ),
               Container(
@@ -315,7 +334,6 @@ class _AppLoginState extends State<AppLogin> {
                   ),
                   TextButton(
                     onPressed: () {
-
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => AppFpw(),
                       ));
@@ -334,7 +352,6 @@ class _AppLoginState extends State<AppLogin> {
                   ),
                   TextButton(
                     onPressed: () {
-
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => AppJoin(),
                       ));

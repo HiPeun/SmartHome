@@ -185,7 +185,6 @@ class _Page2State extends State<Page2> {
           SnackBar(
             content: Text(is90Degrees2 ? '창문이 열렸습니다.' : '창문이 닫혔습니다.'),
             duration: Duration(seconds: 2),
-
           ),
         );
         print('Servo 2 Angle set to $angle degrees successfully');
@@ -220,11 +219,11 @@ class _Page2State extends State<Page2> {
     channel.stream.listen((message) {
       print('Received: $message');
       if (message == 'Danger' && user.isNotEmpty == true) {
-          WebSocketbutton = true; // 상태 업데이트
+        WebSocketbutton = true; // 상태 업데이트
         sendEmergencyNotification();
         showDangerAlert();
       } else {
-          WebSocketbutton = false; // 상태 업데이트
+        WebSocketbutton = false; // 상태 업데이트
       }
     });
   }
@@ -279,8 +278,8 @@ class _Page2State extends State<Page2> {
               child: Text('닫기'),
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => CcTv()));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => CcTv()));
               },
             ),
           ],
@@ -341,7 +340,7 @@ class _Page2State extends State<Page2> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
+                      padding: const EdgeInsets.only(left: 10),
                       child: Text(
                         "Conven",
                         style: TextStyle(
@@ -351,32 +350,52 @@ class _Page2State extends State<Page2> {
                       ),
                     ),
                   ),
-
-                  InkWell(
-                    onTap: () async {
-                      if (user.isNotEmpty) {
-                        _logout(); // 로그아웃 확인 다이얼로그 표시
-                      } else {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AppLogin(),
+                  if (user.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 40,top: 5),
+                      child: Row(
+                        children: [
+                          Text(
+                            "반가워요, ${user["name"]}님!",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
                           ),
-                        );
+                        ],
+                      ),
+                    ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5),
+                    child: InkWell(
+                      onTap: () async {
+                        if (user.isNotEmpty) {
+                          _logout(); // 로그아웃 확인 다이얼로그 표시
+                        } else {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AppLogin(),
+                            ),
+                          );
 
-                        setState(() {});
-                      }
-                    },
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          "assets/images/backbutton.png",
-                          width: 26,
-                          height: 26,
-                          fit: BoxFit.cover,
-                        ),
-                        Text(user.isEmpty ? "로그인 " : "로그아웃"),
-                      ],
+                          setState(() {});
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Column(
+                            children: [
+                              Image.asset(
+                                "assets/images/backbutton.png",
+                                width: 26,
+                                height: 26,
+                                fit: BoxFit.cover,
+                              ),
+                              Text(user.isEmpty ? "로그인 " : "로그아웃"),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   if (user.isEmpty)
@@ -404,14 +423,6 @@ class _Page2State extends State<Page2> {
                     ),
                 ],
               ),
-              if (user.isNotEmpty)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("반가워요, ${user["name"]}님!",
-                        style: TextStyle(fontSize: 18)),
-                  ],
-                ),
               AppMainView(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
