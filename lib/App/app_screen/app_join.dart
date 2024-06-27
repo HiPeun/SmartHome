@@ -484,7 +484,8 @@ class _AppJoinState extends State<AppJoin> {
                         elevation: 5.0,
                         borderRadius: BorderRadius.circular(30.0),
                         color: const Color(0xFFD3CDC8),
-                        child: MaterialButton(
+                        child: TextButton(
+
                           onPressed: () {
                             String joinName = name.text;
                             String joinId = id.text;
@@ -656,7 +657,9 @@ class _AppJoinState extends State<AppJoin> {
                               ),
                             ),
                           ),
+
                         ),
+
                       ),
                     ),
                   ],
