@@ -26,14 +26,8 @@ Future<void> KakaoLogin(BuildContext context) async {
     try {
       await UserApi.instance.loginWithKakaoTalk().then((value) {
         print('value from kakao $value');
-        navigateToMainPage(context);
       });
       print('카카오톡으로 로그인 성공');
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => WebLoginScreen(title: ""),
-          ));
     } catch (error) {
       print(await KakaoSdk.origin);
       print('카카오톡으로 로그인 실패 $error');
@@ -59,14 +53,13 @@ Future<void> KakaoLogin(BuildContext context) async {
     try {
       await UserApi.instance.loginWithKakaoAccount().then((value) {
         print('value from kakao $value');
-        navigateToMainPage(context);
       });
       print('카카오계정으로 로그인 성공');
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => WebLoginScreen(title: ""),
-          ));
+      User user = await UserApi.instance.me();
+      print('사용자 정보 요청 성공'
+          '\n회원번호: ${user.id}'
+          '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
+          '\n이메일: ${user.kakaoAccount?.email}');
     } catch (error) {
       print('카카오계정으로 로그인 실패 $error');
     }
@@ -203,7 +196,7 @@ class _WebLoginState extends State<WebLogin> {
               height: 170,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color(0xFFD3CDC8),
+                color: Color(0xFFe6e8ed),
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(30),
                 ),
@@ -227,7 +220,7 @@ class _WebLoginState extends State<WebLogin> {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 50,
-                                color: Color(0xFF2C2B28), // 추가: 글자 색상
+                                color: Color(0xFF56648b), // 추가: 글자 색상
                               ),
                             ),
                           ),
@@ -261,49 +254,50 @@ class _WebLoginState extends State<WebLogin> {
                 ),
               ),
             ),
-            SizedBox(height: 120),
-            // Padding(
-            //   padding: const EdgeInsets.only(top: 90),
-            //   child: InkWell(
-            //     onTap: () async {
-            //       print(await KakaoSdk.origin);
-            //       KakaoLogin(context);
-            //     },
-            //     child: Container(
-            //       decoration: BoxDecoration(
-            //         borderRadius: BorderRadius.circular(10),
-            //         color: Color(0xffF9E000),
-            //       ),
-            //       width: 400,
-            //       height: 55,                  // child: Row(
-            //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //         children: [
-            //           Container(
-            //             child: Image.asset(
-            //               "assets/images/kakao.png",
-            //               width: 30,
-            //               height: 30,
-            //             ),
-            //           ),
-            //           Container(
-            //             child: Text(
-            //               "카카오톡으로 시작하기",
-            //               style: TextStyle(
-            //                 fontSize: 19,
-            //               ),
-            //             ),
-            //           ),
-            //           SizedBox(
-            //             width: 10,
-            //             height: 10,
-            //           )
-            //         ],
-            //       ),
-            //
-            //     ),
-            //   ),
-            // ),
-            //
+            SizedBox(height: 60),
+            Padding(
+              padding: const EdgeInsets.only(top: 90),
+              child: InkWell(
+                onTap: () async {
+                  print(await KakaoSdk.origin);
+                  KakaoLogin(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xffF9E000),
+                  ),
+                  width: 400,
+                  height: 55,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        child: Image.asset(
+                          "assets/images/kakao.png",
+                          width: 30,
+                          height: 30,
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "카카오톡으로 시작하기",
+                          style: TextStyle(
+                            fontSize: 19,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                        height: 10,
+                      )
+                    ],
+                  ),
+
+                ),
+              ),
+            ),
+
             Container(
               margin: EdgeInsets.only(top: 15),
               width: 400,
@@ -333,7 +327,7 @@ class _WebLoginState extends State<WebLogin> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Color(0xFFD3CDC8),
+                color: Color(0xFF6489e9),
               ),
               margin: EdgeInsets.only(top: 20),
               width: 400,
@@ -344,8 +338,8 @@ class _WebLoginState extends State<WebLogin> {
                     "로 그 인",
                     style: TextStyle(
                         fontSize: 19,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white),
                   ),
                 ),
                 onTap: () {
@@ -357,7 +351,7 @@ class _WebLoginState extends State<WebLogin> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  margin: EdgeInsets.only(right: 120, top: 10),
+                  margin: EdgeInsets.only(right: 110, top: 10),
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
@@ -373,7 +367,7 @@ class _WebLoginState extends State<WebLogin> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10),
+                  margin: EdgeInsets.fromLTRB(0, 10, 20, 0),
                   child: InkWell(
                     child: Text(
                       "아이디 찾기",

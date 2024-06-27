@@ -198,7 +198,7 @@ class _WebJoinState extends State<WebJoin> {
                 height: 170,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Color(0xFFD3CDC8),
+                  color: Color(0xFFe6e8ed),
                   borderRadius: BorderRadius.vertical(
                     bottom: Radius.circular(30),
                   ),
@@ -224,7 +224,7 @@ class _WebJoinState extends State<WebJoin> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 50,
-                                  color: Color(0xFF2C2B28), // 추가: 글자 색상
+                                  color: Color(0xFF56648b), // 추가: 글자 색상
                                 ),
                               ),
                             ),
@@ -344,9 +344,9 @@ class _WebJoinState extends State<WebJoin> {
         
                             check(joinId);
                           },
-                          child: Text('중복확인', style: TextStyle(color: Colors.black)),
+                          child: Text('중복확인', style: TextStyle(color: Colors.white)),
                           style: TextButton.styleFrom(
-                            backgroundColor: Color(0xFFD3CDC8),
+                            backgroundColor: Color(0xFF6489e9),
                             minimumSize: Size(60, 50),
                           ),
                         ),
@@ -484,7 +484,7 @@ class _WebJoinState extends State<WebJoin> {
                       child: Material(
                         elevation: 5.0,
                         borderRadius: BorderRadius.circular(30.0),
-                        color: const Color(0xFFD3CDC8),
+                        color: const Color(0xFF6489e9),
                         child: MaterialButton(
                           onPressed: () {
                             String joinName = name.text;
@@ -645,9 +645,9 @@ class _WebJoinState extends State<WebJoin> {
                                 "회원가입",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal,
                                 ),
                               ),
                             ),

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
+import 'package:loginproject/Web/Web_Cus/web_notice_screen.dart';
 import 'package:loginproject/Web/webmain.dart';
 import 'package:loginproject/main.dart';
 import 'package:loginproject/Web/Web_Member/web_modify_profile.dart';
@@ -179,7 +180,7 @@ class _WebWritingState extends State<WebWriting> {
               height: 170,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color(0xFFD3CDC8),
+                color: Color(0xFFe6e8ed),
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(30),
                 ),
@@ -205,6 +206,7 @@ class _WebWritingState extends State<WebWriting> {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 50,
+                                color: Color(0xFF56648b),
                               ),
                             ),
                           ),
@@ -239,7 +241,7 @@ class _WebWritingState extends State<WebWriting> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebNotice(),
+                            builder: (context) => WebNoticeScreen(),
                           ));
                         },
                         child: Text(
@@ -340,7 +342,8 @@ class _WebWritingState extends State<WebWriting> {
                           child: Text(widget.qna != null ? "글수정" : "글등록"),
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(150, 50),
-                            backgroundColor: Color(0xFFD3CDC8),
+                            backgroundColor: Color(0xFF6489e9),
+                            foregroundColor: Colors.white,
                             textStyle: TextStyle(fontSize: 18),
                           ),
                         ),

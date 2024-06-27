@@ -65,9 +65,36 @@ class _MyHomePageState extends State<MyHomePage> {
                                     builder: (context) => WebLogin()),
                               );
                             } else {
-                              user = {};
+                              // 로그아웃 확인 대화 상자 표시
+                              bool confirmLogout = await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("로그아웃"),
+                                    content: Text("정말 로그아웃 하시겠습니까?"),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop(false);
+                                        },
+                                        child: Text("취소"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop(true);
+                                        },
+                                        child: Text("확인"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+
+                              if (confirmLogout) {
+                                user = {};
+                                setState(() {});
+                              }
                             }
-                            setState(() {});
                           },
                           child: Text(
                             user.isEmpty ? '로그인' : '로그아웃',
@@ -137,11 +164,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: CarouselSlider.builder(
                       itemCount: imgList.length,
                       itemBuilder: (BuildContext context, int itemIndex,
-                              int pageViewIndex) =>
-                          Container(
-                        child:
-                            Image.asset(imgList[itemIndex], fit: BoxFit.cover),
-                      ),
+                          int pageViewIndex) =>
+                          Image.asset(
+                            imgList[itemIndex],
+                            width: double.infinity,
+                            fit: BoxFit.fitWidth,
+                          ),
                       options: CarouselOptions(
                         height: 500,
                         viewportFraction: 1.0,
@@ -172,7 +200,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Text(
                               "일상의 행복한 변화",
                               style:
-                                  TextStyle(fontSize: 40, color: Colors.white),
+                              TextStyle(fontSize: 40, color: Colors.white),
                             ),
                           ),
                         ],
@@ -391,7 +419,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Text(
                           "이용약관",
                           style:
-                              TextStyle(fontSize: 20, color: Color(0xFFE5E5E1)),
+                          TextStyle(fontSize: 20, color: Color(0xFFE5E5E1)),
                         ),
                       ),
                     ),
@@ -404,7 +432,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Text(
                           "개인정보 처리방침",
                           style:
-                              TextStyle(fontSize: 20, color: Color(0xFFE5E5E1)),
+                          TextStyle(fontSize: 20, color: Color(0xFFE5E5E1)),
                         ),
                       ),
                     ),
@@ -465,3 +493,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+

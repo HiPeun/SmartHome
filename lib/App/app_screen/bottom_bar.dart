@@ -26,7 +26,6 @@ class _BottomBarState extends State<BottomBar> {
   void initState() {
     super.initState();
     _widgetOptions = <Widget>[
-
       AppNotice(),
       Page2(),
       AppModifyProfile(),
@@ -49,6 +48,28 @@ class _BottomBarState extends State<BottomBar> {
       _selectedIndex = index;
     });
   }
+
+  // 로그인 후
+  void showLoginAlert(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('알림'),
+          content: Text('로그인 후 이용해 주세요'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {

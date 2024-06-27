@@ -1,13 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:loginproject/App/app_screen/bottom_bar.dart';
 import 'Web/webmain.dart';
 
 void main() async {
-  // 웹 환경에서 카카오 로그인을 정상적으로 완료하려면 runApp() 호출 전 아래 메서드 호출 필요
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   // runApp() 호출 전 Flutter SDK 초기화
   KakaoSdk.init(

@@ -1,3 +1,4 @@
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
               height: 170,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color(0xFFD3CDC8),
+                color: Color(0xFFe6e8ed),
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(30),
                 ),
@@ -56,7 +57,7 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 50,
-                                color: Color(0xFF2C2B28), // 추가: 글자 색상
+                                color: Color(0xFF56648b), // 추가: 글자 색상
                               ),
                             ),
                           ),
@@ -149,14 +150,14 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
                       child: Text(
                         "공지사항",
                         style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal,
                           fontSize: 18,
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(70, 50),
-                        backgroundColor: showNotices ? Colors.grey : null,
+                        backgroundColor: showNotices ? Color(0xFF6489e9) : Color(0xFFe6e8ed),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.zero,
                         ),
@@ -171,39 +172,16 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
                       child: Text(
                         "자주묻는질문",
                         style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal,
                           fontSize: 18,
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(70, 50),
-                        backgroundColor: !showNotices ? Colors.grey : null,
+                        backgroundColor: !showNotices ? Color(0xFF6489e9) : Color(0xFFe6e8ed),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.zero,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(50, 0 , 0, 0),
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          await Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebWriting(),
-                          ));
-                          setState(() {
-
-                          });
-                        },
-                        child: Text("글쓰기"),
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(160, 45),
-                          backgroundColor: Color(0xFFD3CDC8),
-                          textStyle: TextStyle(fontSize: 20),
-                          foregroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero,
-                          ),
                         ),
                       ),
                     ),
@@ -225,6 +203,27 @@ class _WebNoticeScreenState extends State<WebNoticeScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 // 공지사항과 Q&A 리스트에 좌우 여백 추가
                 child: showNotices ? NoticeList() : QnaList(),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(50, 20, 50, 20),
+              child: ElevatedButton(
+                onPressed: () async {
+                  await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => WebWriting(),
+                  ));
+                  setState(() {});
+                },
+                child: Text("글쓰기"),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(160, 50),
+                  backgroundColor: Color(0xFF6489e9),
+                  textStyle: TextStyle(fontSize: 20),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),
+                ),
               ),
             ),
           ],
@@ -402,11 +401,11 @@ class _QnaListState extends State<QnaList> {
                       onPressed: () {
                         Navigator.of(context)
                             .push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    WebWriting(qna: list[index]),
-                              ),
-                            )
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                WebWriting(qna: list[index]),
+                          ),
+                        )
                             .then((value) => getQnaList());
                       },
                     ),
