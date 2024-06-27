@@ -30,10 +30,9 @@ class _AppFidState extends State<AppFid> {
           headers: {"Content-Type": "application/json"},
         ),
       );
-      print(response.data);
 
       if (response.statusCode == 200) {
-        String? id = response.data['id']; // null 값을 처리
+        String? id = response.data['id'];
         if (id != null && id.isNotEmpty) {
           showDialog(
             context: context,
@@ -65,7 +64,7 @@ class _AppFidState extends State<AppFid> {
                 actions: [
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pop(); // 알림 닫기
+                      Navigator.of(context).pop();
                     },
                     child: Text('확인'),
                   ),
@@ -84,7 +83,7 @@ class _AppFidState extends State<AppFid> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop(); // 알림 닫기
+                    Navigator.of(context).pop();
                   },
                   child: Text('확인'),
                 ),
@@ -102,7 +101,7 @@ class _AppFidState extends State<AppFid> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(); // 알림 닫기
+                  Navigator.of(context).pop();
                 },
                 child: Text('확인'),
               ),
@@ -220,7 +219,6 @@ class _AppFidState extends State<AppFid> {
                     children: [
                       TextButton(
                         onPressed: () {
-
                           Navigator.of(context)
                               .pushReplacement(MaterialPageRoute(
                             builder: (context) => AppFpw(),
