@@ -87,7 +87,7 @@ class _Page2State extends State<Page2> {
 
   // led on off 메서드!
   void sendCommand(String command) async {
-    String url = 'http://192.168.0.221/?cmd=$command';
+    String url = 'http://192.168.0.226/?cmd=$command';
     try {
       final response = await Dio().get(url);
       if (response.statusCode == 200) {
@@ -332,7 +332,6 @@ class _Page2State extends State<Page2> {
 
   @override
   Widget build(BuildContext context) {
-
     return Material(
       child: SafeArea(
         child: SingleChildScrollView(
@@ -340,98 +339,105 @@ class _Page2State extends State<Page2> {
             children: [
               Column(
                 children: [
-                  Row(
+                  Stack(
                     children: [
-                      Expanded(child: GestureDetector(
-                        onTap: (){
-                          setState(() {
-                            selected = !selected;
-                          });
-
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Container(
-                            height: 30,
-                            child: AnimatedDefaultTextStyle(child: Text("Conven"), style: TextStyle(
-                              fontSize: 30.0,color: selected ? Colors.blueAccent : Colors.black,
-                              fontWeight: selected ? FontWeight.w300 : FontWeight.bold,
-                            ), duration: const Duration(milliseconds: 400), ),
-                          ),
-                        ),
-                      ),),
-
-                      if (user.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20, top: 12),
-                          child: Row(
-                            children: [
-                              Text(
-                                "반가워요, ${user["name"]}님!",
-                                style: TextStyle(
-                                  fontSize: 20,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selected = !selected;
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Container(
+                                  height: 30,
+                                  child: AnimatedDefaultTextStyle(
+                                    child: Text("Conven"),
+                                    style: TextStyle(
+                                      fontSize: 30.0,
+                                      color: selected ? Colors.blueAccent : Colors.black,
+                                      fontWeight:
+                                      selected ? FontWeight.w300 : FontWeight.bold,
+                                    ),
+                                    duration: const Duration(milliseconds: 400),
+                                  ),
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 5),
-                        child: InkWell(
-                          onTap: () async {
-                            if (user.isNotEmpty) {
-                              _logout(); // 로그아웃 확인 다이얼로그 표시
-                            } else {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AppLogin(),
-                                ),
-                              );
-
-                              setState(() {});
-                            }
-                          },
-                          child: Row(
-                            children: [
-                              Column(
+                          if (user.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 40, top: 12),
+                              child: Row(
                                 children: [
-                                  Image.asset(
-                                    "assets/images/backbutton.png",
-                                    width: 26,
-                                    height: 26,
-                                    fit: BoxFit.cover,
+                                  Text(
+                                    "반가워요, ${user["name"]}님!",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    ),
                                   ),
-                                  Text(user.isEmpty ? "로그인 " : "로그아웃"),
                                 ],
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      if (user.isEmpty)
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(5, 0, 15, 0),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => AppJoin()));
+                            ),
+                          InkWell(
+                            onTap: () async {
+                              if (user.isNotEmpty) {
+                                _logout(); // 로그아웃 확인 다이얼로그 표시
+                              } else {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AppLogin(),
+                                  ),
+                                );
+
+                                setState(() {});
+                              }
                             },
-                            child: Column(
+                            child: Row(
                               children: [
-                                Image.asset(
-                                  user.isEmpty
-                                      ? "assets/images/person2.png"
-                                      : "assets/images/personbutton.png",
-                                  width: 26,
-                                  height: 26,
-                                  fit: BoxFit.cover,
+                                Column(
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/backbutton.png",
+                                      width: 26,
+                                      height: 26,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Text(user.isEmpty ? "로그인 " : "로그아웃"),
+                                  ],
                                 ),
-                                Text(user.isEmpty ? "회원가입" : "내 정보"),
                               ],
                             ),
                           ),
-                        ),
+                          if (user.isEmpty)
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(5, 0, 15, 0),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => AppJoin()));
+                                },
+                                child: Column(
+                                  children: [
+                                    Image.asset(
+                                      user.isEmpty
+                                          ? "assets/images/person2.png"
+                                          : "assets/images/personbutton.png",
+                                      width: 26,
+                                      height: 26,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Text(user.isEmpty ? "회원가입" : "내 정보"),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                     ],
                   ),
                 ],
@@ -458,15 +464,16 @@ class _Page2State extends State<Page2> {
                     SmartControl(
                       text: "조명제어",
                       image: "assets/images/lightimage.png",
-                      iconButton: IconButton(
-                        onPressed: () {
+                      isOn: isLedOn,
+                      switchControl: Switch(
+                        value: isLedOn,
+                        onChanged: (value) {
                           if (user.isNotEmpty) {
-                            sendCommand(isLedOn ? '0' : '1');
+                            sendCommand(value ? '1' : '0');
                           } else {
                             showLoginAlert(context);
                           }
                         },
-                        icon: Icon(Icons.power_settings_new_outlined),
                       ),
                     ),
                     SmartControl(

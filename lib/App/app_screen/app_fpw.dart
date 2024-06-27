@@ -117,7 +117,7 @@ class _AppFpwState extends State<AppFpw> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(top: 30, left: 50, bottom: 20),
+                padding: const EdgeInsets.only(top: 30, left: 30, ),
                 child: Row(
                   children: [
                     Expanded(

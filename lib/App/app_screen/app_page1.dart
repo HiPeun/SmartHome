@@ -60,7 +60,7 @@ class _AppNoticeState extends State<AppNotice> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(top: 30, left: 30, bottom: 20),
+                padding: const EdgeInsets.only(top: 30, left: 30, ),
                 child: Row(
                   children: [
                     Expanded(

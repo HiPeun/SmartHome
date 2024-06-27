@@ -192,7 +192,7 @@ class _AppLoginState extends State<AppLogin> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 10, left: 20),
+                    padding: const EdgeInsets.only(top: 30, left: 30, ),
                     child: Column(
                       children: [
                         Text(
@@ -361,8 +361,12 @@ class _AppLoginState extends State<AppLogin> {
                       ),
                     ),
                   ),
-                ],
+               ],
+
               ),
+              SizedBox(
+                height: 30,
+              )
             ],
           ),
         ),

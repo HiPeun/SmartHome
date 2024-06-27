@@ -47,7 +47,7 @@ class _AppWritingState extends State<AppWriting> {
   void updatePost() async {
     try {
       final Map<String, dynamic> data = {
-        'pno': widget.qna?.pno,     // 다시한번
+        'pno': widget.qna?.pno, // 다시한번
         'name': nameController.text,
         'title': titleController.text,
         'content': contentController.text,
@@ -187,7 +187,7 @@ class _AppWritingState extends State<AppWriting> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(top: 30, left: 50, bottom: 20),
+                padding: const EdgeInsets.only(top: 20, left: 30, bottom: 20),
                 child: Row(
                   children: [
                     Expanded(
@@ -220,8 +220,6 @@ class _AppWritingState extends State<AppWriting> {
                         ],
                       ),
                     ),
-
-
                   ],
                 ),
               ),
@@ -264,8 +262,10 @@ class _AppWritingState extends State<AppWriting> {
                             if (text.length > 30) {
                               setState(() {
                                 titleController.text = text.substring(0, 30);
-                                titleController.selection = TextSelection.fromPosition(
-                                  TextPosition(offset: titleController.text.length),
+                                titleController.selection =
+                                    TextSelection.fromPosition(
+                                  TextPosition(
+                                      offset: titleController.text.length),
                                 );
                               });
                             }
@@ -282,7 +282,6 @@ class _AppWritingState extends State<AppWriting> {
                             labelText: "작성자",
                             border: OutlineInputBorder(),
                           ),
-
                         ),
                       ),
                       SizedBox(height: 16),
@@ -297,20 +296,24 @@ class _AppWritingState extends State<AppWriting> {
                           if (text.length > 1000) {
                             setState(() {
                               contentController.text = text.substring(0, 1000);
-                              contentController.selection = TextSelection.fromPosition(
-                                TextPosition(offset: contentController.text.length),
+                              contentController.selection =
+                                  TextSelection.fromPosition(
+                                TextPosition(
+                                    offset: contentController.text.length),
                               );
                             });
                           }
                         },
                       ),
-
                       SizedBox(height: 16),
                       Center(
                         child: ElevatedButton(
                           onPressed: validateAndSubmit,
                           child: Text(widget.qna != null ? "글수정" : "글등록"),
                           style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             minimumSize: Size(150, 50),
                             backgroundColor: Color(0xFFD3CDC8),
                             textStyle: TextStyle(fontSize: 18),

@@ -249,8 +249,7 @@ class _AppJoinState extends State<AppJoin> {
                 children: [
                   Text(
                     "회원가입",
-                    style: TextStyle(fontWeight: FontWeight.bold
-                        ,fontSize:30),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                   ),
                 ],
               ),
@@ -347,8 +346,7 @@ class _AppJoinState extends State<AppJoin> {
                           ),
                           style: TextButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)
-                            ),
+                                borderRadius: BorderRadius.circular(10)),
                             backgroundColor: Color(0xFFD3CDC8),
                             minimumSize: Size(60, 55),
                           ),
@@ -485,7 +483,6 @@ class _AppJoinState extends State<AppJoin> {
                         borderRadius: BorderRadius.circular(30.0),
                         color: const Color(0xFFD3CDC8),
                         child: TextButton(
-
                           onPressed: () {
                             String joinName = name.text;
                             String joinId = id.text;
@@ -643,10 +640,13 @@ class _AppJoinState extends State<AppJoin> {
                             joins(joinId, joinPw, joinName, joinEmail);
                           },
                           child: SizedBox(
+
                             width: 300,
                             height: 45,
                             child: Center(
+
                               child: Text(
+
                                 "회원가입",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -657,14 +657,15 @@ class _AppJoinState extends State<AppJoin> {
                               ),
                             ),
                           ),
-
                         ),
-
                       ),
                     ),
                   ],
                 ),
               ),
+              SizedBox(
+                height: 30,
+              )
             ],
           ),
         ),
