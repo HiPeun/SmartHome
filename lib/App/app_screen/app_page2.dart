@@ -86,7 +86,7 @@ class _Page2State extends State<Page2> {
 
   // led on off 메서드!
   void sendCommand(String command) async {
-    String url = 'http://192.168.0.221/?cmd=$command';
+    String url = 'http://192.168.0.226/?cmd=$command';
     try {
       final response = await Dio().get(url);
       if (response.statusCode == 200) {
