@@ -68,6 +68,8 @@ dev_dependencies:
   file_picker: ^4.6.1
   image_picker: ^1.1.2
 
+  flutter_launcher_icons: ^0.13.1 # 파비콘
+
 
 
 
@@ -91,6 +93,7 @@ flutter:
   assets:
     - assets/images/
     - assets/webmain/
+    - android/app/src/main/res/raw/emergency_sound.mp3
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
