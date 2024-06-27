@@ -26,14 +26,8 @@ Future<void> KakaoLogin(BuildContext context) async {
     try {
       await UserApi.instance.loginWithKakaoTalk().then((value) {
         print('value from kakao $value');
-        navigateToMainPage(context);
       });
       print('카카오톡으로 로그인 성공');
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => WebLoginScreen(title: ""),
-          ));
     } catch (error) {
       print(await KakaoSdk.origin);
       print('카카오톡으로 로그인 실패 $error');
@@ -59,14 +53,13 @@ Future<void> KakaoLogin(BuildContext context) async {
     try {
       await UserApi.instance.loginWithKakaoAccount().then((value) {
         print('value from kakao $value');
-        navigateToMainPage(context);
       });
       print('카카오계정으로 로그인 성공');
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => WebLoginScreen(title: ""),
-          ));
+      User user = await UserApi.instance.me();
+      print('사용자 정보 요청 성공'
+          '\n회원번호: ${user.id}'
+          '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
+          '\n이메일: ${user.kakaoAccount?.email}');
     } catch (error) {
       print('카카오계정으로 로그인 실패 $error');
     }
@@ -262,48 +255,49 @@ class _WebLoginState extends State<WebLogin> {
               ),
             ),
             SizedBox(height: 120),
-            // Padding(
-            //   padding: const EdgeInsets.only(top: 90),
-            //   child: InkWell(
-            //     onTap: () async {
-            //       print(await KakaoSdk.origin);
-            //       KakaoLogin(context);
-            //     },
-            //     child: Container(
-            //       decoration: BoxDecoration(
-            //         borderRadius: BorderRadius.circular(10),
-            //         color: Color(0xffF9E000),
-            //       ),
-            //       width: 400,
-            //       height: 55,                  // child: Row(
-            //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //         children: [
-            //           Container(
-            //             child: Image.asset(
-            //               "assets/images/kakao.png",
-            //               width: 30,
-            //               height: 30,
-            //             ),
-            //           ),
-            //           Container(
-            //             child: Text(
-            //               "카카오톡으로 시작하기",
-            //               style: TextStyle(
-            //                 fontSize: 19,
-            //               ),
-            //             ),
-            //           ),
-            //           SizedBox(
-            //             width: 10,
-            //             height: 10,
-            //           )
-            //         ],
-            //       ),
-            //
-            //     ),
-            //   ),
-            // ),
-            //
+            Padding(
+              padding: const EdgeInsets.only(top: 90),
+              child: InkWell(
+                onTap: () async {
+                  print(await KakaoSdk.origin);
+                  KakaoLogin(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xffF9E000),
+                  ),
+                  width: 400,
+                  height: 55,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        child: Image.asset(
+                          "assets/images/kakao.png",
+                          width: 30,
+                          height: 30,
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "카카오톡으로 시작하기",
+                          style: TextStyle(
+                            fontSize: 19,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                        height: 10,
+                      )
+                    ],
+                  ),
+
+                ),
+              ),
+            ),
+
             Container(
               margin: EdgeInsets.only(top: 15),
               width: 400,
