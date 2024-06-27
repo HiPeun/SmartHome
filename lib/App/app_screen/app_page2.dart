@@ -22,6 +22,7 @@ class Page2 extends StatefulWidget {
 }
 
 class _Page2State extends State<Page2> {
+  bool selected = false;
   bool isLedOn = false; // led true false
   String temperatureData = '';
   String humidityData = '';
@@ -33,7 +34,7 @@ class _Page2State extends State<Page2> {
     ),
   );
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin();
   late WebSocketChannel channel; // 웹소켓
   bool WebSocketbutton = false; // 웹소켓 버튼
 
@@ -86,7 +87,7 @@ class _Page2State extends State<Page2> {
 
   // led on off 메서드!
   void sendCommand(String command) async {
-    String url = 'http://192.168.0.221/?cmd=$command';
+    String url = 'http://192.168.0.226/?cmd=$command';
     try {
       final response = await Dio().get(url);
       if (response.statusCode == 200) {
@@ -160,7 +161,7 @@ class _Page2State extends State<Page2> {
         // 스낵바로 상태 알림
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(is90Degrees ? '현관문이 열렸습니다.' : '현관문이 닫혔습니다.'),
+            content: Text(is90Degrees ? '현관문이 열렸습니다  ' : '현관문이 닫혔습니다..'),
             duration: Duration(seconds: 2),
           ),
         );
@@ -199,13 +200,13 @@ class _Page2State extends State<Page2> {
   // 웹소켓
   void _initializeNotifications() {
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    AndroidInitializationSettings('@mipmap/ic_launcher');
 
     final IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings();
+    IOSInitializationSettings();
 
     final InitializationSettings initializationSettings =
-        InitializationSettings(
+    InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
     );
@@ -240,7 +241,7 @@ class _Page2State extends State<Page2> {
   // 불꽃 감지 센서 상태 확인 메서드
   Future<void> sendEmergencyNotification() async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
+    AndroidNotificationDetails(
       'emergency_channel_id',
       '비상 알림',
       channelDescription: '비상 상황을 위한 알림',
@@ -336,91 +337,109 @@ class _Page2State extends State<Page2> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Row(
+              Column(
                 children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Text(
-                        "Conven",
-                        style: TextStyle(
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  if (user.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40,top: 5),
-                      child: Row(
+                  Stack(
+                    children: [
+                      Row(
                         children: [
-                          Text(
-                            "반가워요, ${user["name"]}님!",
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 5),
-                    child: InkWell(
-                      onTap: () async {
-                        if (user.isNotEmpty) {
-                          _logout(); // 로그아웃 확인 다이얼로그 표시
-                        } else {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AppLogin(),
-                            ),
-                          );
-
-                          setState(() {});
-                        }
-                      },
-                      child: Row(
-                        children: [
-                          Column(
-                            children: [
-                              Image.asset(
-                                "assets/images/backbutton.png",
-                                width: 26,
-                                height: 26,
-                                fit: BoxFit.cover,
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selected = !selected;
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Container(
+                                  height: 30,
+                                  child: AnimatedDefaultTextStyle(
+                                    child: Text("Conven"),
+                                    style: TextStyle(
+                                      fontSize: 30.0,
+                                      color: selected ? Colors.blueAccent : Colors.black,
+                                      fontWeight:
+                                      selected ? FontWeight.w300 : FontWeight.bold,
+                                    ),
+                                    duration: const Duration(milliseconds: 400),
+                                  ),
+                                ),
                               ),
-                              Text(user.isEmpty ? "로그인 " : "로그아웃"),
-                            ],
+                            ),
                           ),
+                          if (user.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 40, top: 12),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "반가워요, ${user["name"]}님!",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          InkWell(
+                            onTap: () async {
+                              if (user.isNotEmpty) {
+                                _logout(); // 로그아웃 확인 다이얼로그 표시
+                              } else {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AppLogin(),
+                                  ),
+                                );
+
+                                setState(() {});
+                              }
+                            },
+                            child: Row(
+                              children: [
+                                Column(
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/backbutton.png",
+                                      width: 26,
+                                      height: 26,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Text(user.isEmpty ? "로그인 " : "로그아웃"),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (user.isEmpty)
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(5, 0, 15, 0),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => AppJoin()));
+                                },
+                                child: Column(
+                                  children: [
+                                    Image.asset(
+                                      user.isEmpty
+                                          ? "assets/images/person2.png"
+                                          : "assets/images/personbutton.png",
+                                      width: 26,
+                                      height: 26,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Text(user.isEmpty ? "회원가입" : "내 정보"),
+                                  ],
+                                ),
+                              ),
+                            ),
                         ],
                       ),
-                    ),
+                    ],
                   ),
-                  if (user.isEmpty)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(5, 0, 15, 0),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => AppJoin()));
-                        },
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              user.isEmpty
-                                  ? "assets/images/person2.png"
-                                  : "assets/images/personbutton.png",
-                              width: 26,
-                              height: 26,
-                              fit: BoxFit.cover,
-                            ),
-                            Text(user.isEmpty ? "회원가입" : "내 정보"),
-                          ],
-                        ),
-                      ),
-                    ),
                 ],
               ),
               AppMainView(),
@@ -439,22 +458,25 @@ class _Page2State extends State<Page2> {
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  SmartControl(
+              SingleChildScrollView(
+                child: Row(
+                  children: [
+                    SmartControl(
                       text: "조명제어",
                       image: "assets/images/lightimage.png",
-                      iconButton: IconButton(
-                        onPressed: () {
+                      isOn: isLedOn,
+                      switchControl: Switch(
+                        value: isLedOn,
+                        onChanged: (value) {
                           if (user.isNotEmpty) {
-                            sendCommand(isLedOn ? '0' : '1');
+                            sendCommand(value ? '1' : '0');
                           } else {
                             showLoginAlert(context);
                           }
                         },
-                        icon: Icon(Icons.power_settings_new_outlined),
-                      )),
-                  SmartControl(
+                      ),
+                    ),
+                    SmartControl(
                       text: "CCTV",
                       image: "assets/images/cctvimage.png",
                       iconButton: IconButton(
@@ -471,66 +493,67 @@ class _Page2State extends State<Page2> {
                           }
                         },
                         icon: Icon(Icons.power_settings_new_outlined),
-                      )),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                children: [
+                  SmartControl(
+                    text: "현관문개폐",
+                    image: "assets/images/doorimage.png",
+                    isOn: is90Degrees,
+                    switchControl: Switch(
+                      value: is90Degrees,
+                      onChanged: (value) {
+                        if (user.isNotEmpty) {
+                          setAngle(value ? 0 : 180);
+                          setState(() {
+                            is90Degrees = value;
+                          });
+                        } else {
+                          showLoginAlert(context);
+                        }
+                      },
+                    ),
+                  ),
+                  SmartControl(
+                    text: "창문개폐",
+                    image: "assets/images/windowimage.png",
+                    isOn: is90Degrees2,
+                    switchControl: Switch(
+                      value: is90Degrees2,
+                      onChanged: (value) {
+                        if (user.isNotEmpty) {
+                          setAngle2(value ? 0 : 180);
+                          setState(() {
+                            is90Degrees2 = value;
+                          });
+                        } else {
+                          showLoginAlert(context);
+                        }
+                      },
+                    ),
+                  ),
                 ],
               ),
               Row(
                 children: [
                   SmartControl(
-                      text: "현관문개폐",
-                      image: "assets/images/doorimage.png",
-                      iconButton: IconButton(
-                        onPressed: () {
-                          if (user.isNotEmpty) {
-                            if (is90Degrees == false) {
-                              setAngle(0);
-                              is90Degrees = true;
-                            } else {
-                              setAngle(180);
-                              is90Degrees = false;
-                            }
-                          } else {
-                            showLoginAlert(context);
-                          }
-                        },
-                        icon: Icon(Icons.power_settings_new_outlined),
-                      )),
-                  SmartControl(
-                      text: "창문개폐",
-                      image: "assets/images/windowimage.png",
-                      iconButton: IconButton(
-                        onPressed: () {
-                          if (user.isNotEmpty) {
-                            if (is90Degrees2 == false) {
-                              setAngle2(0);
-                              is90Degrees2 = true;
-                            } else {
-                              setAngle2(180);
-                              is90Degrees2 = false;
-                            }
-                          } else {
-                            showLoginAlert(context);
-                          }
-                        },
-                        icon: Icon(Icons.power_settings_new_outlined),
-                      )),
-                ],
-              ),
-              Row(
-                children: [
-                  SmartControl(
-                      text: "온습도측정",
-                      image: "assets/images/homeimage.png",
-                      iconButton: IconButton(
-                        onPressed: () {
-                          if (user.isNotEmpty) {
-                            fetchData();
-                          } else {
-                            showLoginAlert(context);
-                          }
-                        },
-                        icon: Icon(Icons.power_settings_new_outlined),
-                      )),
+                    text: "온습도측정",
+                    image: "assets/images/homeimage.png",
+                    iconButton: IconButton(
+                      onPressed: () {
+                        if (user.isNotEmpty) {
+                          fetchData();
+                        } else {
+                          showLoginAlert(context);
+                        }
+                      },
+                      icon: Icon(Icons.power_settings_new_outlined),
+                    ),
+                  ),
                   SmartControl(
                     text: "화재감지",
                     image: "assets/images/fireimage.png",
@@ -559,13 +582,18 @@ class _Page2State extends State<Page2> {
 class SmartControl extends StatelessWidget {
   final String text;
   final String image;
-  final IconButton iconButton;
+  final bool? isOn;
+  final Switch? switchControl;
+  final IconButton? iconButton;
 
-  const SmartControl(
-      {required this.iconButton,
-      required this.image,
-      required this.text,
-      super.key});
+  const SmartControl({
+    required this.text,
+    required this.image,
+    this.isOn,
+    this.switchControl,
+    this.iconButton,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -579,9 +607,9 @@ class SmartControl extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.42,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: const Color(
-                0xFFE5E5E1,
-              ),
+              color: isOn == null || isOn == false
+                  ? const Color(0xFFE5E5E1)
+                  : const Color(0xFFFFEEEE),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -599,7 +627,8 @@ class SmartControl extends StatelessWidget {
                     ),
                   ],
                 ),
-                iconButton,
+                if (switchControl != null) switchControl!,
+                if (iconButton != null) iconButton!,
               ],
             ),
           ),
@@ -618,6 +647,7 @@ class AppMainView extends StatefulWidget {
 }
 
 class _AppMainViewState extends State<AppMainView> {
+  bool selected = false;
   // 이미지 슬라이더 list로 묶음
   final List<String> imgList = [
     'assets/webmain/webmain1.png',
@@ -635,13 +665,13 @@ class _AppMainViewState extends State<AppMainView> {
           items: imgList
               .map(
                 (e) => Container(
-                  child: Image.asset(
-                    e,
-                    fit: BoxFit.cover,
-                    width: 1000,
-                  ),
-                ),
-              )
+              child: Image.asset(
+                e,
+                fit: BoxFit.cover,
+                width: 1000,
+              ),
+            ),
+          )
               .toList(),
           options: CarouselOptions(
             // 화면 전환을 자동으로 할건지 설정
@@ -660,12 +690,27 @@ class _AppMainViewState extends State<AppMainView> {
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 60),
-                child: const Text(
-                  "Smart Home",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 40,
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selected = !selected;
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Container(
+                      height: 40,
+                      child: AnimatedDefaultTextStyle(
+                        child: Text("Smart Home"),
+                        style: TextStyle(
+                          fontSize: 40.0,
+                          color: selected ? Colors.black : Colors.white,
+                          fontWeight:
+                          selected ? FontWeight.bold : FontWeight.bold,
+                        ),
+                        duration: const Duration(milliseconds: 300),
+                      ),
+                    ),
                   ),
                 ),
               ),

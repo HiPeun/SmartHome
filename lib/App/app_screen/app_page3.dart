@@ -262,7 +262,7 @@ class _AppModifyProfile extends State<AppModifyProfile> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(top: 30, left: 50, bottom: 20),
+                padding: const EdgeInsets.only(top: 20, left: 50, bottom: 20),
                 child: Row(
                   children: [
                     const Expanded(
@@ -301,13 +301,10 @@ class _AppModifyProfile extends State<AppModifyProfile> {
               ),
             ),
             const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-              child: Container(
-                width: double.infinity,
-                height: 1.5,
-                decoration: const BoxDecoration(color: Colors.black54),
-              ),
+            Container(
+              width: double.infinity,
+              height: 1.5,
+              decoration: const BoxDecoration(color: Colors.black54),
             ),
             const SizedBox(height: 50),
             Expanded(
