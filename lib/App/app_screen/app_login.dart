@@ -192,7 +192,7 @@ class _AppLoginState extends State<AppLogin> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 10, left: 20),
+                    padding: const EdgeInsets.only(top: 30, left: 30, ),
                     child: Column(
                       children: [
                         Text(
@@ -313,19 +313,16 @@ class _AppLoginState extends State<AppLogin> {
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: 35,
-                    height: 50,
-                  ),
+
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) => AppFid()));
                     },
                     child: Text(
-                      "아이디 찾기",
+                      "아이디 찾기 ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -338,18 +335,18 @@ class _AppLoginState extends State<AppLogin> {
                         builder: (context) => AppFpw(),
                       ));
                     },
-                    child: Text(
-                      "비밀번호 찾기",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 50),
+                      child: Text(
+                        "비밀번호 찾기",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 60,
-                    height: 10,
-                  ),
+
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
@@ -364,8 +361,12 @@ class _AppLoginState extends State<AppLogin> {
                       ),
                     ),
                   ),
-                ],
+               ],
+
               ),
+              SizedBox(
+                height: 30,
+              )
             ],
           ),
         ),
