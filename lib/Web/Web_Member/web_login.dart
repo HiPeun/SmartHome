@@ -196,7 +196,7 @@ class _WebLoginState extends State<WebLogin> {
               height: 170,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color(0xFFD3CDC8),
+                color: Color(0xFFe6e8ed),
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(30),
                 ),
@@ -220,7 +220,7 @@ class _WebLoginState extends State<WebLogin> {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 50,
-                                color: Color(0xFF2C2B28), // 추가: 글자 색상
+                                color: Color(0xFF56648b), // 추가: 글자 색상
                               ),
                             ),
                           ),
@@ -254,7 +254,7 @@ class _WebLoginState extends State<WebLogin> {
                 ),
               ),
             ),
-            SizedBox(height: 120),
+            SizedBox(height: 90),
             Padding(
               padding: const EdgeInsets.only(top: 90),
               child: InkWell(
@@ -327,7 +327,7 @@ class _WebLoginState extends State<WebLogin> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Color(0xFFD3CDC8),
+                color: Color(0xFF6489e9),
               ),
               margin: EdgeInsets.only(top: 20),
               width: 400,
@@ -367,7 +367,7 @@ class _WebLoginState extends State<WebLogin> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10),
+                  margin: EdgeInsets.fromLTRB(0, 10, 20, 0),
                   child: InkWell(
                     child: Text(
                       "아이디 찾기",
