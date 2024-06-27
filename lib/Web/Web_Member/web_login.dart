@@ -254,7 +254,7 @@ class _WebLoginState extends State<WebLogin> {
                 ),
               ),
             ),
-            SizedBox(height: 90),
+            SizedBox(height: 60),
             Padding(
               padding: const EdgeInsets.only(top: 90),
               child: InkWell(
@@ -338,8 +338,8 @@ class _WebLoginState extends State<WebLogin> {
                     "로 그 인",
                     style: TextStyle(
                         fontSize: 19,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white),
                   ),
                 ),
                 onTap: () {
@@ -351,7 +351,7 @@ class _WebLoginState extends State<WebLogin> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  margin: EdgeInsets.only(right: 120, top: 10),
+                  margin: EdgeInsets.only(right: 110, top: 10),
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(

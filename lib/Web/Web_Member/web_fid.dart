@@ -125,7 +125,7 @@ class _WebFidState extends State<WebFid> {
               height: 170,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color(0xFFD3CDC8),
+                color: Color(0xFFe6e8ed),
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(30),
                 ),
@@ -149,7 +149,7 @@ class _WebFidState extends State<WebFid> {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 50,
-                                color: Color(0xFF2C2B28), // 추가: 글자 색상
+                                color: Color(0xFF56648b), // 추가: 글자 색상
                               ),
                             ),
                           ),
@@ -195,18 +195,7 @@ class _WebFidState extends State<WebFid> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40),
-                      child: InkWell(
-                        onTap: () {},
-                        child: Text(
-                          "고객센터",
-                          style: TextStyle(
-                            fontSize: 22,
-                          ),
-                        ),
-                      ),
-                    ),
+
                   ],
                 ),
               ),
@@ -247,7 +236,7 @@ class _WebFidState extends State<WebFid> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Color(0xFFD3CDC8),
+                      color: Color(0xFF6489e9),
                     ),
                     margin: EdgeInsets.only(top: 45),
                     width: 400,
@@ -261,8 +250,8 @@ class _WebFidState extends State<WebFid> {
                           "아이디 찾기",
                           style: TextStyle(
                             fontSize: 19,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white,
                           ),
                         ),
                       ),

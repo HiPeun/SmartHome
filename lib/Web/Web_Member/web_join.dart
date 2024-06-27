@@ -645,9 +645,9 @@ class _WebJoinState extends State<WebJoin> {
                                 "회원가입",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: 19,
+                                  fontSize: 20,
                                   color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.normal,
                                 ),
                               ),
                             ),
