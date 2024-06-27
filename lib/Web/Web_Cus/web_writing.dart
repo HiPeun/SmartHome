@@ -334,6 +334,28 @@ class _WebWritingState extends State<WebWriting> {
                           }
                         },
                       ),
+                      SizedBox(height: 12),
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: GestureDetector(
+                          onTap: () {
+                            // 처리할 로직 추가
+                          },
+                          child: Container(
+                            width: 90,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF6489e9),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              '첨부파일',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
 
                       SizedBox(height: 16),
                       Center(

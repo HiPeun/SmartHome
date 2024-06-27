@@ -147,7 +147,7 @@ class _WebNpwState extends State<WebNpw> {
               height: 170,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color(0xFFD3CDC8),
+                color: Color(0xFFe6e8ed),
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(30),
                 ),
@@ -165,6 +165,7 @@ class _WebNpwState extends State<WebNpw> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 50,
+                              color: Color(0xFF56648b),
                             ),
                           ),
                           Text(
@@ -249,7 +250,7 @@ class _WebNpwState extends State<WebNpw> {
                     child: Material(
                       elevation: 5.0,
                       borderRadius: BorderRadius.circular(30.0),
-                      color: const Color(0xFFD3CDC8),
+                      color: const Color(0xFF6489e9),
                       child: MaterialButton(
                         onPressed: () {
                           String newPassword = pw.text;
@@ -309,8 +310,8 @@ class _WebNpwState extends State<WebNpw> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 18,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal,
                               ),
                             ),
                           ),
