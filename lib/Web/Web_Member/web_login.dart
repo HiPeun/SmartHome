@@ -196,7 +196,7 @@ class _WebLoginState extends State<WebLogin> {
               height: 170,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color(0xFFD3CDC8),
+                color: Color(0xFFe6e8ed),
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(30),
                 ),
@@ -220,7 +220,7 @@ class _WebLoginState extends State<WebLogin> {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 50,
-                                color: Color(0xFF2C2B28), // 추가: 글자 색상
+                                color: Color(0xFF56648b), // 추가: 글자 색상
                               ),
                             ),
                           ),
@@ -254,7 +254,7 @@ class _WebLoginState extends State<WebLogin> {
                 ),
               ),
             ),
-            SizedBox(height: 120),
+            SizedBox(height: 60),
             Padding(
               padding: const EdgeInsets.only(top: 90),
               child: InkWell(
@@ -327,7 +327,7 @@ class _WebLoginState extends State<WebLogin> {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Color(0xFFD3CDC8),
+                color: Color(0xFF6489e9),
               ),
               margin: EdgeInsets.only(top: 20),
               width: 400,
@@ -338,8 +338,8 @@ class _WebLoginState extends State<WebLogin> {
                     "로 그 인",
                     style: TextStyle(
                         fontSize: 19,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white),
                   ),
                 ),
                 onTap: () {
@@ -351,7 +351,7 @@ class _WebLoginState extends State<WebLogin> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  margin: EdgeInsets.only(right: 120, top: 10),
+                  margin: EdgeInsets.only(right: 110, top: 10),
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
@@ -367,7 +367,7 @@ class _WebLoginState extends State<WebLogin> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10),
+                  margin: EdgeInsets.fromLTRB(0, 10, 20, 0),
                   child: InkWell(
                     child: Text(
                       "아이디 찾기",

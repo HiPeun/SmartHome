@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:loginproject/Web/Web_Cus/web_notice_screen.dart';
 import 'package:loginproject/main.dart';
 import 'package:loginproject/Web/webmain.dart';
 import '../Web_Cus/web_notice.dart';
@@ -311,7 +312,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
               height: 170,
               width: double.infinity,
               decoration: const BoxDecoration(
-                color: Color(0xFFD3CDC8),
+                color: Color(0xFFe6e8ed),
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(30),
                 ),
@@ -336,6 +337,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 50,
+                              color: Color(0xFF56648b),
                             ),
                           ),
                         ),
@@ -370,7 +372,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WebNotice(),
+                            builder: (context) => WebNoticeScreen(),
                           ));
                         },
                         child: const Text(
@@ -475,9 +477,9 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                           child: const Text("회원정보수정"),
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(100, 50),
-                            backgroundColor: const Color(0xFFD3CDC8),
+                            backgroundColor: const Color(0xFF6489e9),
                             textStyle: const TextStyle(fontSize: 18),
-                            foregroundColor: Colors.black,
+                            foregroundColor: Colors.white,
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
                             ),
@@ -489,9 +491,9 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                           child: const Text("취소"),
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(100, 50),
-                            backgroundColor: const Color(0xFFD3CDC8),
+                            backgroundColor: const Color(0xFF6489e9),
                             textStyle: const TextStyle(fontSize: 18),
-                            foregroundColor: Colors.black,
+                            foregroundColor: Colors.white,
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
                             ),
@@ -503,9 +505,9 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                           child: const Text("회원 탈퇴"),
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(100, 50),
-                            backgroundColor: const Color(0xFFD3CDC8),
+                            backgroundColor: const Color(0xFF6489e9),
                             textStyle: const TextStyle(fontSize: 18),
-                            foregroundColor: Colors.black,
+                            foregroundColor: Colors.grey,
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
                             ),
