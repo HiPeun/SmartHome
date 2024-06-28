@@ -646,7 +646,6 @@ class _AppJoinState extends State<AppJoin> {
                             child: Center(
 
                               child: Text(
-
                                 "회원가입",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
