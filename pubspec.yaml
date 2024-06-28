@@ -69,8 +69,11 @@ dev_dependencies:
   image_picker: ^1.1.2
 
   flutter_launcher_icons: ^0.13.1 # 파비콘
-
-
+flutter_icons:
+  ios: true
+  android: true
+  image_path: "assets/images/app_icon.png"
+  remove_alpha_ios: true
 
 
 
@@ -93,7 +96,6 @@ flutter:
   assets:
     - assets/images/
     - assets/webmain/
-    - android/app/src/main/res/raw/emergency_sound.mp3
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
