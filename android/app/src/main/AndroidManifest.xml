@@ -16,7 +16,7 @@
     </queries>
 
     <application
-            android:label="loginproject"
+            android:label="Conven"
             android:name="${applicationName}"
             android:icon="@mipmap/ic_launcher"
             android:usesCleartextTraffic="true">

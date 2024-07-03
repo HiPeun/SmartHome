@@ -161,7 +161,7 @@ class _Page2State extends State<Page2> {
         // 스낵바로 상태 알림
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(is90Degrees ? '현관문이 열렸습니다  ' : '현관문이 닫혔습니다..'),
+            content: Text(is90Degrees ? '현관문이 열렸습니다.' : '현관문이 닫혔습니다.'),
             duration: Duration(seconds: 2),
           ),
         );
@@ -508,7 +508,7 @@ class _Page2State extends State<Page2> {
                       value: is90Degrees,
                       onChanged: (value) {
                         if (user.isNotEmpty) {
-                          setAngle(value ? 0 : 180);
+                          setAngle(value ? 180 : 0);
                           setState(() {
                             is90Degrees = value;
                           });
@@ -526,7 +526,7 @@ class _Page2State extends State<Page2> {
                       value: is90Degrees2,
                       onChanged: (value) {
                         if (user.isNotEmpty) {
-                          setAngle2(value ? 0 : 180);
+                          setAngle2(value ? 180 : 0);
                           setState(() {
                             is90Degrees2 = value;
                           });
@@ -697,7 +697,7 @@ class _AppMainViewState extends State<AppMainView> {
                     });
                   },
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 10, top: 20),
                     child: Container(
                       height: 40,
                       child: AnimatedDefaultTextStyle(

@@ -507,7 +507,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                             minimumSize: const Size(100, 50),
                             backgroundColor: const Color(0xFF6489e9),
                             textStyle: const TextStyle(fontSize: 18),
-                            foregroundColor: Colors.grey,
+                            foregroundColor: Colors.white,
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
                             ),
