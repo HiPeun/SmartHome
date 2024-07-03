@@ -44,7 +44,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   dio: ^5.4.3+1
-  freezed: ^2.5.2
+  freezed: ^2.5.2 #코드 자동생성 불변 객체 및 데이터 클래스를 생성하는데 필요한 도구 제공
   freezed_annotation: ^2.4.1
   json_annotation: ^4.9.0
   carousel_slider: ^4.2.1
@@ -59,7 +59,7 @@ dependencies:
   shared_preferences: ^2.2.3
   flutter_secure_storage: ^4.2.1
   url_launcher: ^6.3.0
-  flutter_mjpeg: ^2.0.4
+  flutter_mjpeg: ^2.0.4 #cctv 실시간 통신
   firebase_core: ^3.1.1
 dev_dependencies:
   flutter_test:
@@ -67,6 +67,7 @@ dev_dependencies:
   slang_build_runner: ^2.4.9
   file_picker: ^4.6.1
   image_picker: ^1.1.2
+  firebase_core: ^3.1.1
 
   flutter_launcher_icons: ^0.13.1 # 파비콘
 flutter_icons:
