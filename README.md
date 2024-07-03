@@ -20,7 +20,8 @@ SmartHome은 스마트 홈 시스템을 통해 일상의 편리함과 안전을 
 
 ## 앱 화면
 
-![Simulator Screenshot - iPhone 15 - 2024-07-03 at 17 44 33](https://github.com/HiPeun/SmartHome/assets/112228310/bfcd28b0-242a-4234-ab89-05da8ef0b952)
+<img width="383" alt="스크린샷 2024-07-03 오후 5 45 44" src="https://github.com/HiPeun/SmartHome/assets/112228310/c8387949-5134-470d-b8a3-f3e7b0c62756">
+
 
 
 ### 설명
