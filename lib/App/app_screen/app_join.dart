@@ -640,11 +640,9 @@ class _AppJoinState extends State<AppJoin> {
                             joins(joinId, joinPw, joinName, joinEmail);
                           },
                           child: SizedBox(
-
                             width: 300,
                             height: 45,
                             child: Center(
-
                               child: Text(
                                 "회원가입",
                                 textAlign: TextAlign.center,
