@@ -697,7 +697,7 @@ class _AppMainViewState extends State<AppMainView> {
                     });
                   },
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 10, top: 20),
                     child: Container(
                       height: 40,
                       child: AnimatedDefaultTextStyle(
