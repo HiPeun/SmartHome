@@ -188,6 +188,93 @@ class _AppJoinState extends State<AppJoin> {
     }
   }
 
+  // 이메일 이름 중복검사
+  void check1(String name, String email) async {
+    final dio = Dio();
+    try {
+      final res = await dio.post(
+        "http://192.168.0.177:9090/user/login/duplication1",
+        data: {
+          'name': name,
+          'email': email,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+      if (res.statusCode == 200 && res.data == true) {
+        print(res.data);
+        bool isDuplicate = res.data as bool;
+        if (isDuplicate) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: Text("이미 사용 중인 이름과 이메일 입니다."),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('확인'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      } else {
+        print("이메일 이름 중복 확인 실패: ${res.data}");
+      }
+    } catch (e) {
+      showDialog(context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text("사용 가능한 이름과 이메일 입니다."),
+            actions: [
+              TextButton(onPressed: () {
+                Navigator.of(context).pop();
+              },
+                child: Text("확인"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  // 이메일 이름 중복 검사 버튼
+  Future<bool> check2(String name, String email) async {
+    final dio = Dio();
+    try {
+      final res = await dio.post(
+        "http://192.168.0.177:9090/user/login/duplication1",
+        data: {
+          'name': name,
+          'email': email,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (res.statusCode == 200) {
+        return res.data as bool;
+      } else {
+        print("이메일 이름 중복");
+        return false;
+      }
+    } catch (e) {
+      print("회원가입 완료");
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -384,18 +471,100 @@ class _AppJoinState extends State<AppJoin> {
                       ),
                     ),
                     SizedBox(height: 20),
-                    SizedBox(
-                      width: 300,
-                      child: TextField(
-                        controller: email,
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.markunread_rounded),
-                          labelText: "이메일",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 220,
+                          child: TextField(
+                            controller: email,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.markunread_rounded),
+                              labelText: "이메일",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        SizedBox(width: 10),
+                        TextButton(
+                          onPressed: () {
+                            String joinName = name.text;
+                            String joinEmail = email.text;
+                            if (joinName.isEmpty || joinEmail.isEmpty) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Text("이름 및 이메일을 입력하세요."),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('확인'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return;
+                            }
+                            if (joinEmail.isEmpty || !isValidEmail(joinEmail)) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Text("유효한 이메일 주소를 입력하세요."),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('확인'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return;
+                            }
+                            if (joinName.length > 6) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Text("이름은 6자리 이하로 입력하세요."),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('확인'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return;
+                            }
+                            check1(joinName, joinEmail);
+                          },
+                          child: Text(
+                            '중복확인',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                          style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            backgroundColor: Color(0xFFD3CDC8),
+                            minimumSize: Size(60, 55),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 16),
                     Container(
@@ -483,7 +652,7 @@ class _AppJoinState extends State<AppJoin> {
                         borderRadius: BorderRadius.circular(30.0),
                         color: const Color(0xFFD3CDC8),
                         child: TextButton(
-                          onPressed: () {
+                          onPressed: () async {
                             String joinName = name.text;
                             String joinId = id.text;
                             String joinPw = pw.text;
@@ -616,13 +785,32 @@ class _AppJoinState extends State<AppJoin> {
                               );
                               return;
                             }
-
                             if (!isAgreed) {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     content: Text("약관에 동의해야 합니다."),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('확인'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return;
+                            };
+                            bool isDuplicate = await check2(joinName, joinEmail);
+                            if (isDuplicate) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Text("이미 사용 중인 이름과 이메일 입니다."),
                                     actions: [
                                       TextButton(
                                         onPressed: () {
