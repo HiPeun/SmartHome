@@ -242,6 +242,34 @@ class _WebJoinState extends State<WebJoin> {
       );
     }
   }
+  // 이메일 이름 중복 검사 버튼
+  Future<bool> check2(String name, String email) async {
+    final dio = Dio();
+    try {
+      final res = await dio.post(
+        "http://192.168.0.177:9090/user/login/duplication1",
+        data: {
+          'name': name,
+          'email': email,
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (res.statusCode == 200) {
+        return res.data as bool;
+      } else {
+        print("이메일 이름 중복");
+        return false;
+      }
+    } catch (e) {
+      print("회원가입 완료");
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -618,7 +646,7 @@ class _WebJoinState extends State<WebJoin> {
                         borderRadius: BorderRadius.circular(30.0),
                         color: const Color(0xFF6489e9),
                         child: MaterialButton(
-                          onPressed: () {
+                          onPressed: () async {
                             String joinName = name.text;
                             String joinId = id.text;
                             String joinPw = pw.text;
@@ -752,6 +780,26 @@ class _WebJoinState extends State<WebJoin> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     content: Text("약관에 동의해야 합니다."),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('확인'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return;
+                            }
+                            bool isDuplicate = await check2(joinName, joinEmail);
+                            if (isDuplicate) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Text("이미 사용 중인 이름과 이메일 입니다."),
                                     actions: [
                                       TextButton(
                                         onPressed: () {
