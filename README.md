@@ -1,4 +1,4 @@
-readme_content = """
+
 # SmartHome 프로젝트
 
 SmartHome은 스마트 홈 시스템을 통해 일상의 편리함과 안전을 제공하는 프로젝트입니다. 이 시스템은 웹 인터페이스와 모바일 앱을 통해 다양한 가정 기기를 제어할 수 있도록 해줍니다. 또한, Arduino와 연결하여 다양한 센서와 기기를 통합할 수 있습니다.
@@ -20,7 +20,7 @@ SmartHome은 스마트 홈 시스템을 통해 일상의 편리함과 안전을 
 
 ## 앱 화면
 
-<img width="268" alt="스크린샷 2024-07-03 오후 5 33 50" src="https://github.com/HiPeun/SmartHome/assets/112228310/ef9ac405-436e-4aa9-87da-bd7914b46a88">
+![Simulator Screenshot - iPhone 15 - 2024-07-03 at 17 44 33](https://github.com/HiPeun/SmartHome/assets/112228310/bfcd28b0-242a-4234-ab89-05da8ef0b952)
 
 
 ### 설명
