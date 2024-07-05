@@ -306,24 +306,28 @@ class _AppModifyProfile extends State<AppModifyProfile> {
               height: 1.5,
               decoration: const BoxDecoration(color: Colors.black54),
             ),
-            const SizedBox(height: 50),
+             SizedBox(height: 30),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      width: 300,
-                      child: TextField(
-                        controller: idController,
-                        decoration: const InputDecoration(
-                          labelText: "아이디",
-                          border: OutlineInputBorder(),
+
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: SizedBox(
+                        width: 300,
+                        child: TextField(
+                          controller: idController,
+                          decoration: const InputDecoration(
+                            labelText: "아이디",
+                            border: OutlineInputBorder(),
+                          ),
+                          readOnly: true,
                         ),
-                        readOnly: true,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                     SizedBox(
                       width: 300,
                       child: TextFormField(
@@ -334,7 +338,7 @@ class _AppModifyProfile extends State<AppModifyProfile> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                     SizedBox(
                       width: 300,
                       child: TextField(
@@ -345,7 +349,7 @@ class _AppModifyProfile extends State<AppModifyProfile> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                     SizedBox(
                       width: 300,
                       child: TextFormField(

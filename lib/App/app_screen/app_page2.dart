@@ -34,7 +34,7 @@ class _Page2State extends State<Page2> {
     ),
   );
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
   late WebSocketChannel channel; // 웹소켓
   bool WebSocketbutton = false; // 웹소켓 버튼
 
@@ -200,13 +200,13 @@ class _Page2State extends State<Page2> {
   // 웹소켓
   void _initializeNotifications() {
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/ic_launcher');
 
     final IOSInitializationSettings initializationSettingsIOS =
-    IOSInitializationSettings();
+        IOSInitializationSettings();
 
     final InitializationSettings initializationSettings =
-    InitializationSettings(
+        InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
     );
@@ -241,7 +241,7 @@ class _Page2State extends State<Page2> {
   // 불꽃 감지 센서 상태 확인 메서드
   Future<void> sendEmergencyNotification() async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
+        AndroidNotificationDetails(
       'emergency_channel_id',
       '비상 알림',
       channelDescription: '비상 상황을 위한 알림',
@@ -339,124 +339,126 @@ class _Page2State extends State<Page2> {
             children: [
               Column(
                 children: [
-                  Stack(
+                  Row(
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selected = !selected;
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Container(
-                                  height: 30,
-                                  child: AnimatedDefaultTextStyle(
-                                    child: Text("Conven"),
-                                    style: TextStyle(
-                                      fontSize: 30.0,
-                                      color: selected ? Colors.blueAccent : Colors.black,
-                                      fontWeight:
-                                      selected ? FontWeight.w300 : FontWeight.bold,
-                                    ),
-                                    duration: const Duration(milliseconds: 400),
-                                  ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selected = !selected;
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Container(
+                              height: 35,
+                              child: AnimatedDefaultTextStyle(
+                                child: Text("Conven"),
+                                style: TextStyle(
+                                  fontSize: 30.0,
+                                  color: selected
+                                      ? Colors.blueAccent
+                                      : Colors.black,
+                                  fontWeight: selected
+                                      ? FontWeight.w300
+                                      : FontWeight.bold,
                                 ),
+                                duration: const Duration(milliseconds: 400),
                               ),
                             ),
                           ),
-                          if (user.isNotEmpty)
-                            Padding(
-                              padding: const EdgeInsets.only(right: 40, top: 12),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "반가워요, ${user["name"]}님!",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          InkWell(
-                            onTap: () async {
-                              if (user.isNotEmpty) {
-                                _logout(); // 로그아웃 확인 다이얼로그 표시
-                              } else {
-                                await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AppLogin(),
-                                  ),
-                                );
-
-                                setState(() {});
-                              }
-                            },
-                            child: Row(
-                              children: [
-                                Column(
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/backbutton.png",
-                                      width: 26,
-                                      height: 26,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    Text(user.isEmpty ? "로그인 " : "로그아웃"),
-                                  ],
+                        ),
+                      ),
+                      if (user.isNotEmpty)
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(right: 10, top: 12),
+                          child: Row(
+                            children: [
+                              Text(
+                                "반가워요, ${user["name"]}님!",
+                                style: TextStyle(
+                                  fontSize: 14,
                                 ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      InkWell(
+                        onTap: () async {
+                          if (user.isNotEmpty) {
+                            _logout(); // 로그아웃 확인 다이얼로그 표시
+                          } else {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AppLogin(),
+                              ),
+                            );
+
+                            setState(() {});
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            Column(
+                              children: [
+                                Image.asset(
+                                  "assets/images/backbutton.png",
+                                  width: 26,
+                                  height: 26,
+                                  fit: BoxFit.cover,
+                                ),
+                                Text(user.isEmpty ? "로그인 " : "로그아웃"),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (user.isEmpty)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(5, 0, 15, 0),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => AppJoin()));
+                            },
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  user.isEmpty
+                                      ? "assets/images/person2.png"
+                                      : "assets/images/personbutton.png",
+                                  width: 26,
+                                  height: 26,
+                                  fit: BoxFit.cover,
+                                ),
+                                Text(user.isEmpty ? "회원가입" : "내 정보"),
                               ],
                             ),
                           ),
-                          if (user.isEmpty)
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(5, 0, 15, 0),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => AppJoin()));
-                                },
-                                child: Column(
-                                  children: [
-                                    Image.asset(
-                                      user.isEmpty
-                                          ? "assets/images/person2.png"
-                                          : "assets/images/personbutton.png",
-                                      width: 26,
-                                      height: 26,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    Text(user.isEmpty ? "회원가입" : "내 정보"),
-                                  ],
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
+                        ),
                     ],
                   ),
                 ],
               ),
               AppMainView(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: const Text(
-                      "스마트 제어 ",
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+              SingleChildScrollView(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: const Text(
+                        "스마트 제어 ",
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               SingleChildScrollView(
                 child: Row(
@@ -501,7 +503,7 @@ class _Page2State extends State<Page2> {
               Row(
                 children: [
                   SmartControl(
-                    text: "현관문개폐",
+                    text: "현관문",
                     image: "assets/images/doorimage.png",
                     isOn: is90Degrees,
                     switchControl: Switch(
@@ -519,7 +521,7 @@ class _Page2State extends State<Page2> {
                     ),
                   ),
                   SmartControl(
-                    text: "창문개폐",
+                    text: "창문",
                     image: "assets/images/windowimage.png",
                     isOn: is90Degrees2,
                     switchControl: Switch(
@@ -602,7 +604,7 @@ class SmartControl extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            margin: const EdgeInsets.all(15),
+            margin: const EdgeInsets.all(13),
             padding: const EdgeInsets.all(15),
             width: MediaQuery.of(context).size.width * 0.42,
             decoration: BoxDecoration(
@@ -648,6 +650,7 @@ class AppMainView extends StatefulWidget {
 
 class _AppMainViewState extends State<AppMainView> {
   bool selected = false;
+
   // 이미지 슬라이더 list로 묶음
   final List<String> imgList = [
     'assets/webmain/webmain1.png',
@@ -665,13 +668,13 @@ class _AppMainViewState extends State<AppMainView> {
           items: imgList
               .map(
                 (e) => Container(
-              child: Image.asset(
-                e,
-                fit: BoxFit.cover,
-                width: 1000,
-              ),
-            ),
-          )
+                  child: Image.asset(
+                    e,
+                    fit: BoxFit.cover,
+                    width: 1000,
+                  ),
+                ),
+              )
               .toList(),
           options: CarouselOptions(
             // 화면 전환을 자동으로 할건지 설정
@@ -706,7 +709,7 @@ class _AppMainViewState extends State<AppMainView> {
                           fontSize: 40.0,
                           color: selected ? Colors.black : Colors.white,
                           fontWeight:
-                          selected ? FontWeight.bold : FontWeight.bold,
+                              selected ? FontWeight.bold : FontWeight.bold,
                         ),
                         duration: const Duration(milliseconds: 300),
                       ),
