@@ -367,7 +367,7 @@ class _AppJoinState extends State<AppJoin> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: 220,
+                          width: 210,
                           child: TextField(
                             controller: id,
                             decoration: InputDecoration(
@@ -478,7 +478,7 @@ class _AppJoinState extends State<AppJoin> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: 220,
+                          width: 210,
                           child: TextField(
                             controller: email,
                             decoration: InputDecoration(
