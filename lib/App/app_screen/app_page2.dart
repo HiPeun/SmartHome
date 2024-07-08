@@ -154,7 +154,7 @@ class _Page2State extends State<Page2> {
 
   // 현관문 개폐 메서드
   Future<void> setAngle(int angle) async {
-    String url = 'http://192.168.0.229/setAngle1?angle=$angle';
+    String url = 'http://192.168.0.198/setAngle1?angle=$angle';
     try {
       final res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
@@ -177,7 +177,7 @@ class _Page2State extends State<Page2> {
 
   // 창문 개폐 메서드
   Future<void> setAngle2(int angle) async {
-    String url = 'http://192.168.0.229/setAngle2?angle=$angle';
+    String url = 'http://192.168.0.198/setAngle2?angle=$angle';
     try {
       final res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
@@ -241,7 +241,7 @@ class _Page2State extends State<Page2> {
   // 불꽃 감지 센서 상태 확인 메서드
   Future<void> sendEmergencyNotification() async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
+    AndroidNotificationDetails(
       'emergency_channel_id',
       '비상 알림',
       channelDescription: '비상 상황을 위한 알림',
@@ -372,7 +372,7 @@ class _Page2State extends State<Page2> {
                       if (user.isNotEmpty)
                         Padding(
                           padding:
-                              const EdgeInsets.only(right: 10, top: 12),
+                          const EdgeInsets.only(right: 10, top: 12),
                           child: Row(
                             children: [
                               Text(
@@ -395,62 +395,6 @@ class _Page2State extends State<Page2> {
                                 builder: (context) => AppLogin(),
                               ),
                             );
-                  Stack(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: SingleChildScrollView(
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    selected = !selected;
-                                  });
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Container(
-                                    height: 30,
-                                    child: AnimatedDefaultTextStyle(
-                                      child: Text("Conven"),
-                                      style: TextStyle(
-                                        fontSize: 30.0,
-                                        color: selected ? Colors.blueAccent : Colors.black,
-                                        fontWeight:
-                                        selected ? FontWeight.w300 : FontWeight.bold,
-                                      ),
-                                      duration: const Duration(milliseconds: 400),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          if (user.isNotEmpty)
-                            Padding(
-                              padding: const EdgeInsets.only(right: 40, top: 12),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "반가워요, ${user["name"]}님!",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          InkWell(
-                            onTap: () async {
-                              if (user.isNotEmpty) {
-                                _logout(); // 로그아웃 확인 다이얼로그 표시
-                              } else {
-                                await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AppLogin(),
-                                  ),
-                                );
 
                             setState(() {});
                           }
@@ -706,6 +650,7 @@ class AppMainView extends StatefulWidget {
 
 class _AppMainViewState extends State<AppMainView> {
   bool selected = false;
+
   // 이미지 슬라이더 list로 묶음
   final List<String> imgList = [
     'assets/webmain/webmain1.png',
@@ -723,13 +668,13 @@ class _AppMainViewState extends State<AppMainView> {
           items: imgList
               .map(
                 (e) => Container(
-                  child: Image.asset(
-                    e,
-                    fit: BoxFit.cover,
-                    width: 1000,
-                  ),
-                ),
-              )
+              child: Image.asset(
+                e,
+                fit: BoxFit.cover,
+                width: 1000,
+              ),
+            ),
+          )
               .toList(),
           options: CarouselOptions(
             // 화면 전환을 자동으로 할건지 설정
@@ -764,7 +709,7 @@ class _AppMainViewState extends State<AppMainView> {
                           fontSize: 40.0,
                           color: selected ? Colors.black : Colors.white,
                           fontWeight:
-                              selected ? FontWeight.bold : FontWeight.bold,
+                          selected ? FontWeight.bold : FontWeight.bold,
                         ),
                         duration: const Duration(milliseconds: 300),
                       ),
@@ -792,3 +737,4 @@ class _AppMainViewState extends State<AppMainView> {
     );
   }
 }
+
