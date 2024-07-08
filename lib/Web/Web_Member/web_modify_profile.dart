@@ -428,6 +428,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                       width: 600,
                       child: TextField(
                         controller: pwController,
+                        obscureText: true,
                         decoration: const InputDecoration(
                           labelText: "비밀번호",
                           border: OutlineInputBorder(),
@@ -439,6 +440,7 @@ class _WebModifyProfile extends State<WebModifyProfile> {
                       width: 600,
                       child: TextField(
                         controller: pw2Controller,
+                        obscureText: true,
                         decoration: const InputDecoration(
                           labelText: "비밀번호 확인",
                           border: OutlineInputBorder(),

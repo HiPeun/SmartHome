@@ -71,6 +71,45 @@ class _AppModifyProfile extends State<AppModifyProfile> {
         );
         return;
       }
+      if (pwController.text != pw2Controller.text) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('회원 수정 실패'),
+              content: const Text('비밀번호가 서로 같은지 확인해주세요'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+        return;
+      }
+      if (nameController.text.length > 6) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text("이름은 6자리 이하로 입력하세요."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('확인'),
+                ),
+              ],
+            );
+          },
+        );
+        return;
+      }
       dio.Response res = await dioClient.post("/user/update", data: data);
       if (res.statusCode == 200) {
         showDialog(
@@ -312,6 +351,7 @@ class _AppModifyProfile extends State<AppModifyProfile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    const SizedBox(height: 16),
                     SizedBox(
                       width: 300,
                       child: TextField(
@@ -327,9 +367,22 @@ class _AppModifyProfile extends State<AppModifyProfile> {
                     SizedBox(
                       width: 300,
                       child: TextFormField(
+                        obscureText: true,
                         controller: pwController,
                         decoration: const InputDecoration(
                           labelText: "비밀번호",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: 300,
+                      child: TextFormField(
+                        obscureText: true,
+                        controller: pw2Controller,
+                        decoration: const InputDecoration(
+                          labelText: "비밀번호 확인",
                           border: OutlineInputBorder(),
                         ),
                       ),

@@ -92,7 +92,7 @@ class _WebJoinState extends State<WebJoin> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: Text("아이디를 다시 확인해 주세요."),
+              content: Text("아이디를 다시 확인해 주세요!."),
               actions: [
                 TextButton(
                   onPressed: () {

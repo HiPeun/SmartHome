@@ -154,7 +154,7 @@ class _Page2State extends State<Page2> {
 
   // 현관문 개폐 메서드
   Future<void> setAngle(int angle) async {
-    String url = 'http://192.168.0.198/setAngle1?angle=$angle';
+    String url = 'http://192.168.0.229/setAngle1?angle=$angle';
     try {
       final res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
@@ -177,7 +177,7 @@ class _Page2State extends State<Page2> {
 
   // 창문 개폐 메서드
   Future<void> setAngle2(int angle) async {
-    String url = 'http://192.168.0.198/setAngle2?angle=$angle';
+    String url = 'http://192.168.0.229/setAngle2?angle=$angle';
     try {
       final res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
@@ -344,25 +344,27 @@ class _Page2State extends State<Page2> {
                       Row(
                         children: [
                           Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selected = !selected;
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Container(
-                                  height: 30,
-                                  child: AnimatedDefaultTextStyle(
-                                    child: Text("Conven"),
-                                    style: TextStyle(
-                                      fontSize: 30.0,
-                                      color: selected ? Colors.blueAccent : Colors.black,
-                                      fontWeight:
-                                      selected ? FontWeight.w300 : FontWeight.bold,
+                            child: SingleChildScrollView(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selected = !selected;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Container(
+                                    height: 30,
+                                    child: AnimatedDefaultTextStyle(
+                                      child: Text("Conven"),
+                                      style: TextStyle(
+                                        fontSize: 30.0,
+                                        color: selected ? Colors.blueAccent : Colors.black,
+                                        fontWeight:
+                                        selected ? FontWeight.w300 : FontWeight.bold,
+                                      ),
+                                      duration: const Duration(milliseconds: 400),
                                     ),
-                                    duration: const Duration(milliseconds: 400),
                                   ),
                                 ),
                               ),
