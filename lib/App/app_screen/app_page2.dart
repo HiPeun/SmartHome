@@ -154,7 +154,7 @@ class _Page2State extends State<Page2> {
 
   // 현관문 개폐 메서드
   Future<void> setAngle(int angle) async {
-    String url = 'http://192.168.0.198/setAngle1?angle=$angle';
+    String url = 'http://192.168.0.229/setAngle1?angle=$angle';
     try {
       final res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
@@ -177,7 +177,7 @@ class _Page2State extends State<Page2> {
 
   // 창문 개폐 메서드
   Future<void> setAngle2(int angle) async {
-    String url = 'http://192.168.0.198/setAngle2?angle=$angle';
+    String url = 'http://192.168.0.229/setAngle2?angle=$angle';
     try {
       final res = await http.get(Uri.parse(url));
       if (res.statusCode == 200) {
