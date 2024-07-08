@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loginproject/App/app_screen/app_login.dart';
 import 'package:loginproject/App/app_screen/bottom_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppJoin extends StatefulWidget {
   AppJoin({super.key});
@@ -229,14 +230,16 @@ class _AppJoinState extends State<AppJoin> {
         print("이메일 이름 중복 확인 실패: ${res.data}");
       }
     } catch (e) {
-      showDialog(context: context,
+      showDialog(
+        context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             content: Text("사용 가능한 이름과 이메일 입니다."),
             actions: [
-              TextButton(onPressed: () {
-                Navigator.of(context).pop();
-              },
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
                 child: Text("확인"),
               ),
             ],
@@ -364,7 +367,7 @@ class _AppJoinState extends State<AppJoin> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: 220,
+                          width: 210,
                           child: TextField(
                             controller: id,
                             decoration: InputDecoration(
@@ -475,7 +478,7 @@ class _AppJoinState extends State<AppJoin> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: 220,
+                          width: 210,
                           child: TextField(
                             controller: email,
                             decoration: InputDecoration(
@@ -803,8 +806,10 @@ class _AppJoinState extends State<AppJoin> {
                                 },
                               );
                               return;
-                            };
-                            bool isDuplicate = await check2(joinName, joinEmail);
+                            }
+                            ;
+                            bool isDuplicate =
+                                await check2(joinName, joinEmail);
                             if (isDuplicate) {
                               showDialog(
                                 context: context,
@@ -856,5 +861,13 @@ class _AppJoinState extends State<AppJoin> {
         ),
       ),
     );
+  }
+
+  Future<void> _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw "Could not launch $url";
+    }
   }
 }

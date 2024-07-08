@@ -345,7 +345,7 @@ class _AppModifyProfile extends State<AppModifyProfile> {
               height: 1.5,
               decoration: const BoxDecoration(color: Colors.black54),
             ),
-            const SizedBox(height: 50),
+             SizedBox(height: 30),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(

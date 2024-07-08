@@ -192,7 +192,10 @@ class _AppLoginState extends State<AppLogin> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 30, left: 30, ),
+                    padding: const EdgeInsets.only(
+                      top: 30,
+                      left: 30,
+                    ),
                     child: Column(
                       children: [
                         Text(
@@ -222,12 +225,13 @@ class _AppLoginState extends State<AppLogin> {
                 children: [
                   Text(
                     "로그인",
-                    style: TextStyle(fontWeight: FontWeight.bold
-                    ,fontSize:30),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                   ),
                 ],
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Material(
                 color: Colors.transparent,
                 child: InkWell(
@@ -312,31 +316,38 @@ class _AppLoginState extends State<AppLogin> {
                   },
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => AppFid()));
-                    },
-                    child: Text(
-                      "아이디 찾기 ",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 1,
+                width: double.infinity,
+                color: Colors.black,
+              ),
+              Container(
+                color: Colors.transparent,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => AppFid()));
+                      },
+                      child: Text(
+                        "아이디 찾기 ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => AppFpw(),
-                      ));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 50),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => AppFpw(),
+                        ));
+                      },
                       child: Text(
                         "비밀번호 찾기",
                         style: TextStyle(
@@ -345,28 +356,23 @@ class _AppLoginState extends State<AppLogin> {
                         ),
                       ),
                     ),
-                  ),
-
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => AppJoin(),
-                      ));
-                    },
-                    child: Text(
-                      "회원가입",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => AppJoin(),
+                        ));
+                      },
+                      child: Text(
+                        "회원가입",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
-                  ),
-               ],
-
+                  ],
+                ),
               ),
-              SizedBox(
-                height: 30,
-              )
             ],
           ),
         ),

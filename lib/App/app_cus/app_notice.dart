@@ -78,52 +78,83 @@ class _AppNoticeState extends State<AppNotice> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
+                  TextButton(
                     onPressed: () {
                       setState(() {
                         showNotices = true;
                       });
                     },
-                    child: Row(
+                    child: Column(
+
                       children: [
-                        Text(
-                          "공지사항",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              "공지사항",
+                              style: TextStyle(
+                                color: !showNotices ? Colors.grey : Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+
+                          ],
+
                         ),
+                        if (showNotices)
+                          Container(
+                            margin: EdgeInsets.only(top: 3),
+                            height: 4,
+                            width: 70,
+                            color: Colors.orange,
+                          ),
                       ],
+
                     ),
+
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(70, 50),
-                      backgroundColor: showNotices ? Color(0x66Bde0) : null,
+                      backgroundColor:null,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
+
                     ),
+
                   ),
+
                   SizedBox(
-                    width: 80,
+                    width: 30,
                   ),
-                  ElevatedButton(
+                  TextButton(
                     onPressed: () {
                       setState(() {
                         showNotices = false;
                       });
                     },
-                    child: Text(
-                      "자주묻는질문",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+                    child: Column(
+                      children: [
+                        Text(
+                          "자주묻는질문",
+                          style: TextStyle(
+                            color: showNotices ? Colors.grey : Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+
+                          ),
+                        ),
+                        if (!showNotices)
+                          Container(
+                            margin: EdgeInsets.only(top: 3),
+                            height: 4,
+                            width: 100,
+                            color: Colors.orange,
+                          ),
+                      ],
                     ),
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(70, 50),
-                      backgroundColor: !showNotices ? Color(0x66Bde0) : null,
+                      backgroundColor:  null,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -132,20 +163,15 @@ class _AppNoticeState extends State<AppNotice> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-              child: Container(
-                width: double.infinity,
-                height: 1.5,
-                decoration: BoxDecoration(color: Colors.black54),
-              ),
-            ),
+
             SizedBox(height: 30),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 // 공지사항과 Q&A 리스트에 좌우 여백 추가
-                child: showNotices ? NoticeList() : QnaList(),
+                child: showNotices ? NoticeList(
+
+                ) : QnaList(),
               ),
             ),
             Padding(
@@ -180,6 +206,7 @@ class _AppNoticeState extends State<AppNotice> {
                               },
                               child: Text('확인'),
                             ),
+
                           ],
                         );
                       },
